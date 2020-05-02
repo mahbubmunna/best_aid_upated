@@ -105,6 +105,14 @@ class _PostProblemState extends State<PostProblem> {
           Text('Posted Successfully')
         ],
       ), backgroundColor: Theme.of(context).primaryColor,));
+    }).catchError((onError) {
+      Scaffold.of(context).showSnackBar(SnackBar(content: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Text('Something went wrong')
+        ],
+      ), backgroundColor: Theme.of(context).primaryColor,));
     });
  }
 

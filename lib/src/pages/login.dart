@@ -78,7 +78,7 @@ class _LoginWidgetState extends State<LoginWidget> {
               child: RaisedButton(
                 color: Theme
                     .of(context)
-                    .secondaryHeaderColor,
+                    .primaryColor,
                 textColor: Colors.white,
                 onPressed: () {
                   _login();

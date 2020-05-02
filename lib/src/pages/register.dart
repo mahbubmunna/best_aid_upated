@@ -63,7 +63,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
             ButtonTheme(
               height: 50,
               child: RaisedButton(
-                color: Theme.of(context).secondaryHeaderColor,
+                color: Theme.of(context).primaryColor,
                 textColor: Colors.white,
                 onPressed: (){
                   _register();

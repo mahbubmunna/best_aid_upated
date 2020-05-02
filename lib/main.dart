@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
               brightness: brightness,
               accentColor: config.Colors().accentColor(1),
               focusColor: config.Colors().accentColor(1),
-              hintColor: config.Colors().accentColor(1),
+              hintColor: config.Colors().primaryColorGray(1),
               secondaryHeaderColor: config.Colors().primaryColorGray(1),
               inputDecorationTheme: InputDecorationTheme(border: OutlineInputBorder()),
               textTheme: TextTheme(

@@ -1,6 +1,7 @@
 import 'package:bestaid/elements/DrawerWidget.dart';
 import 'package:bestaid/src/pages/expert_opinion.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 
 import 'home.dart';
@@ -53,7 +54,9 @@ class _PagesTestWidgetState extends State<PagesTestWidget> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async => false,
+      onWillPop: () {
+        return SystemNavigator.pop();
+      },
       child: Scaffold(
         //key: widget.scaffoldKey,
         drawer: DrawerWidget(),
