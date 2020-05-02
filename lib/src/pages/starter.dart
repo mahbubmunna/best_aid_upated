@@ -16,7 +16,7 @@ class _StarterState extends State<Starter> {
   @override
   void initState() {
     _backgroundForBangla = config.Colors().accentDarkColor(1);
-    _backgroundForEnglish = config.Colors().mainColor(1);
+    _backgroundForEnglish = config.Colors().accentColor(1);
     S.load(Locale(Intl.getCurrentLocale()));
     super.initState();
   }

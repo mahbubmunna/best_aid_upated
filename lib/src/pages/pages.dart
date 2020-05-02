@@ -9,7 +9,7 @@ import 'home.dart';
 class PagesTestWidget extends StatefulWidget {
   int currentTab;
   Widget currentPage = HomeWidget();
-  final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
+  //final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
 
   PagesTestWidget({
     Key key,
@@ -41,10 +41,10 @@ class _PagesTestWidgetState extends State<PagesTestWidget> {
       widget.currentTab = tabItem;
       switch (tabItem) {
         case 1:
-          widget.currentPage = ExpertOpinion(parentScaffoldKey: widget.scaffoldKey,);
+          widget.currentPage = ExpertOpinion();
           break;
         case 2:
-          widget.currentPage = HomeWidget(parentScaffoldKey: widget.scaffoldKey,);
+          widget.currentPage = HomeWidget();
 
       }
     });
@@ -55,7 +55,7 @@ class _PagesTestWidgetState extends State<PagesTestWidget> {
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
-        key: widget.scaffoldKey,
+        //key: widget.scaffoldKey,
         drawer: DrawerWidget(),
         body: widget.currentPage,
         bottomNavigationBar: BottomNavigationBar(

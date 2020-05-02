@@ -1,5 +1,10 @@
+import 'package:bestaid/config/helper.dart';
+import 'package:bestaid/src/models/post.dart';
+import 'package:bestaid/src/repository/post_repository.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
+
+import 'package:intl/intl.dart';
 
 class NewsFeed extends StatefulWidget {
   @override
@@ -7,6 +12,14 @@ class NewsFeed extends StatefulWidget {
 }
 
 class _NewsFeedState extends State<NewsFeed> {
+  var _allPosts;
+  Post _post;
+
+  @override
+  void initState() {
+    _allPosts = PostRepository.getPost();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,62 +101,19 @@ class _NewsFeedState extends State<NewsFeed> {
               height: 30,
             ),
             Flexible(
-              child: ListView.builder(
-                shrinkWrap: true,
-                physics: ClampingScrollPhysics(),
-                itemCount: 7,
-                itemBuilder: (context, index) {
-                  return Card(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Row(
-                        children: <Widget>[
-                          Flexible(
-                            flex: 2,
-                            fit: FlexFit.tight,
-                            child: Column(
-                              children: <Widget>[
-                                Text('Today', textScaleFactor: 1.5, style: TextStyle(color: Theme.of(context).accentColor),),
-                                Text('17 April 2019'),
-                                SizedBox(height: 10,),
-                                Text('08:45', textScaleFactor: 1.5,),
-                              ],
-                            ),
-                          ),
-                          VerticalDivider(
-                              color: Theme.of(context).primaryColor,
-                              thickness: 1,
-                            ),
-                          Flexible(
-                            flex: 3,
-                            child: Padding(
-                              padding: EdgeInsets.all(10),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: <Widget>[
-                                  Text(
-                                      'Lorem ipsum dolor sit amet, consectetur adipiscing elit,derit in voluptate velit, meri kahne ka houl soum'),
-                                  SizedBox(
-                                    height: 25,
-                                    width: 100,
-                                    child: MaterialButton(
-                                      shape: StadiumBorder(),
-                                      color: Theme.of(context).accentColor,
-                                      textColor: Colors.white,
-                                      onPressed: () {},
-                                      child: Text(
-                                        'Read More',
-                                        textScaleFactor: .8,
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ));
+              child: FutureBuilder(
+                future: _allPosts,
+                builder: (context, snapshot) {
+                  if(snapshot.hasData) {
+                    if(snapshot.data.error != null && snapshot.data.error.length > 0){
+                      buildErrorWidget(snapshot.data.error);
+                    }
+                    return _postListWidget(snapshot.data.posts);
+                  } else if (snapshot.hasError) {
+                    return buildErrorWidget(snapshot.error);
+                  } else {
+                    return buildLoadingWidget();
+                  }
                 },
               ),
             ),
@@ -152,4 +122,80 @@ class _NewsFeedState extends State<NewsFeed> {
       ),
     );
   }
+
+  _postListWidget(List<Post> posts) {
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: ClampingScrollPhysics(),
+      itemCount: posts.length,
+      itemBuilder: (context, index) {
+        _post = posts[index];
+        return Card(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            child: Row(
+              children: <Widget>[
+                Flexible(
+                  flex: 2,
+                  fit: FlexFit.tight,
+                  child: Column(
+                    children: <Widget>[
+                      Text(
+                        DateFormat('EEEE').format(_post.time),
+                        textScaleFactor: 1.5,
+                        style: TextStyle(color: Theme.of(context).accentColor),
+                      ),
+                      Text(DateFormat('d MMM yyyy').format(_post.time)),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        DateFormat('h:mm a').format(_post.time),
+                        textScaleFactor: 1.5,
+                      ),
+                    ],
+                  ),
+                ),
+                VerticalDivider(
+                  color: Theme.of(context).primaryColor,
+                  thickness: 1,
+                ),
+                Flexible(
+                  flex: 3,
+                  fit: FlexFit.tight,
+                  child: Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        Text(
+                            _post.body, maxLines: 4, overflow: TextOverflow.ellipsis,),
+                        SizedBox(
+                          height: 25,
+                          width: 100,
+                          child: MaterialButton(
+                            shape: StadiumBorder(),
+                            color: Theme.of(context).accentColor,
+                            textColor: Colors.white,
+                            onPressed: () {},
+                            child: Text(
+                              'Read More',
+                              textScaleFactor: .8,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ));
+      },
+    );
+  }
 }
+
+
+

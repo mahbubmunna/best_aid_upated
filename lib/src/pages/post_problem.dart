@@ -1,7 +1,11 @@
 import 'package:bestaid/generated/l10n.dart';
+import 'package:bestaid/src/repository/post_repository.dart';
+import 'package:bestaid/src/repository/problem_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
+
+import 'package:flutter/services.dart';
 
 class PostProblem extends StatefulWidget {
   @override
@@ -54,6 +58,7 @@ class _PostProblemState extends State<PostProblem> {
             SizedBox(height: 30,),
             TextField(
               maxLines: 16,
+              controller: _postInputController,
               decoration: InputDecoration(
                 focusColor: Colors.white,
                 border: OutlineInputBorder(
@@ -66,14 +71,20 @@ class _PostProblemState extends State<PostProblem> {
             ),
             SizedBox(height: 30,),
             Center(
-              child: MaterialButton(
-                color: Theme.of(context).primaryColor,
-                shape: StadiumBorder(),
-                textColor: Colors.white,
-                onPressed: (){},
-                child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 40),
-                    child: Text('SEND', textScaleFactor: 1.2,)),
+              child: Builder(
+                builder: (BuildContext context) {
+                  return MaterialButton(
+                    color: Theme.of(context).primaryColor,
+                    shape: StadiumBorder(),
+                    textColor: Colors.white,
+                    onPressed: (){
+                      _postProblemToTheServer(context);
+                    },
+                    child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 40),
+                        child: Text('SEND', textScaleFactor: 1.2,)),
+                  );
+                }
               ),
             )
           ],
@@ -81,4 +92,21 @@ class _PostProblemState extends State<PostProblem> {
       ),
     );
   }
+
+ _postProblemToTheServer(BuildContext context) {
+    Map post = {'title': _postInputController.text, 'message': _postInputController.text};
+    ProblemRepository.postDataToProblem(post).then((value) {
+      SystemChannels.textInput.invokeMethod('TextInput.hide');
+      _postInputController.clear();
+      Scaffold.of(context).showSnackBar(SnackBar(content: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Text('Posted Successfully')
+        ],
+      ), backgroundColor: Theme.of(context).primaryColor,));
+    });
+ }
+
+
 }

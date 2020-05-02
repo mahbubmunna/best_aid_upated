@@ -1,27 +1,30 @@
 
 
 import 'package:bestaid/config/strings.dart';
-import 'package:bestaid/models/token.dart';
+import 'package:bestaid/src/models/token.dart';
 import 'package:dio/dio.dart';
 
 
 class TokenProvider{
-  static final _endPoint = "${api_base_url}login";
+  static final _endPointLogin = "${api_base_url}login";
+  static final _endPointRegister = "${api_base_url}register";
   static final _dio = Dio();
 
-  static Future<Token> getToken(Map loginInfo) async {
-    _dio.options.contentType = Headers.formUrlEncodedContentType;
+  static Future<TokenResponse> getToken(Map loginInfo) async {
+   // _dio.options.contentType = Headers.formUrlEncodedContentType;
     try {
-      Response response = await _dio.post(_endPoint, data: loginInfo);
-      if (response.data['results'] == null){
-        return Token.withError('Invalid credential');
+      Response response;
+      if (loginInfo.length == 3) response = await _dio.post(_endPointRegister, data: loginInfo);
+      else response = await _dio.post(_endPointLogin, data: loginInfo);
+      if (response.data['access_token'] == null){
+        return TokenResponse.withError('Invalid credential');
       } else {
-        return Token.fromJson(response.data);
+        return TokenResponse.fromJson(response.data);
       }
 
     } catch (error, stacktrace) {
       print("Exception occured: $error stackTrace: $stacktrace");
-      return Token.withError("$error");
+      return TokenResponse.withError("$error");
     }
   }
 

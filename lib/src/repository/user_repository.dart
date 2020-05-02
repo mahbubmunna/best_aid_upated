@@ -1,6 +1,7 @@
 
-import 'package:bestaid/models/user.dart';
-import 'package:bestaid/providers/user_provider.dart';
+
+import 'package:bestaid/src/models/user.dart';
+import 'package:bestaid/src/providers/user_provider.dart';
 
 class UserRepository {
 
@@ -8,7 +9,7 @@ class UserRepository {
     return UserProvider.getUser();
   }
 
-  static Future<UserResponse> postUser(Map updatedData) {
-    return UserProvider.postUserUpdatedData(updatedData);
+  static Future<UserResponse> postUser(Map loginInfo) {
+    return UserProvider.postLoginData(loginInfo);
   }
 }

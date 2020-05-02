@@ -1,9 +1,6 @@
 
 
-
-
-
-import 'package:bestaid/providers/registration_provider.dart';
+import 'package:bestaid/src/providers/registration_provider.dart';
 
 class RegistrationRepository{
 

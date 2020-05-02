@@ -8,7 +8,7 @@ class UserResponse {
   String error;
 
   UserResponse.fromJson(Map<String, dynamic> json)
-    : user = User.fromJson(json['results']),
+    : user = User.fromJson(json['user']),
   error = "";
 
   UserResponse.withError(String errorValue)
@@ -32,15 +32,16 @@ class User {
   User.init();
 
   User.fromJson(Map<String, dynamic> json)
-      : email = json['email'],
-        id = json['id'].toString(),
-        name = json["name"],
-        gender = 'Male',
-        address = json['address'] != null ? json['address'] : '',
-        city = json['city'] != null ? json['city'] : '',
-        country = json['country'] != null ? json['country'] : '',
-        dateOfBirth = DateTime(1993, 12, 31),
-        avatar = json['avatar_original'] == null ? 'https://picsum.photos/200' : public_path_url+json['avatar_original'];
+      : email = json['email'] ?? "",
+        id = json['id'] ?? "",
+        name = json["name"] ?? "";
+//        id = json['id'].toString(),
+//        gender = 'Male',
+//        address = json['address'] != null ? json['address'] : '',
+//        city = json['city'] != null ? json['city'] : '',
+//        country = json['country'] != null ? json['country'] : '',
+//        dateOfBirth = DateTime(1993, 12, 31),
+//        avatar = json['avatar_original'] == null ? 'https://picsum.photos/200' : public_path_url+json['avatar_original'];
 
 
   User.basic(this.name, this.avatar, this.userState);

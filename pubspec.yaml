@@ -35,6 +35,8 @@ dependencies:
   dio: ^3.0.8
   rxdart: ^0.23.1
   http: ^0.12.0+4
+  animated_splash: ^1.0.0
+  loading: ^1.0.2
 
 dev_dependencies:
   flutter_test:
@@ -63,6 +65,7 @@ flutter:
     - assets/cfg/
     - assets/img/
     - assets/icon/
+    - assets/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

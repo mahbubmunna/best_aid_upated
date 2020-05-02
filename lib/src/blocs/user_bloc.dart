@@ -1,4 +1,4 @@
-import 'package:bestaid/models/user.dart';
+import 'package:bestaid/src/models/user.dart';
 import 'package:bestaid/src/repository/user_repository.dart';
 import 'package:rxdart/rxdart.dart';
 

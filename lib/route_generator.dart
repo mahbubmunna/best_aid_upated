@@ -7,6 +7,7 @@ import 'package:bestaid/src/pages/post_problem.dart';
 import 'package:bestaid/src/pages/register.dart';
 import 'package:bestaid/src/pages/starter.dart';
 import 'package:bestaid/src/pages/your_history.dart';
+import 'package:bestaid/splash.dart';
 import 'package:flutter/material.dart';
 
 class RouteGenerator {
@@ -15,7 +16,7 @@ class RouteGenerator {
     final args = settings.arguments;
     switch (settings.name) {
       case '/':
-        return MaterialPageRoute(builder: (_) => LoginWidget());
+        return MaterialPageRoute(builder: (_) => Splash());
       case '/Starter':
         return MaterialPageRoute(builder: (_) => Starter());
       case '/Login':

@@ -1,16 +1,16 @@
 
 
-class Token {
+class TokenResponse {
   final String token;
   final String error;
 
-  Token(this.token,this.error);
+  TokenResponse(this.token,this.error);
 
-  Token.fromJson(Map<String, dynamic> json)
-      : token = json['results'],
+  TokenResponse.fromJson(Map<String, dynamic> json)
+      : token = json['access_token'],
         error = "";
 
-  Token.withError(String errorValue)
+  TokenResponse.withError(String errorValue)
       : token = "",
         error = errorValue;
 }

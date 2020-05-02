@@ -1,8 +1,8 @@
 
 
-const base_url = "http://app.bestaidbd.com/";
-const api_base_url = "http://app.bestaidbd.com/api/";
-const public_path_url = "http://smartcommercebd.com/public/";
-const forgot_password_url = "http://smartcommercebd.com/password/reset";
+const base_url = "http://140.238.241.75/";
+const api_base_url = "http://140.238.241.75/api/";
+const public_path_url = "http://140.238.241.75//public/";
+const forgot_password_url = "http://140.238.241.75/password/reset";
 
 const token_key = "access_key";
