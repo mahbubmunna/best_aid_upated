@@ -15,7 +15,7 @@ class _ExpertOpinionState extends State<ExpertOpinion> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).accentColor,
+
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {Navigator.pop(context);},
@@ -23,7 +23,7 @@ class _ExpertOpinionState extends State<ExpertOpinion> {
           color: Colors.white,),
         title: Text('Back'),
         elevation: 0,
-        backgroundColor: Theme.of(context).accentColor,),
+        ),
       body: Padding(
         padding: const EdgeInsets.only( top: 100, left: 20, right: 20),
         child: ListView(

@@ -26,6 +26,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
     ));
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: PreferredSize(
         child: Container(color: Theme.of(context).accentColor,),
         preferredSize: Size.fromHeight(40),

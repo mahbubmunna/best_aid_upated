@@ -1,5 +1,4 @@
 import 'package:animated_splash/animated_splash.dart';
-import 'package:bestaid/src/pages/home.dart';
 import 'package:bestaid/src/pages/login.dart';
 import 'package:bestaid/src/pages/pages.dart';
 import 'package:bestaid/src/providers/shared_pref_provider.dart';

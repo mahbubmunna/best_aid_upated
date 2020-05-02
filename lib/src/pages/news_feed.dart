@@ -1,5 +1,6 @@
 import 'package:bestaid/config/helper.dart';
 import 'package:bestaid/src/models/post.dart';
+import 'package:bestaid/src/models/route_argument.dart';
 import 'package:bestaid/src/repository/post_repository.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
@@ -13,7 +14,6 @@ class NewsFeed extends StatefulWidget {
 
 class _NewsFeedState extends State<NewsFeed> {
   var _allPosts;
-  Post _post;
 
   @override
   void initState() {
@@ -23,7 +23,7 @@ class _NewsFeedState extends State<NewsFeed> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).accentColor,
+
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
@@ -34,7 +34,7 @@ class _NewsFeedState extends State<NewsFeed> {
         ),
         title: Text('Back'),
         elevation: 0,
-        backgroundColor: Theme.of(context).accentColor,
+
       ),
       floatingActionButton: Padding(
         padding: EdgeInsets.only(bottom: 16),
@@ -129,7 +129,7 @@ class _NewsFeedState extends State<NewsFeed> {
       physics: ClampingScrollPhysics(),
       itemCount: posts.length,
       itemBuilder: (context, index) {
-        _post = posts[index];
+        Post post = posts[index];
         return Card(
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -141,16 +141,16 @@ class _NewsFeedState extends State<NewsFeed> {
                   child: Column(
                     children: <Widget>[
                       Text(
-                        DateFormat('EEEE').format(_post.time),
+                        DateFormat('EEEE').format(post.time),
                         textScaleFactor: 1.5,
                         style: TextStyle(color: Theme.of(context).accentColor),
                       ),
-                      Text(DateFormat('d MMM yyyy').format(_post.time)),
+                      Text(DateFormat('d MMM yyyy').format(post.time)),
                       SizedBox(
                         height: 10,
                       ),
                       Text(
-                        DateFormat('h:mm a').format(_post.time),
+                        DateFormat('h:mm a').format(post.time),
                         textScaleFactor: 1.5,
                       ),
                     ],
@@ -171,7 +171,7 @@ class _NewsFeedState extends State<NewsFeed> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
                         Text(
-                            _post.body, maxLines: 4, overflow: TextOverflow.ellipsis,),
+                            post.body, maxLines: 4, overflow: TextOverflow.ellipsis,),
                         SizedBox(
                           height: 25,
                           width: 100,
@@ -179,7 +179,7 @@ class _NewsFeedState extends State<NewsFeed> {
                             shape: StadiumBorder(),
                             color: Theme.of(context).accentColor,
                             textColor: Colors.white,
-                            onPressed: () {},
+                            onPressed: () {Navigator.of(context).pushNamed('/PostDetails', arguments: RouteArgument(param: post));},
                             child: Text(
                               'Read More',
                               textScaleFactor: .8,

@@ -13,7 +13,7 @@ class _HomeWidgetState extends State<HomeWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Theme.of(context).accentColor,
+
       body: Padding(
         padding: const EdgeInsets.only(top: 80, left: 20, right: 20),
         child: ListView(
@@ -49,7 +49,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                     title: Text('Online Doctor Consultancy', style: TextStyle(color: Theme.of(context).primaryColor,),),
                     trailing: Icon(Icons.arrow_forward_ios, color: Theme.of(context).primaryColor,),
                   ),
-                ), onPressed: () {},
+                ), onPressed: () {Navigator.of(context).pushNamed('/OnlineConsultancy');},
               ),
             SizedBox(height: 20,),
             MaterialButton(
@@ -65,7 +65,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                     title: Text('1Click Doctor', style: TextStyle(color: Theme.of(context).primaryColor,),),
                     trailing: Icon(Icons.arrow_forward_ios, color: Theme.of(context).primaryColor,),
                   ),
-                ), onPressed: () {},
+                ), onPressed: () {Navigator.of(context).pushNamed('/OneClickDoctor');},
               ),
 
           ],

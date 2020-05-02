@@ -22,7 +22,7 @@ class _PostProblemState extends State<PostProblem> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).accentColor,
+
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {Navigator.pop(context);},
@@ -30,7 +30,7 @@ class _PostProblemState extends State<PostProblem> {
           color: Colors.white,),
         title: Text('Back'),
         elevation: 0,
-        backgroundColor: Theme.of(context).accentColor,),
+        ),
       body: Padding(
         padding: EdgeInsets.only(left: 50, right: 50),
         child: ListView(

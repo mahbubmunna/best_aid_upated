@@ -30,6 +30,8 @@ class MyApp extends StatelessWidget {
           if (brightness == Brightness.light) {
             return ThemeData(
               fontFamily: 'Poppins',
+              scaffoldBackgroundColor: config.Colors().accentColor(1),
+              appBarTheme: AppBarTheme(color: config.Colors().accentColor(1)),
               primaryColor: config.Colors().primaryColor(1),
               brightness: brightness,
               accentColor: config.Colors().accentColor(1),

@@ -1,9 +1,14 @@
 
+import 'package:bestaid/src/models/route_argument.dart';
+import 'package:bestaid/src/pages/1click_doctor.dart';
 import 'package:bestaid/src/pages/expert_opinion.dart';
 import 'package:bestaid/src/pages/login.dart';
 import 'package:bestaid/src/pages/news_feed.dart';
+import 'package:bestaid/src/pages/online_consultancy.dart';
 import 'package:bestaid/src/pages/pages.dart';
+import 'package:bestaid/src/pages/post_detail.dart';
 import 'package:bestaid/src/pages/post_problem.dart';
+import 'package:bestaid/src/pages/problem_detail.dart';
 import 'package:bestaid/src/pages/register.dart';
 import 'package:bestaid/src/pages/starter.dart';
 import 'package:bestaid/src/pages/your_history.dart';
@@ -31,6 +36,14 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => YourHistory());
       case '/NewsFeed':
         return MaterialPageRoute(builder: (_) => NewsFeed());
+      case '/OnlineConsultancy':
+        return MaterialPageRoute(builder: (_) => OnlineConsultancy());
+      case '/OneClickDoctor':
+        return MaterialPageRoute(builder: (_) => OneClickDoctor());
+      case '/ProblemDetails':
+        return MaterialPageRoute(builder: (_) => ProblemDetails(routeArgument: args as RouteArgument,));
+      case '/PostDetails':
+        return MaterialPageRoute(builder: (_) => PostDetails(routeArgument: args as RouteArgument,));
       default:
         // If there is no such named route in the switch statement, e.g. /third
         return MaterialPageRoute(builder: (_) => PagesTestWidget(currentTab: 2));

@@ -34,6 +34,7 @@ class _LoginWidgetState extends State<LoginWidget> {
     ));
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: PreferredSize(
         child: Container(color: Theme
             .of(context)

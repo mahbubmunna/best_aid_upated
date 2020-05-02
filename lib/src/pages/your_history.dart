@@ -1,6 +1,6 @@
 import 'package:bestaid/config/helper.dart';
 import 'package:bestaid/src/models/problems.dart';
-import 'package:bestaid/src/repository/post_repository.dart';
+import 'package:bestaid/src/models/route_argument.dart';
 import 'package:bestaid/src/repository/problem_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +17,6 @@ class _YourHistoryState extends State<YourHistory> {
   var _futureProblems;
   List<Problem> _problemHistories;
   List<Problem> _activeProblems;
-  Problem _problem;
   int active = 1;
   int closed = 0;
   @override
@@ -28,7 +27,7 @@ class _YourHistoryState extends State<YourHistory> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).accentColor,
+
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
@@ -39,7 +38,7 @@ class _YourHistoryState extends State<YourHistory> {
         ),
         title: Text('Back'),
         elevation: 0,
-        backgroundColor: Theme.of(context).accentColor,
+
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 30),
@@ -169,7 +168,7 @@ class _YourHistoryState extends State<YourHistory> {
       physics: ClampingScrollPhysics(),
       itemCount: _problemHistories.length,
       itemBuilder: (context, index) {
-        _problem = _problemHistories[index];
+        Problem solvedProblem = _problemHistories[index];
         return Card(
             color: Theme.of(context).primaryColor,
             shape: RoundedRectangleBorder(
@@ -187,7 +186,7 @@ class _YourHistoryState extends State<YourHistory> {
                         style: TextStyle(color: Colors.white,),
                       ),
                       Text(
-                        DateFormat('d MMM yyyy').format(_problem.time),
+                        DateFormat('d MMM yyyy').format(solvedProblem.time),
                         style: TextStyle(color: Colors.white),
                       ),
                     ],
@@ -206,7 +205,7 @@ class _YourHistoryState extends State<YourHistory> {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: <Widget>[
                         Text(
-                            _problem.title,
+                            solvedProblem.title,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(color: Colors.white)),
                         SizedBox(
@@ -216,7 +215,7 @@ class _YourHistoryState extends State<YourHistory> {
                             shape: StadiumBorder(),
                             color: Colors.white,
                             textColor: Theme.of(context).primaryColor,
-                            onPressed: () {},
+                            onPressed: () {Navigator.of(context).pushNamed('/ProblemDetails', arguments: RouteArgument(param: solvedProblem));},
                             child: Text(
                               'Read More',
                               textScaleFactor: .8,
@@ -248,7 +247,7 @@ class _YourHistoryState extends State<YourHistory> {
       physics: ClampingScrollPhysics(),
       itemCount: _activeProblems.length,
       itemBuilder: (context, index) {
-        _problem = _activeProblems[index];
+        Problem activeProblem = _activeProblems[index];
         return Card(
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10)),
@@ -265,7 +264,7 @@ class _YourHistoryState extends State<YourHistory> {
                         style: TextStyle(
                           color: Theme.of(context).primaryColor, ),
                       ),
-                      Text(DateFormat('d MMM yyyy').format(_problem.time)),
+                      Text(DateFormat('d MMM yyyy').format(activeProblem.time)),
                     ],
                   ),
                 ),
@@ -283,7 +282,7 @@ class _YourHistoryState extends State<YourHistory> {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: <Widget>[
                         Text(
-                            _problem.title, maxLines: 4, overflow: TextOverflow.ellipsis,),
+                          activeProblem.title, maxLines: 4, overflow: TextOverflow.ellipsis,),
                         SizedBox(
                           height: 25,
                           width: 100,
@@ -291,7 +290,7 @@ class _YourHistoryState extends State<YourHistory> {
                             shape: StadiumBorder(),
                             color: Theme.of(context).accentColor,
                             textColor: Colors.white,
-                            onPressed: () {},
+                            onPressed: () {Navigator.of(context).pushNamed('/ProblemDetails', arguments: RouteArgument(param: activeProblem));},
                             child: Text(
                               'Read More',
                               textScaleFactor: .8,

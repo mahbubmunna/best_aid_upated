@@ -24,7 +24,7 @@ class _StarterState extends State<Starter> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).accentColor,
+
       body: Center(
         child: ListView(
           shrinkWrap: true,

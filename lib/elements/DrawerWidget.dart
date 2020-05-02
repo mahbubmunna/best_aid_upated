@@ -33,7 +33,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                       style: Theme.of(context).textTheme.caption,
                     ),
                     currentAccountPicture: CircleAvatar(
-                      backgroundColor: Theme.of(context).accentColor,
+
                       backgroundImage: NetworkImage('https://i.picsum.photos/id/237/200/300.jpg'),
                     ),
                   ),
