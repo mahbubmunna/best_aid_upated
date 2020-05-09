@@ -1,3 +1,5 @@
+
+import 'package:bestaid/src/models/route_argument.dart';
 import 'package:flutter/material.dart';
 
 
@@ -10,6 +12,12 @@ class HomeWidget extends StatefulWidget {
 }
 
 class _HomeWidgetState extends State<HomeWidget> {
+
+  @override
+  void initState() {
+
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +41,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                     title: Text('Expert Option', style: TextStyle(color: Theme.of(context).primaryColor,),),
                     trailing: Icon(Icons.arrow_forward_ios, color: Theme.of(context).primaryColor,),
                   ),
-                ), onPressed: () {Navigator.of(context).pushNamed('/ExpertOpinion');},
+                ), onPressed: () {Navigator.of(context).pushNamedAndRemoveUntil('/Pages', ModalRoute.withName('/'), arguments: RouteArgument(param: 1));},
               ),
             SizedBox(height: 20,),
             MaterialButton(

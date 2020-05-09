@@ -1,5 +1,9 @@
 import 'package:bestaid/elements/DrawerWidget.dart';
+import 'package:bestaid/src/models/route_argument.dart';
+import 'package:bestaid/src/pages/cart.dart';
 import 'package:bestaid/src/pages/expert_opinion.dart';
+import 'package:bestaid/src/pages/menu.dart';
+import 'package:bestaid/src/pages/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -9,14 +13,17 @@ import 'home.dart';
 // ignore: must_be_immutable
 class PagesTestWidget extends StatefulWidget {
   int currentTab;
+  RouteArgument routeArgument;
   Widget currentPage = HomeWidget();
   //final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
 
   PagesTestWidget({
     Key key,
     this.currentTab,
+    this.routeArgument
   }) {
     currentTab = currentTab != null ? currentTab : 2;
+    if(routeArgument != null) currentTab = routeArgument.param as int;
   }
 
   @override
@@ -41,11 +48,22 @@ class _PagesTestWidgetState extends State<PagesTestWidget> {
     setState(() {
       widget.currentTab = tabItem;
       switch (tabItem) {
+        case 0:
+          widget.currentPage = UserProfile();
+          break;
         case 1:
           widget.currentPage = ExpertOpinion();
           break;
         case 2:
           widget.currentPage = HomeWidget();
+          break;
+        case 3:
+          widget.currentPage = Cart();
+          break;
+        case 4:
+          widget.currentPage = Menu();
+          break;
+
 
       }
     });

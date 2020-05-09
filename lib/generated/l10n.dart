@@ -62,6 +62,15 @@ class S {
       args: [],
     );
   }
+
+  String get replay {
+    return Intl.message(
+      'your replay',
+      name: 'replay',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

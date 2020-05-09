@@ -24,6 +24,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "home" : MessageLookupByLibrary.simpleMessage("Home"),
     "notifications" : MessageLookupByLibrary.simpleMessage("Notifications"),
     "post_hint" : MessageLookupByLibrary.simpleMessage("Write your problems.."),
+    "replay" : MessageLookupByLibrary.simpleMessage("your replay"),
     "send" : MessageLookupByLibrary.simpleMessage("SEND")
   };
 }

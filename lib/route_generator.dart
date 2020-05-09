@@ -46,7 +46,7 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => PostDetails(routeArgument: args as RouteArgument,));
       default:
         // If there is no such named route in the switch statement, e.g. /third
-        return MaterialPageRoute(builder: (_) => PagesTestWidget(currentTab: 2));
+        return MaterialPageRoute(builder: (_) => PagesTestWidget(currentTab: 2, routeArgument: args as RouteArgument,));
     }
   }
 

@@ -15,6 +15,14 @@ class ProblemRepository{
     return ProblemProvider.postDataToProblem(postData);
   }
 
+  static Future<dynamic> postDataToProblemDiscussion(int postId, Map postData) async{
+    return ProblemProvider.postDataToProblemDiscussion(postId, postData);
+  }
+
+  static Future<dynamic> getDiscussions(int postId) async{
+    return ProblemProvider.getDiscussions(postId);
+  }
+
   static Future<dynamic> deleteDataFromCart(Map postData) async{
     return ProblemProvider.deleteDataFromProblems(postData);
   }

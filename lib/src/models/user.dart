@@ -8,7 +8,7 @@ class UserResponse {
   String error;
 
   UserResponse.fromJson(Map<String, dynamic> json)
-    : user = User.fromJson(json['user']),
+    : user = User.fromJson(json),
   error = "";
 
   UserResponse.withError(String errorValue)
@@ -17,7 +17,7 @@ class UserResponse {
 }
 
 class User {
-  String id;
+  int id;
   String name;
   String email;
   String gender;

@@ -1,4 +1,5 @@
 import 'package:bestaid/route_generator.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
@@ -17,13 +18,23 @@ Future<void> main() async {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
-//  /// Supply 'the Controller' for this application.
-//  MyApp({Key key}) : super(con: Controller(), key: key);
+class MyApp extends StatefulWidget {
+
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+
+  @override
+  void initState() {
+    super.initState();
+
+  }
 
   @override
   Widget build(BuildContext context) {
+
     return DynamicTheme(
         defaultBrightness: Brightness.light,
         data: (brightness) {

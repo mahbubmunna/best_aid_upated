@@ -14,7 +14,7 @@ class TokenProvider{
    // _dio.options.contentType = Headers.formUrlEncodedContentType;
     try {
       Response response;
-      if (loginInfo.length == 3) response = await _dio.post(_endPointRegister, data: loginInfo);
+      if (loginInfo.length == 4) response = await _dio.post(_endPointRegister, data: loginInfo);
       else response = await _dio.post(_endPointLogin, data: loginInfo);
       if (response.data['access_token'] == null){
         return TokenResponse.withError('Invalid credential');

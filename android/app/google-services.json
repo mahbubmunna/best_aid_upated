@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "779188411714",
+    "firebase_url": "https://best-aid.firebaseio.com",
+    "project_id": "best-aid",
+    "storage_bucket": "best-aid.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:779188411714:android:0c694f588f935a73a6fcdb",
+        "android_client_info": {
+          "package_name": "rocks.moonss.bestaid"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "779188411714-852riu612d29egv8raf17rk1i24df8gc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "rocks.moonss.bestaid",
+            "certificate_hash": "9d7bbb3a52836b749bb15378895a69458fa13699"
+          }
+        },
+        {
+          "client_id": "779188411714-abht92vmuvukmq6m8g3md7csq1nq6krq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDLrAyg4BdpAevho6sTL4RegKrIxtR0NQc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "779188411714-abht92vmuvukmq6m8g3md7csq1nq6krq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

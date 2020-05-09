@@ -1,8 +1,11 @@
 import 'package:animated_splash/animated_splash.dart';
+import 'package:bestaid/src/models/user.dart';
 import 'package:bestaid/src/pages/login.dart';
 import 'package:bestaid/src/pages/pages.dart';
 import 'package:bestaid/src/providers/shared_pref_provider.dart';
 import 'package:flutter/material.dart';
+
+import 'src/repository/user_repository.dart';
 
 class Splash extends StatefulWidget {
   @override
@@ -36,7 +39,12 @@ class _SplashState extends State<Splash> {
     if ( await SharedPrefProvider.getString('access_token') == null
         ||  await SharedPrefProvider.getString('access_token') == '') {
       isLogged = false;
-    } else isLogged = true;
+    } else {
+      isLogged = true;
+      await UserRepository.getUser().then((user) {
+        appUser = user.user;
+      });
+    }
   }
 
   properNavigation() {
@@ -45,3 +53,5 @@ class _SplashState extends State<Splash> {
     } else return 1;
   }
 }
+
+User appUser;

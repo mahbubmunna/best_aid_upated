@@ -6,6 +6,8 @@ import 'package:bestaid/src/repository/user_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../splash.dart';
+
 class LoginWidget extends StatefulWidget {
   @override
   _LoginWidgetState createState() => _LoginWidgetState();
@@ -157,5 +159,3 @@ class _LoginWidgetState extends State<LoginWidget> {
   }
 
 }
-
-User appUser;
