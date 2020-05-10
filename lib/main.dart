@@ -1,8 +1,10 @@
 import 'package:bestaid/route_generator.dart';
+import 'package:bestaid/splash.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:bestaid/config/app_config.dart' as config;
@@ -25,11 +27,38 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey(debugLabel: "Main Navigator");
+  final Firestore _db = Firestore.instance;
+  final FirebaseMessaging _fcm = FirebaseMessaging();
   @override
   void initState() {
+    _fcm.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print("onMessage: $message");
+        showDialog(context: context, builder: (context) => AlertDialog(
+          content: Text(message['notification']['body']),
+        ));
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        print("onLaunch: $message");
+        _goToDeeplyNestedView();
+      },
+      onResume: (Map<String, dynamic> message) async {
+        print("onResume: $message");
+        _goToDeeplyNestedView();
+      },
+    );
+    _getFirebaseToken();
     super.initState();
+  }
 
+  _goToDeeplyNestedView() {
+    Navigator.of(navigatorKey.currentContext).pushNamed('/YourHistory');
+  }
+
+  _getFirebaseToken() async {
+    await _fcm.getToken().then((value) {token = value;});
+    print(token);
   }
 
   @override
@@ -100,6 +129,7 @@ class _MyAppState extends State<MyApp> {
                 return MaterialApp(
                   title: 'Basic Starter',
                   initialRoute: '/',
+                  navigatorKey: navigatorKey,
                   onGenerateRoute: RouteGenerator.generateRoute,
                   debugShowCheckedModeBanner: false,
                   locale: value,

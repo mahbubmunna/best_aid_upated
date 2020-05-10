@@ -55,3 +55,4 @@ class _SplashState extends State<Splash> {
 }
 
 User appUser;
+var token;

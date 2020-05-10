@@ -9,6 +9,10 @@ class UserRepository {
     return UserProvider.getUser();
   }
 
+  static Future<UserResponse> updateUserData(Map updatedUserData) {
+    return UserProvider.updateUserData(updatedUserData);
+  }
+
   static Future<UserResponse> postUser(Map loginInfo) {
     return UserProvider.postLoginData(loginInfo);
   }

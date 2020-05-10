@@ -26,6 +26,22 @@ class UserProvider{
     }
   }
 
+  static Future<UserResponse> updateUserData(Map updatedUserData) async {
+    var token = await SharedPrefProvider.getString('access_token');
+    _dio.options.headers = {
+      'Accept': 'application/json',
+      "Authorization": "Bearer $token"
+    };
+
+    try {
+      await _dio.post(_userEndpoint, data: updatedUserData);
+      return getUser();
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      return UserResponse.withError("$error");
+    }
+  }
+
   static Future<UserResponse> postLoginData(Map loginData) async {
     _dio.options.headers = {
       'Content-type': '${Headers.formUrlEncodedContentType}',

@@ -21,20 +21,26 @@ class User {
   String name;
   String email;
   String gender;
-  DateTime dateOfBirth;
+  String dob;
   String avatar;
   String address;
-  String city;
-  String country;
+  String weight;
+  String height;
+  String phone;
   String error;
   UserState userState;
 
   User.init();
 
   User.fromJson(Map<String, dynamic> json)
-      : email = json['email'] ?? "",
-        id = json['id'] ?? "",
-        name = json["name"] ?? "";
+      : email = json['email'],
+        id = json['id'] ?? -1,
+        dob = json['dob'],
+        address = json['location'],
+        weight = json['weight'],
+        height = json['height'],
+        phone = json['phone'],
+        name = json["name"];
 //        id = json['id'].toString(),
 //        gender = 'Male',
 //        address = json['address'] != null ? json['address'] : '',
@@ -46,14 +52,14 @@ class User {
 
   User.basic(this.name, this.avatar, this.userState);
 
-  User.advanced(this.name, this.email, this.gender, this.dateOfBirth, this.avatar, this.address, this.userState);
+  User.advanced(this.name, this.email, this.gender, this.dob, this.avatar, this.address, this.userState);
 
   User getCurrentUser() {
-    return User.advanced('Andrew R. Whitesides', 'andrew@gmail.com', 'Male', DateTime(1993, 12, 31), 'assets/img/user2.jpg',
+    return User.advanced('Andrew R. Whitesides', 'andrew@gmail.com', 'Male', 'DateTime(1994, 04, 12)', 'assets/img/user2.jpg',
         '4600 Isaacs Creek Road Golden, IL 62339', UserState.available);
   }
 
-  getDateOfBirth() {
-    return DateFormat('yyyy-MM-dd').format(this.dateOfBirth);
-  }
+//  getDateOfBirth() {
+//    return DateFormat('yyyy-MM-dd').format(this.dateOfBirth);
+//  }
 }

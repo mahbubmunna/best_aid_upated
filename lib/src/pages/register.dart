@@ -2,13 +2,10 @@ import 'package:bestaid/config/helper.dart';
 import 'package:bestaid/src/providers/shared_pref_provider.dart';
 import 'package:bestaid/src/repository/token_repository.dart';
 import 'package:bestaid/src/repository/user_repository.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../splash.dart';
-import 'login.dart';
 
 class RegisterWidget extends StatefulWidget {
   @override
@@ -21,30 +18,10 @@ class _RegisterWidgetState extends State<RegisterWidget> {
   final _passwordController = TextEditingController();
   bool _isLoading = false;
 
-  final Firestore _db = Firestore.instance;
-  final FirebaseMessaging _fcm = FirebaseMessaging();
 
-  var token;
 
   @override
   void initState() {
-    _fcm.configure(
-      onMessage: (Map<String, dynamic> message) async {
-        print("onMessage: $message");
-        showDialog(context: context, builder: (context) => AlertDialog(
-          content: Text(message['notification']['body']),
-        ));
-      },
-      onLaunch: (Map<String, dynamic> message) async {
-        print("onLaunch: $message");
-        //_navigateToItemDetail(message);
-      },
-      onResume: (Map<String, dynamic> message) async {
-        print("onResume: $message");
-        //_navigateToItemDetail(message);
-      },
-    );
-    _fcm.getToken().then((value) {token = value;});
     super.initState();
   }
   @override
