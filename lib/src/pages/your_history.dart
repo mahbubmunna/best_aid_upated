@@ -1,11 +1,11 @@
+import 'dart:math' as math;
+
 import 'package:bestaid/config/helper.dart';
 import 'package:bestaid/src/models/problems.dart';
 import 'package:bestaid/src/models/route_argument.dart';
 import 'package:bestaid/src/repository/problem_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'dart:math' as math;
-
 import 'package:intl/intl.dart';
 
 class YourHistory extends StatefulWidget {
@@ -19,15 +19,16 @@ class _YourHistoryState extends State<YourHistory> {
   List<Problem> _activeProblems;
   int active = 1;
   int closed = 0;
+
   @override
   void initState() {
     _futureProblems = ProblemRepository.getProblems();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
@@ -38,7 +39,6 @@ class _YourHistoryState extends State<YourHistory> {
         ),
         title: Text('Back'),
         elevation: 0,
-
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 30),
@@ -61,7 +61,7 @@ class _YourHistoryState extends State<YourHistory> {
                             width: 30,
                           ),
                           Text(
-                            'YOUR PROBLEMS',
+                            'Your History',
                             textScaleFactor: 1.2,
                           ),
                           SizedBox(
@@ -83,8 +83,9 @@ class _YourHistoryState extends State<YourHistory> {
               child: FutureBuilder(
                 future: _futureProblems,
                 builder: (context, snapshot) {
-                  if(snapshot.hasData) {
-                    if(snapshot.data.error != null && snapshot.data.error.length > 0){
+                  if (snapshot.hasData) {
+                    if (snapshot.data.error != null &&
+                        snapshot.data.error.length > 0) {
                       buildErrorWidget(snapshot.data.error);
                     }
                     return _activeProblemsListView(snapshot.data.posts);
@@ -96,7 +97,7 @@ class _YourHistoryState extends State<YourHistory> {
                 },
               ),
             ),
-            Flexible(
+            /*   Flexible(
               flex: 1,
               child: Center(
                 child: RaisedButton(
@@ -129,14 +130,15 @@ class _YourHistoryState extends State<YourHistory> {
                       ),
                     )),
               ),
-            ),
+            ),*/
             Flexible(
               flex: 3,
               child: FutureBuilder(
                 future: _futureProblems,
                 builder: (context, snapshot) {
-                  if(snapshot.hasData) {
-                    if(snapshot.data.error != null && snapshot.data.error.length > 0){
+                  if (snapshot.hasData) {
+                    if (snapshot.data.error != null &&
+                        snapshot.data.error.length > 0) {
                       buildErrorWidget(snapshot.data.error);
                     }
                     return _historyListView(snapshot.data.posts);
@@ -153,15 +155,28 @@ class _YourHistoryState extends State<YourHistory> {
       ),
     );
   }
+
   _historyListView(List<Problem> problems) {
-    _problemHistories = problems.where((problem) => problem.status == closed).toList();
-    if(_problemHistories.length == 0) {
-      return Center(child: Column(
-        children: <Widget>[
-          Icon(Icons.cancel, color: Colors.white,),
-          Text('No Solved Cases', textScaleFactor: 2, style: TextStyle(color: Colors.white),),
-        ],
-      ));
+    _problemHistories =
+        problems.where((problem) => problem.status == closed).toList();
+    if (_problemHistories.length == 0) {
+      return Padding(
+        padding: const EdgeInsets.only(top: 16.0),
+        child: Center(
+            child: Column(
+          children: <Widget>[
+            Icon(
+              Icons.cancel,
+              color: Colors.white,
+            ),
+            Text(
+              'No Solved Cases',
+              textScaleFactor: 2,
+              style: TextStyle(color: Colors.white),
+            ),
+          ],
+        )),
+      );
     }
     return ListView.builder(
       shrinkWrap: true,
@@ -171,8 +186,8 @@ class _YourHistoryState extends State<YourHistory> {
         Problem solvedProblem = _problemHistories[index];
         return Card(
             color: Theme.of(context).primaryColor,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10)),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             child: Row(
               children: <Widget>[
                 Flexible(
@@ -183,7 +198,9 @@ class _YourHistoryState extends State<YourHistory> {
                       Text(
                         'Solved',
                         textScaleFactor: 1.5,
-                        style: TextStyle(color: Colors.white,),
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
                       ),
                       Text(
                         DateFormat('d MMM yyyy').format(solvedProblem.time),
@@ -204,8 +221,7 @@ class _YourHistoryState extends State<YourHistory> {
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: <Widget>[
-                        Text(
-                            solvedProblem.title,
+                        Text(solvedProblem.title,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(color: Colors.white)),
                         SizedBox(
@@ -215,13 +231,17 @@ class _YourHistoryState extends State<YourHistory> {
                             shape: StadiumBorder(),
                             color: Colors.white,
                             textColor: Theme.of(context).primaryColor,
-                            onPressed: () {Navigator.of(context).pushNamed('/ProblemDetails', arguments: RouteArgument(param: solvedProblem));},
+                            onPressed: () {
+                              Navigator.of(context).pushNamed('/ProblemDetails',
+                                  arguments:
+                                      RouteArgument(param: solvedProblem));
+                            },
                             child: Text(
                               'Read More',
                               textScaleFactor: .8,
                             ),
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),
@@ -233,12 +253,21 @@ class _YourHistoryState extends State<YourHistory> {
   }
 
   _activeProblemsListView(List<Problem> problems) {
-    _activeProblems = problems.where((problem) => problem.status == active).toList();
-    if(_activeProblems.length == 0) {
-      return Center(child: Column(
+    _activeProblems =
+        problems.where((problem) => problem.status == active).toList();
+    if (_activeProblems.length == 0) {
+      return Center(
+          child: Column(
         children: <Widget>[
-          Icon(Icons.cancel, color: Colors.white,),
-          Text('You didn\'t post a problem yet', textScaleFactor: 2, style: TextStyle(color: Colors.white),),
+          Icon(
+            Icons.cancel,
+            color: Colors.white,
+          ),
+          Text(
+            'You didn\'t post a problem yet',
+            textScaleFactor: 2,
+            style: TextStyle(color: Colors.white),
+          ),
         ],
       ));
     }
@@ -248,61 +277,86 @@ class _YourHistoryState extends State<YourHistory> {
       itemCount: _activeProblems.length,
       itemBuilder: (context, index) {
         Problem activeProblem = _activeProblems[index];
-        return Card(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10)),
-            child: Row(
-              children: <Widget>[
-                Flexible(
-                  flex: 2,
-                  fit: FlexFit.tight,
-                  child: Column(
-                    children: <Widget>[
-                      Text(
-                        'Active',
-                        textScaleFactor: 1.5,
-                        style: TextStyle(
-                          color: Theme.of(context).primaryColor, ),
-                      ),
-                      Text(DateFormat('d MMM yyyy').format(activeProblem.time)),
-                    ],
-                  ),
-                ),
-                VerticalDivider(
-                  color: Theme.of(context).primaryColor,
-                  thickness: 1,
-                ),
-                Flexible(
-                  flex: 3,
-                  fit: FlexFit.tight,
-                  child: Padding(
-                    padding: EdgeInsets.all(10),
+        return Container(
+          height: 112,
+          child: Card(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
+              child: Row(
+                children: <Widget>[
+                  Flexible(
+                    flex: 2,
+                    fit: FlexFit.tight,
                     child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Text(
-                          activeProblem.title, maxLines: 4, overflow: TextOverflow.ellipsis,),
-                        SizedBox(
-                          height: 25,
-                          width: 100,
-                          child: MaterialButton(
-                            shape: StadiumBorder(),
-                            color: Theme.of(context).accentColor,
-                            textColor: Colors.white,
-                            onPressed: () {Navigator.of(context).pushNamed('/ProblemDetails', arguments: RouteArgument(param: activeProblem));},
-                            child: Text(
-                              'Read More',
-                              textScaleFactor: .8,
-                            ),
-                          ),
-                        )
+                          'Active',
+                          textScaleFactor: 1.5,
+                          style: TextStyle(
+                              color: Theme.of(context).primaryColor,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        Text(DateFormat('d MMM yyyy')
+                            .format(activeProblem.time)),
                       ],
                     ),
                   ),
-                ),
-              ],
-            ));
+                  VerticalDivider(
+                    color: Colors.grey.shade300,
+                    thickness: 1,
+                  ),
+                  Flexible(
+                    flex: 3,
+                    fit: FlexFit.tight,
+                    child: Padding(
+                        padding: EdgeInsets.all(4),
+                        child: Stack(
+                          children: <Widget>[
+                            Positioned(
+                              top: 2,
+                              child: Text(
+                                activeProblem.title,
+                                maxLines: 3,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                activeProblem.title,
+                                maxLines: 4,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.bottomCenter,
+                              child: SizedBox(
+                                height: 25,
+                                width: 88,
+                                child: MaterialButton(
+                                  shape: StadiumBorder(),
+                                  color: Theme.of(context).accentColor,
+                                  textColor: Colors.white,
+                                  onPressed: () {
+                                    Navigator.of(context).pushNamed(
+                                        '/ProblemDetails',
+                                        arguments: RouteArgument(
+                                            param: activeProblem));
+                                  },
+                                  child: Text(
+                                    'Read More',
+                                    textScaleFactor: .6,
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        )),
+                  ),
+                ],
+              )),
+        );
       },
     );
   }

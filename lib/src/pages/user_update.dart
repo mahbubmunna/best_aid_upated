@@ -66,13 +66,13 @@ class _UserProfileChangeDialogState extends State<UserProfileChangeDialog> {
                         ),
                         new TextFormField(
                           controller: weightController,
-                          style: TextStyle(color: Theme.of(context).textTheme.subtitle2.color),
+                          style: TextStyle(color: Theme.of(context).textTheme.subtitle.color),
                           keyboardType: TextInputType.number,
                           decoration: getInputDecoration(hintText: '60', labelText: 'Weight'),
                         ),
                         new TextFormField(
                           controller: addressController,
-                          style: TextStyle(color: Theme.of(context).textTheme.subtitle2.color),
+                          style: TextStyle(color: Theme.of(context).textTheme.subtitle.color),
                           keyboardType: TextInputType.text,
                           decoration: getInputDecoration(hintText: 'Mirpur 11, Block A, Road 1, House 11', labelText: 'Address'),
 //                          validator: (input) => input.trim().length < 3 ? 'Not a valid full name' : null,
@@ -80,14 +80,14 @@ class _UserProfileChangeDialogState extends State<UserProfileChangeDialog> {
 
                         new TextFormField(
                           controller: heightController,
-                          style: TextStyle(color: Theme.of(context).textTheme.subtitle2.color),
+                          style: TextStyle(color: Theme.of(context).textTheme.subtitle.color),
                           keyboardType: TextInputType.number,
                           validator: (height) => double.parse(height) > 8 || double.parse(height) < 4 ? 'not vaid value' : null,
                           decoration: getInputDecoration(hintText: '5.11', labelText: 'Height'),
                         ),
                         new TextFormField(
                           controller: phoneController,
-                          style: TextStyle(color: Theme.of(context).textTheme.subtitle2.color),
+                          style: TextStyle(color: Theme.of(context).textTheme.subtitle.color),
                           keyboardType: TextInputType.phone,
                           decoration: getInputDecoration(hintText: '01XXX XXXXXX', labelText: 'Phone'),
                         ),

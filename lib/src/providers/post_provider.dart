@@ -1,11 +1,9 @@
-
-
 import 'package:bestaid/config/strings.dart';
 import 'package:bestaid/src/models/post.dart';
 import 'package:bestaid/src/providers/shared_pref_provider.dart';
 import 'package:dio/dio.dart';
 
-class PostProvider{
+class PostProvider {
   static final _endpointProblems = "${api_base_url}problem";
   static final _endpointPost = "${api_base_url}post";
   static final Dio _dio = Dio();
@@ -42,7 +40,7 @@ class PostProvider{
     }
   }
 
-  static Future<dynamic> postDataToProblem(Map postData) async{
+  static Future<dynamic> postDataToProblem(Map postData) async {
     var token = await SharedPrefProvider.getString('access_token');
     print(token);
     print(postData);
@@ -55,14 +53,13 @@ class PostProvider{
       Response response = await _dio.post(_endpointProblems, data: postData);
       print(response);
       return response;
-    } catch (error, stacktrace){
+    } catch (error, stacktrace) {
       print("Exception occured: $error stackTrace: $stacktrace");
       return error;
     }
-
   }
 
-  static Future<dynamic> deleteDataFromPost(Map postData) async{
+  static Future<dynamic> deleteDataFromPost(Map postData) async {
     var token = await SharedPrefProvider.getString('access_token');
     _dio.options.headers = {
       'Accept': 'application/json',
@@ -73,12 +70,9 @@ class PostProvider{
       Response response = await _dio.delete(_endpointPost, data: postData);
       print(response);
       return response;
-    } catch (error, stacktrace){
+    } catch (error, stacktrace) {
       print("Exception occured: $error stackTrace: $stacktrace");
       return error;
     }
-
   }
-
-
 }

@@ -23,7 +23,6 @@ class _NewsFeedState extends State<NewsFeed> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {

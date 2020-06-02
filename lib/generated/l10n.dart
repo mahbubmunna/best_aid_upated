@@ -54,6 +54,15 @@ class S {
     );
   }
 
+  String get post_headline {
+    return Intl.message(
+      'Problem Headline',
+      name: 'post_headline',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get send {
     return Intl.message(
       'SEND',
