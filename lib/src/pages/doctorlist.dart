@@ -2,6 +2,7 @@ import 'dart:math' as math;
 
 import 'package:bestaid/config/helper.dart';
 import 'package:bestaid/src/models/doctors.dart';
+import 'package:bestaid/src/pages/doctordetails.dart';
 import 'package:bestaid/src/repository/doctor_repository.dart';
 import 'package:flutter/material.dart';
 
@@ -104,8 +105,10 @@ class DoctorListState extends State<DoctorListScreen> {
                   } else if (snapshot.hasError) {
                     return buildErrorWidget(snapshot.error);
                   } else {
-                    return buildLoadingWidget();
+                    buildLoadingWidget();
                   }
+                  return Center(
+                  );
                 },
               ),
             ),
@@ -119,50 +122,55 @@ class DoctorListState extends State<DoctorListScreen> {
     if (data is DoctorResponse) {
       print(data.doctors.length);
       return ListView.builder(
-          shrinkWrap: true,
-          physics: ClampingScrollPhysics(),
-          itemCount: data.doctors.length,
-          itemBuilder: (context, index) {
-            Doctors post = data.doctors[index];
+        shrinkWrap: true,
+        physics: ClampingScrollPhysics(),
+        itemCount: data.doctors.length,
+        itemBuilder: (context, index) {
+          Doctors post = data.doctors[index];
 
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-                child: Container(
-                  height: 120,
-                  child: Card(
-                    child: Center(
-                      child: ListTile(
-                        leading: Image.asset(
-                          'assets/img/17.png',
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Padding(
+              padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+              child: Container(
+                height: 120,
+                child: Card(
+                  child: Center(
+                    child: ListTile(
+                      leading: Image.asset(
+                        'assets/img/17.png',
+                      ),
+                      title: Text(
+                        post.name,
+                        style: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                          fontWeight: FontWeight.bold,
                         ),
-                        title: Text(
-                          post.name,
-                          style: TextStyle(
-                            color: Theme.of(context).primaryColor,
-                            fontWeight: FontWeight.bold,
-                          ),
+                      ),
+                      subtitle: Text(
+                        post.qualification,
+                        style: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                          fontWeight: FontWeight.bold,
                         ),
-                        subtitle: Text(
-                          post.qualification,
-                          style: TextStyle(
-                            color: Theme.of(context).primaryColor,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        trailing: SizedBox(
-                          height: 25,
-                          width: 100,
-                          child: MaterialButton(
-                            shape: StadiumBorder(),
-                            color: Theme.of(context).primaryColor,
-                            textColor: Colors.white,
-                            onPressed: () {},
-                            child: Text(
-                              'More Details',
-                              textScaleFactor: .7,
-                            ),
+                      ),
+                      trailing: SizedBox(
+                        height: 25,
+                        width: 100,
+                        child: MaterialButton(
+                          shape: StadiumBorder(),
+                          color: Theme.of(context).primaryColor,
+                          textColor: Colors.white,
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        DoctorDetailsPage(post.id)));
+                          },
+                          child: Text(
+                            'More Details',
+                            textScaleFactor: .7,
                           ),
                         ),
                       ),
@@ -170,8 +178,17 @@ class DoctorListState extends State<DoctorListScreen> {
                   ),
                 ),
               ),
-            );
-          });
+            ),
+          );
+        },
+      );
+    } else {
+      return Center(
+        child: Text(
+          'Stay tuned',
+          style: TextStyle(color: Colors.white),
+        ),
+      );
     }
   }
 }

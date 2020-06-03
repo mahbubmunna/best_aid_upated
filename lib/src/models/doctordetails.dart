@@ -1,51 +1,49 @@
-class DoctorResponse {
-  List<Doctors> doctors;
+class DoctorDetails {
+  Doctor doctor;
   String error;
 
-  DoctorResponse({this.doctors});
+  DoctorDetails({this.doctor});
 
-  DoctorResponse.fromJson(Map<String, dynamic> json) {
-    if (json['doctors'] != null) {
-      doctors = new List<Doctors>();
-      json['doctors'].forEach((v) {
-        doctors.add(new Doctors.fromJson(v));
-      });
-      this.error = "";
-    }
+  DoctorDetails.fromJson(Map<String, dynamic> json) {
+    doctor =
+        json['doctor'] != null ? new Doctor.fromJson(json['doctor']) : null;
+    error = "";
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.doctors != null) {
-      data['doctors'] = this.doctors.map((v) => v.toJson()).toList();
+    if (this.doctor != null) {
+      data['doctor'] = this.doctor.toJson();
     }
     return data;
   }
 
-  DoctorResponse.withError(String errorValue) {
-    this.error = errorValue;
+  DoctorDetails.withError(String error) {
+    this.error = error;
   }
 }
 
-class Doctors {
+class Doctor {
   int id;
   int userId;
   int specialistId;
   String name;
   String email;
+  String phone;
   String qualification;
   String language;
   String designation;
   String institute;
   String createdAt;
   String updatedAt;
-  
-  Doctors(
+
+  Doctor(
       {this.id,
       this.userId,
       this.specialistId,
       this.name,
       this.email,
+      this.phone,
       this.qualification,
       this.language,
       this.designation,
@@ -53,12 +51,13 @@ class Doctors {
       this.createdAt,
       this.updatedAt});
 
-  Doctors.fromJson(Map<String, dynamic> json) {
+  Doctor.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     userId = json['user_id'];
     specialistId = json['specialist_id'];
     name = json['name'];
     email = json['email'];
+    phone = json['phone'];
     qualification = json['qualification'];
     language = json['language'];
     designation = json['designation'];
@@ -74,6 +73,7 @@ class Doctors {
     data['specialist_id'] = this.specialistId;
     data['name'] = this.name;
     data['email'] = this.email;
+    data['phone'] = this.phone;
     data['qualification'] = this.qualification;
     data['language'] = this.language;
     data['designation'] = this.designation;

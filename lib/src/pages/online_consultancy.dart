@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 
+import 'package:bestaid/src/pages/generalpractitioner.dart';
 import 'package:bestaid/src/pages/specialist_page.dart';
 import 'package:flutter/material.dart';
 
@@ -69,36 +70,42 @@ class _OnlineConsultancyState extends State<OnlineConsultancy> {
                   ConstrainedBox(
                     constraints: BoxConstraints(minWidth: double.infinity),
                     child: MaterialButton(
-                        height: 44.0,
-                        color: Theme.of(context).primaryColor,
-                        textColor: Colors.white,
-                        elevation: 8,
-                        shape: StadiumBorder(),
-                        onPressed: () {},
-                        child: Padding(
-                          padding: EdgeInsets.all(8),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Expanded(
-                                child: Stack(
-                                  children: <Widget>[
-                                    Center(
-                                      child: Text(
-                                        'General Practitioner',
-                                        style: TextStyle(fontSize: 16.0),
-                                      ),
+                      height: 44.0,
+                      color: Theme.of(context).primaryColor,
+                      textColor: Colors.white,
+                      elevation: 8,
+                      shape: StadiumBorder(),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => GeneralPractitioner()));
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.all(8),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Expanded(
+                              child: Stack(
+                                children: <Widget>[
+                                  Center(
+                                    child: Text(
+                                      'General Practitioner',
+                                      style: TextStyle(fontSize: 16.0),
                                     ),
-                                    Positioned(
-                                      child: Icon(Icons.arrow_forward_ios),
-                                      right: 4,
-                                    )
-                                  ],
-                                ),
+                                  ),
+                                  Positioned(
+                                    child: Icon(Icons.arrow_forward_ios),
+                                    right: 4,
+                                  )
+                                ],
                               ),
-                            ],
-                          ),
-                        )),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
                   SizedBox(
                     height: 24.0,
