@@ -1,5 +1,7 @@
+
+
 import 'package:bestaid/config/helper.dart';
-import 'package:bestaid/src/models/user.dart';
+import 'package:bestaid/src/pages/otpverify.dart';
 import 'package:bestaid/src/providers/shared_pref_provider.dart';
 import 'package:bestaid/src/repository/token_repository.dart';
 import 'package:bestaid/src/repository/user_repository.dart';
@@ -28,36 +30,45 @@ class _LoginWidgetState extends State<LoginWidget> {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-        statusBarColor: Theme
-            .of(context)
-            .accentColor,
+        statusBarColor: Theme.of(context).accentColor,
         statusBarIconBrightness: Brightness.light,
-        statusBarBrightness: Brightness.dark
-    ));
+        statusBarBrightness: Brightness.dark));
 
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(
-        child: Container(color: Theme
-            .of(context)
-            .accentColor,),
+        child: Container(
+          color: Theme.of(context).accentColor,
+        ),
         preferredSize: Size.fromHeight(40),
       ),
       body: Container(
         padding: EdgeInsets.only(left: 20, right: 20, top: 40),
         child: ListView(
           children: <Widget>[
-            Text('Sign In', style: TextStyle(fontSize: 30, color: Theme
-                .of(context)
-                .secondaryHeaderColor),),
-            SizedBox(height: 20,),
-            TextField(decoration: InputDecoration(hintText: 'Email'),
-              controller: _emailController,),
-            SizedBox(height: 20,),
-            TextField(decoration: InputDecoration(hintText: 'Password'),
+            Text(
+              'Sign In',
+              style: TextStyle(
+                  fontSize: 30, color: Theme.of(context).secondaryHeaderColor),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            TextField(
+              decoration: InputDecoration(hintText: 'Email'),
+              controller: _emailController,
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            TextField(
+              decoration: InputDecoration(hintText: 'Password'),
               obscureText: true,
-              controller: _passwordController,),
-            SizedBox(height: 20,),
+              controller: _passwordController,
+            ),
+            SizedBox(
+              height: 20,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -70,49 +81,63 @@ class _LoginWidgetState extends State<LoginWidget> {
                     Text('Remember')
                   ],
                 ),
-                FlatButton(
-                    onPressed: () {},
-                    child: Text('Forgot Password?'))
+                FlatButton(onPressed: () {}, child: Text('Forgot Password?'))
               ],
             ),
-            SizedBox(height: 20,),
+            SizedBox(
+              height: 20,
+            ),
             ButtonTheme(
               height: 50,
               child: RaisedButton(
-                color: Theme
-                    .of(context)
-                    .primaryColor,
+                color: Theme.of(context).primaryColor,
                 textColor: Colors.white,
                 onPressed: () {
                   _login();
                 },
-                child: _isLoading ? showProgressBar() : Text('Sign In', style: TextStyle(fontSize: 20),),
+                child: _isLoading
+                    ? showProgressBar()
+                    : Text(
+                        'Sign In',
+                        style: TextStyle(fontSize: 20),
+                      ),
               ),
             ),
-            SizedBox(height: 20,),
-            Center(child: Text('Or', style: TextStyle(fontSize: 16),)),
-            SizedBox(height: 20,),
+            SizedBox(
+              height: 20,
+            ),
+            Center(
+                child: Text(
+              'Or',
+              style: TextStyle(fontSize: 16),
+            )),
+            SizedBox(
+              height: 20,
+            ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 70),
               child: ButtonTheme(
                 height: 60,
                 buttonColor: Colors.white,
                 child: OutlineButton(
-                  borderSide: BorderSide(color: Theme
-                      .of(context)
-                      .primaryColor, width: 2),
-                  textColor: Theme
-                      .of(context)
-                      .primaryColor,
+                  borderSide: BorderSide(
+                      color: Theme.of(context).primaryColor, width: 2),
+                  textColor: Theme.of(context).primaryColor,
                   onPressed: () {
-                    Navigator.of(context).pushNamed('/Register');
+                    //Navigator.of(context).pushNamed('/Register');
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => VerifyCode()));
                   },
                   child: Text(
-                    'Create Account', style: TextStyle(fontSize: 20),),
+                    'Create Account',
+                    style: TextStyle(fontSize: 20),
+                  ),
                 ),
               ),
             ),
-            SizedBox(height: 10,),
+            SizedBox(
+              height: 10,
+            ),
             Center(child: Text('Already have account?'))
           ],
         ),
@@ -138,9 +163,10 @@ class _LoginWidgetState extends State<LoginWidget> {
     if (!(tokenResponse.error == "" || tokenResponse.error == null)) {
       setState(() {
         _isLoading = false;
-        tokenResponse.error == 'Invalid credential' ? showErrorDialog(
-            context, "Failure", tokenResponse.error, "close") : showErrorDialog(
-            context, "Failure", "Failed to Login, try again", "close");
+        tokenResponse.error == 'Invalid credential'
+            ? showErrorDialog(context, "Failure", tokenResponse.error, "close")
+            : showErrorDialog(
+                context, "Failure", "Failed to Login, try again", "close");
       });
     } else {
       print(tokenResponse.token);
@@ -151,11 +177,11 @@ class _LoginWidgetState extends State<LoginWidget> {
       });
       setState(() {
         //Scaffold.of(context).showSnackBar(SnackBar(content: Text('Successfully logged in'),));
-        Navigator.of(context).pushNamedAndRemoveUntil('/Starter', ModalRoute.withName('/'));
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil('/Starter', ModalRoute.withName('/'));
       });
       var token = await SharedPrefProvider.getString('access_token');
       print('token: $token');
     }
   }
-
 }

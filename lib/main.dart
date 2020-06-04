@@ -1,6 +1,7 @@
 import 'package:bestaid/route_generator.dart';
 import 'package:bestaid/splash.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:country_code_picker/country_localizations.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
@@ -32,7 +33,7 @@ class _MyAppState extends State<MyApp> {
   final FirebaseMessaging _fcm = FirebaseMessaging();
   @override
   void initState() {
-    _fcm.configure(
+    /*_fcm.configure(
       onMessage: (Map<String, dynamic> message) async {
         print("onMessage: $message");
         showDialog(context: context, builder: (context) => AlertDialog(
@@ -48,7 +49,7 @@ class _MyAppState extends State<MyApp> {
         _goToDeeplyNestedView();
       },
     );
-    _getFirebaseToken();
+    _getFirebaseToken();*/
     super.initState();
   }
 
@@ -137,6 +138,7 @@ class _MyAppState extends State<MyApp> {
                     S.delegate,
                     GlobalMaterialLocalizations.delegate,
                     GlobalWidgetsLocalizations.delegate,
+                    CountryLocalizations.delegate,
                   ],
                   supportedLocales: S.delegate.supportedLocales,
                   navigatorObservers: [
