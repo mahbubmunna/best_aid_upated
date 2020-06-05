@@ -1,9 +1,10 @@
-import 'package:bestaid/src/pages/register.dart';
+import 'package:bestaid/src/pages/registerfinal.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class VerifyCode extends StatefulWidget {
   @override
@@ -22,6 +23,8 @@ class _VerifyCodeState extends State<VerifyCode> {
   bool codeSent = false;
   String code = "";
   String verificationId;
+  String verifyString = "Verification";
+  String otpDetails = "You'll get a OTP via SMS.";
 
   @override
   void dispose() {
@@ -35,6 +38,28 @@ class _VerifyCodeState extends State<VerifyCode> {
     // TODO: implement build
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
+      appBar: codeSent
+          ? AppBar(
+              backgroundColor: Colors.transparent,
+              leading: IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: Icon(Icons.arrow_back_ios),
+                color: Theme.of(context).primaryColor,
+              ),
+              title: Text(
+                'Back',
+                style: TextStyle(
+                  color: Theme.of(context).primaryColor,
+                ),
+              ),
+              elevation: 0,
+            )
+          : AppBar(
+              backgroundColor: Colors.transparent,
+              elevation: 0.0,
+            ),
       body: Padding(
           padding: EdgeInsets.only(
             left: 24,
@@ -45,97 +70,118 @@ class _VerifyCodeState extends State<VerifyCode> {
               shrinkWrap: true,
               children: <Widget>[
                 Center(
-                  child: Text(
-                    headerString,
-                    textScaleFactor: 1.5,
-                    style: TextStyle(
-                      color: Theme.of(context).primaryColor,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  child: codeSent
+                      ? Column(
+                          children: <Widget>[
+                            Text(
+                              verifyString,
+                              textScaleFactor: 1.5,
+                              style: TextStyle(
+                                color: Theme.of(context).primaryColor,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              otpDetails,
+                              textScaleFactor: 1.2,
+                              style: TextStyle(
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ],
+                        )
+                      : Text(
+                          headerString,
+                          textScaleFactor: 1.5,
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                 ),
                 SizedBox(
                   height: 24.0,
                 ),
                 Container(
-                    height: 56.0,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.grey,
-                      ),
-                      borderRadius: BorderRadius.circular(6.0),
+                  height: 56.0,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.grey,
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Flexible(
-                          child: CountryCodePicker(
-                            onChanged: (code) {
-                              print("on init ${code.name} ${code.dialCode}");
-                              setState(() {
-                                dialCode = code.dialCode;
-                              });
-                            },
-                            // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
-                            initialSelection: 'BD',
-                            favorite: ['+88', 'BD'],
-                            showFlagDialog: true,
-                            showFlag: true,
-                            showFlagMain: true,
-                            alignLeft: true,
-                            comparator: (a, b) => b.name.compareTo(a.name),
-                            //Get the country information relevant to the initial selection
-                            onInit: (code) {
-                              print("on init ${code.name} ${code.dialCode}");
-                              dialCode = code.dialCode;
-                            },
+                    borderRadius: BorderRadius.circular(6.0),
+                  ),
+                  child: codeSent
+                      ? TextField(
+                          controller: codeController,
+                          autocorrect: false,
+                          keyboardType: TextInputType.visiblePassword,
+                          obscureText: true,
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            focusedBorder: InputBorder.none,
+                            enabledBorder: InputBorder.none,
+                            errorBorder: InputBorder.none,
+                            disabledBorder: InputBorder.none,
+                            contentPadding: EdgeInsets.all(8),
                           ),
-                          flex: 1,
-                        ),
-                        Flexible(
-                          child: TextField(
-                            controller: phoneController,
-                            autocorrect: false,
-                            keyboardType: TextInputType.phone,
-                            inputFormatters: <TextInputFormatter>[
-                              WhitelistingTextInputFormatter.digitsOnly
-                            ],
-                            decoration: InputDecoration(
-                              hintText: 'Enter your phone number',
-                              border: InputBorder.none,
-                              focusedBorder: InputBorder.none,
-                              enabledBorder: InputBorder.none,
-                              errorBorder: InputBorder.none,
-                              disabledBorder: InputBorder.none,
-                            ),
-                            onChanged: (value) {
-                              phoneNumber = value;
-                            },
-                          ),
-                          flex: 2,
+                          onChanged: (value) {
+                            code = value;
+                          },
                         )
-                      ],
-                    )
-                    /* : Flexible(
-                          child: TextField(
-                            controller: codeController,
-                            autocorrect: false,
-                            keyboardType: TextInputType.visiblePassword,
-                            obscureText: true,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              focusedBorder: InputBorder.none,
-                              enabledBorder: InputBorder.none,
-                              errorBorder: InputBorder.none,
-                              disabledBorder: InputBorder.none,
+                      : Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            Flexible(
+                              child: CountryCodePicker(
+                                onChanged: (code) {
+                                  print(
+                                      "on init ${code.name} ${code.dialCode}");
+                                  setState(() {
+                                    dialCode = code.dialCode;
+                                  });
+                                },
+                                // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
+                                initialSelection: 'BD',
+                                favorite: ['+88', 'BD'],
+                                showFlagDialog: true,
+                                showFlag: true,
+                                showFlagMain: true,
+                                alignLeft: true,
+                                comparator: (a, b) => b.name.compareTo(a.name),
+                                //Get the country information relevant to the initial selection
+                                onInit: (code) {
+                                  print(
+                                      "on init ${code.name} ${code.dialCode}");
+                                  dialCode = code.dialCode;
+                                },
+                              ),
+                              flex: 1,
                             ),
-                            onChanged: (value) {
-                              code = value;
-                            },
-                          ),
-                          flex: 2,
-                        ),*/
-                    ),
+                            Flexible(
+                              child: TextField(
+                                controller: phoneController,
+                                autocorrect: false,
+                                keyboardType: TextInputType.phone,
+                                inputFormatters: <TextInputFormatter>[
+                                  WhitelistingTextInputFormatter.digitsOnly
+                                ],
+                                decoration: InputDecoration(
+                                  hintText: 'Enter your phone number',
+                                  border: InputBorder.none,
+                                  focusedBorder: InputBorder.none,
+                                  enabledBorder: InputBorder.none,
+                                  errorBorder: InputBorder.none,
+                                  disabledBorder: InputBorder.none,
+                                ),
+                                onChanged: (value) {
+                                  phoneNumber = value;
+                                },
+                              ),
+                              flex: 2,
+                            )
+                          ],
+                        ),
+                ),
                 SizedBox(
                   height: 24.0,
                 ),
@@ -143,20 +189,58 @@ class _VerifyCodeState extends State<VerifyCode> {
                   padding: const EdgeInsets.only(left: 24.0, right: 24.0),
                   child: MaterialButton(
                     onPressed: () {
-                      phoneNumber = "$dialCode$phoneNumber";
-                      print(phoneNumber);
-                      verifyOTP(phoneNumber);
+                      if (codeSent) {
+                        signIn();
+                      } else {
+                        phoneNumber = "$dialCode$phoneNumber";
+                        print(phoneNumber);
+                        verifyOTP(phoneNumber);
+                      }
                     },
                     color: Theme.of(context).primaryColor,
                     child: Text(
-                      'Next',
+                      codeSent ? 'Verify' : 'Next',
                       textScaleFactor: 1.2,
                       style: TextStyle(
                         color: Colors.white,
                       ),
                     ),
                   ),
-                )
+                ),
+                SizedBox(
+                  height: 16.0,
+                ),
+                codeSent
+                    ? InkWell(
+                        onTap: () {
+                          codeSent = false;
+                        },
+                        child: RichText(
+                          text: new TextSpan(
+                            // Note: Styles for TextSpans must be explicitly defined.
+                            // Child text spans will inherit styles from parent
+                            style: new TextStyle(
+                              fontSize: 14.0,
+                              color: Colors.black,
+                            ),
+                            children: <TextSpan>[
+                              TextSpan(
+                                  text:
+                                      "Didn't receive the verification code?"),
+                              TextSpan(
+                                text: 'Resend Code',
+                                style: new TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    : SizedBox(
+                        height: 16.0,
+                      ),
               ],
             ),
           )),
@@ -178,18 +262,19 @@ class _VerifyCodeState extends State<VerifyCode> {
           AuthResult result = await _auth.signInWithCredential(credential);
           FirebaseUser user = result.user;
           print(user.toString());
-          if (user != null) {
-            Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => RegisterWidget()));
-          }
         },
         verificationFailed: (AuthException exception) {
           print(exception.message.toString());
         },
         codeSent: (String verificationId, [int forceSendingToken]) async {
           this.verificationId = verificationId;
-          smsCodeDialog(context).then((value) {
-            print('Signed in');
+          codeSent = true;
+          FirebaseAuth.instance.currentUser().then((user) {
+            if (user != null) {
+              Fluttertoast.showToast(msg: "Code has been sent to your phone");
+            } else {
+              signIn();
+            }
           });
         },
         codeAutoRetrievalTimeout: (String verId) {
@@ -197,46 +282,14 @@ class _VerifyCodeState extends State<VerifyCode> {
         });
   }
 
-  Future<bool> smsCodeDialog(BuildContext context) {
-    return showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return new AlertDialog(
-            title: Text('Enter sms Code'),
-            content: TextField(
-              onChanged: (value) {
-                this.code = value;
-              },
-            ),
-            contentPadding: EdgeInsets.all(10.0),
-            actions: <Widget>[
-              new FlatButton(
-                child: Text('Done'),
-                onPressed: () {
-                  FirebaseAuth.instance.currentUser().then((user) {
-                    if (user != null) {
-                      Navigator.of(context).pop();
-                      Navigator.of(context).pushReplacementNamed('/homepage');
-                    } else {
-                      Navigator.of(context).pop();
-                      signIn();
-                    }
-                  });
-                },
-              )
-            ],
-          );
-        });
-  }
-
   signIn() {
     AuthCredential authCredential = PhoneAuthProvider.getCredential(
         verificationId: verificationId, smsCode: code);
     FirebaseAuth.instance.signInWithCredential(authCredential).then((user) {
-      Navigator.of(context).pushReplacementNamed('/homepage');
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => RegisterPage()));
     }).catchError((e) {
-      print(e);
+      Fluttertoast.showToast(msg: e.toString());
     });
   }
 }

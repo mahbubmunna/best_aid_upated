@@ -2,6 +2,7 @@
 
 import 'package:bestaid/config/helper.dart';
 import 'package:bestaid/src/pages/otpverify.dart';
+import 'package:bestaid/src/pages/registerfinal.dart';
 import 'package:bestaid/src/providers/shared_pref_provider.dart';
 import 'package:bestaid/src/repository/token_repository.dart';
 import 'package:bestaid/src/repository/user_repository.dart';
@@ -126,7 +127,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                   onPressed: () {
                     //Navigator.of(context).pushNamed('/Register');
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => VerifyCode()));
+                        MaterialPageRoute(builder: (context) => RegisterPage()));
                   },
                   child: Text(
                     'Create Account',
