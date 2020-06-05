@@ -1,3 +1,4 @@
+import 'package:bestaid/src/pages/medicalhistory.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -115,23 +116,29 @@ class _UploadPictureState extends State<UploadPicture> {
             SizedBox(
               height: 8.0,
             ),
-            Padding(
-              padding: const EdgeInsets.only(right:32.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  Text(
-                    "Skip",
-                    textScaleFactor: 1.5,
-                    style: TextStyle(
+            InkWell(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => MedicalHistoryPage()));
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(right: 32.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Text(
+                      "Skip",
+                      textScaleFactor: 1.5,
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
+                    Icon(
+                      Icons.arrow_forward_ios,
                       color: Theme.of(context).primaryColor,
                     ),
-                  ),
-                  Icon(
-                    Icons.arrow_forward_ios,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],
