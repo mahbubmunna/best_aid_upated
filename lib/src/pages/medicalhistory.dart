@@ -1,3 +1,4 @@
+import 'package:bestaid/src/pages/overviewprofile.dart';
 import 'package:flutter/material.dart';
 
 class MedicalHistoryPage extends StatefulWidget {
@@ -92,7 +93,10 @@ class _MediclHistoryState extends State<MedicalHistoryPage> {
               height: 8.0,
             ),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => OverviewProfile()));
+              },
               child: Padding(
                 padding: const EdgeInsets.only(right: 32.0),
                 child: Row(

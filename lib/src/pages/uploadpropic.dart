@@ -89,25 +89,26 @@ class _UploadPictureState extends State<UploadPicture> {
                   ),
                   Flexible(
                     child: OutlineButton(
-                        disabledBorderColor: Theme.of(context).primaryColor,
-                        color: Theme.of(context).primaryColor,
-                        highlightColor: Theme.of(context).primaryColor,
-                        child: Row(
-                          children: <Widget>[
-                            Text(
-                              "Open Camera",
-                              textScaleFactor: .8,
-                            ),
-                            Icon(
-                              Icons.camera_alt,
-                              color: Theme.of(context).primaryColor,
-                            ),
-                          ],
-                        ),
-                        onPressed: () {},
-                        shape: new RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(8.0),
-                        )),
+                      disabledBorderColor: Theme.of(context).primaryColor,
+                      color: Theme.of(context).primaryColor,
+                      highlightColor: Theme.of(context).primaryColor,
+                      child: Row(
+                        children: <Widget>[
+                          Text(
+                            "Open Camera",
+                            textScaleFactor: .8,
+                          ),
+                          Icon(
+                            Icons.camera_alt,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                        ],
+                      ),
+                      onPressed: () {},
+                      shape: new RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(8.0),
+                      ),
+                    ),
                     flex: 1,
                   )
                 ],
