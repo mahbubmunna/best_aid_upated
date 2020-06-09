@@ -1,65 +1,92 @@
-import 'package:bestaid/config/strings.dart';
-import 'package:intl/intl.dart' show DateFormat;
-
 enum UserState { available, away, busy }
 
 class UserResponse {
   User user;
   String error;
+  String accessToken;
 
   UserResponse.fromJson(Map<String, dynamic> json)
-    : user = User.fromJson(json),
-  error = "";
+      : user = User.fromJson(json),
+        error = "",
+        accessToken = json['access_token'];
 
   UserResponse.withError(String errorValue)
-    : user = User.init(),
-  error = errorValue;
+      : user = User.init(),
+        error = errorValue;
 }
 
 class User {
+  static User user;
+
   int id;
   String name;
   String email;
-  String gender;
+  String emailVerifiedAt;
+  String createdAt;
+  String updatedAt;
+  String role;
+  String deviceToken;
+  String phone;
   String dob;
-  String avatar;
-  String address;
+  String location;
   String weight;
   String height;
-  String phone;
-  String error;
-  UserState userState;
+  String gender;
+  String history;
+  String photo;
+  String permanentLocation;
 
   User.init();
 
-  User.fromJson(Map<String, dynamic> json)
-      : email = json['email'],
-        id = json['id'] ?? -1,
-        dob = json['dob'],
-        address = json['location'],
-        weight = json['weight'],
-        height = json['height'],
-        phone = json['phone'],
-        name = json["name"];
-//        id = json['id'].toString(),
-//        gender = 'Male',
-//        address = json['address'] != null ? json['address'] : '',
-//        city = json['city'] != null ? json['city'] : '',
-//        country = json['country'] != null ? json['country'] : '',
-//        dateOfBirth = DateTime(1993, 12, 31),
-//        avatar = json['avatar_original'] == null ? 'https://picsum.photos/200' : public_path_url+json['avatar_original'];
-
-
-  User.basic(this.name, this.avatar, this.userState);
-
-  User.advanced(this.name, this.email, this.gender, this.dob, this.avatar, this.address, this.userState);
-
-  User getCurrentUser() {
-    return User.advanced('Andrew R. Whitesides', 'andrew@gmail.com', 'Male', 'DateTime(1994, 04, 12)', 'assets/img/user2.jpg',
-        '4600 Isaacs Creek Road Golden, IL 62339', UserState.available);
+  static User initUser() {
+    if (user == null) {
+      user = User.init();
+    }
+    return user;
   }
 
-//  getDateOfBirth() {
-//    return DateFormat('yyyy-MM-dd').format(this.dateOfBirth);
-//  }
+  User.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    print(json);
+    name = json['name']== null ? json['name'] : "";
+    email = json['email'];
+    emailVerifiedAt =
+        json['email_verified_at'] == null ? json['email_verified_at'] : "";
+    createdAt = json['created_at'] == null ? json['created_at'] : "";
+    updatedAt = json['updated_at'] == null ? json['updated_at'] : "";
+    role = json['role'];
+    deviceToken = json['device_token'];
+    phone = json['phone'] == null ? json['phone'] : "";
+    dob = json['dob'] == null ? json['dob'] : "";
+    location = json['location'] == null ? json['location'] : "";
+    weight = json['weight'] == null ? json['weight'] : "";
+    height = json['height'] == null ? json['height'] : "";
+    gender = json['gender'] == null ? json['gender'] : "";
+    history = json['history'] == null ? json['history'] : "";
+    photo = json['photo'] == null ? json['photo'] : "";
+    permanentLocation =
+        json['permanent_location'] == null ? json['permanent_location'] : "";
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+    data['email'] = this.email;
+    data['email_verified_at'] = this.emailVerifiedAt;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    data['role'] = this.role;
+    data['device_token'] = this.deviceToken;
+    data['phone'] = this.phone;
+    data['dob'] = this.dob;
+    data['location'] = this.location;
+    data['weight'] = this.weight;
+    data['height'] = this.height;
+    data['gender'] = this.gender;
+    data['history'] = this.history;
+    data['photo'] = this.photo;
+    data['permanent_location'] = this.permanentLocation;
+    return data;
+  }
 }

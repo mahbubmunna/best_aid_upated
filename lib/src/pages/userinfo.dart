@@ -1,4 +1,6 @@
+import 'package:bestaid/src/models/registerinfo.dart';
 import 'package:bestaid/src/pages/uploadpropic.dart';
+import 'package:bestaid/src/repository/settings_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -25,6 +27,19 @@ class _UserInfoState extends State<UserInfoPage> {
 
   List<String> genderList = ['Male', 'Female', 'Other'];
 
+  String name = "";
+  String firstName = "";
+  String lastName = "";
+  String height = "";
+  String weight = "";
+  String presentAddress = "";
+  String permanentAddress = "";
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -68,7 +83,9 @@ class _UserInfoState extends State<UserInfoPage> {
                       decoration: InputDecoration(
                         hintText: 'First Name',
                       ),
-                      onChanged: (value) {},
+                      onChanged: (value) {
+                        firstName = value;
+                      },
                     ),
                     flex: 1,
                   ),
@@ -84,7 +101,9 @@ class _UserInfoState extends State<UserInfoPage> {
                       decoration: InputDecoration(
                         hintText: 'Last Name',
                       ),
-                      onChanged: (value) {},
+                      onChanged: (value) {
+                        lastName = value;
+                      },
                     ),
                     flex: 1,
                   )
@@ -155,11 +174,13 @@ class _UserInfoState extends State<UserInfoPage> {
                       controller: heightEditingController,
                       autocorrect: false,
                       textAlign: TextAlign.center,
-                      keyboardType: TextInputType.text,
+                      keyboardType: TextInputType.number,
                       decoration: InputDecoration(
                         hintText: 'Height (in feet)',
                       ),
-                      onChanged: (value) {},
+                      onChanged: (value) {
+                        height = value;
+                      },
                     ),
                     flex: 1,
                   ),
@@ -171,11 +192,13 @@ class _UserInfoState extends State<UserInfoPage> {
                       controller: weightEditingController,
                       autocorrect: false,
                       textAlign: TextAlign.center,
-                      keyboardType: TextInputType.text,
+                      keyboardType: TextInputType.number,
                       decoration: InputDecoration(
                         hintText: 'Weight (in kg)',
                       ),
-                      onChanged: (value) {},
+                      onChanged: (value) {
+                        weight = value;
+                      },
                     ),
                     flex: 1,
                   )
@@ -192,20 +215,24 @@ class _UserInfoState extends State<UserInfoPage> {
                 decoration: InputDecoration(
                   hintText: 'Address Present',
                 ),
-                onChanged: (value) {},
+                onChanged: (value) {
+                  presentAddress = value;
+                },
               ),
               SizedBox(
                 height: 16.0,
               ),
               TextField(
-                controller: presentAddressEditingController,
+                controller: permanentAddressEditingController,
                 autocorrect: false,
                 textAlign: TextAlign.center,
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
                   hintText: 'Address Permanent',
                 ),
-                onChanged: (value) {},
+                onChanged: (value) {
+                  permanentAddress = value;
+                },
               ),
               SizedBox(
                 height: 36.0,
@@ -215,8 +242,18 @@ class _UserInfoState extends State<UserInfoPage> {
                 child: MaterialButton(
                   height: 56.0,
                   onPressed: () {
-                    Navigator.of(context)
-                        .push(MaterialPageRoute(builder: (context) => UploadPicture()));
+                    if(firstName!=""){
+                      RegisterInfo.getInfo().name = firstName+" "+lastName;
+                    }else{
+                      RegisterInfo.getInfo().name= firstName;
+                    }
+                    RegisterInfo.getInfo().gender = gender;
+                    RegisterInfo.getInfo().height = height;
+                    RegisterInfo.getInfo().weight = weight;
+                    RegisterInfo.getInfo().location = presentAddress;
+                    RegisterInfo.getInfo().permanentLocation = permanentAddress;
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => UploadPicture()));
                   },
                   color: Theme.of(context).primaryColor,
                   child: Text(

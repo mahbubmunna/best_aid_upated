@@ -1,3 +1,4 @@
+import 'package:bestaid/src/models/registerinfo.dart';
 import 'package:bestaid/src/pages/overviewprofile.dart';
 import 'package:flutter/material.dart';
 
@@ -5,11 +6,20 @@ class MedicalHistoryPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return _MediclHistoryState();
+    return _MedicalHistoryState();
   }
 }
 
-class _MediclHistoryState extends State<MedicalHistoryPage> {
+class _MedicalHistoryState extends State<MedicalHistoryPage> {
+  String history = "";
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print(RegisterInfo.getInfo().photo);
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -68,7 +78,9 @@ class _MediclHistoryState extends State<MedicalHistoryPage> {
                     ),
                   ),
                 ),
-                onChanged: (value) {},
+                onChanged: (value) {
+                  history = value;
+                },
               ),
             ),
             SizedBox(
@@ -94,6 +106,7 @@ class _MediclHistoryState extends State<MedicalHistoryPage> {
             ),
             InkWell(
               onTap: () {
+                RegisterInfo.getInfo().history = history;
                 Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) => OverviewProfile()));
               },

@@ -139,7 +139,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
         Navigator.of(context).pushNamedAndRemoveUntil('/Starter', ModalRoute.withName('/'));
       });
       var token = await SharedPrefProvider.getString('access_token');
-      print('fucking token: $token');
+      print('token: $token');
     }
   }
 

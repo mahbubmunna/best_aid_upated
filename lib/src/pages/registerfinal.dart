@@ -1,3 +1,4 @@
+import 'package:bestaid/src/models/registerinfo.dart';
 import 'package:bestaid/src/pages/userinfo.dart';
 import 'package:flutter/material.dart';
 
@@ -10,10 +11,13 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterState extends State<RegisterPage> {
-
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
+
+  String email = "";
+  String password = "";
+  String confirmPassword = "";
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +60,7 @@ class _RegisterState extends State<RegisterPage> {
                   hintText: 'Email Address',
                 ),
                 onChanged: (value) {
-
+                  email = value;
                 },
               ),
               SizedBox(
@@ -72,7 +76,9 @@ class _RegisterState extends State<RegisterPage> {
                   contentPadding: EdgeInsets.all(8),
                   hintText: 'Password',
                 ),
-                onChanged: (value) {},
+                onChanged: (value) {
+                  password = value;
+                },
               ),
               SizedBox(
                 height: 16.0,
@@ -87,7 +93,9 @@ class _RegisterState extends State<RegisterPage> {
                   contentPadding: EdgeInsets.all(8),
                   hintText: 'Confirm Password',
                 ),
-                onChanged: (value) {},
+                onChanged: (value) {
+                  confirmPassword = value;
+                },
               ),
               SizedBox(
                 height: 24.0,
@@ -97,8 +105,14 @@ class _RegisterState extends State<RegisterPage> {
                 child: MaterialButton(
                   height: 56.0,
                   onPressed: () {
-                    Navigator.of(context)
-                        .push(MaterialPageRoute(builder: (context) => UserInfoPage()));
+                    if (email.isNotEmpty) {
+                      if (password == confirmPassword) {
+                        RegisterInfo.getInfo().email = email;
+                        RegisterInfo.getInfo().password = password;
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => UserInfoPage()));
+                      }
+                    }
                   },
                   color: Theme.of(context).primaryColor,
                   child: Text(

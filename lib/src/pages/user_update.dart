@@ -18,7 +18,7 @@ class _UserProfileChangeDialogState extends State<UserProfileChangeDialog> {
   final nameController = TextEditingController(text: appUser.name);
   final weightController = TextEditingController(text: appUser.weight);
   DateTime dob = DateTime.now();
-  final addressController = TextEditingController(text: appUser.address);
+  final addressController = TextEditingController(text: appUser.location);
   final heightController = TextEditingController(text: appUser.height);
   final phoneController = TextEditingController(text: appUser.phone);
 
@@ -162,7 +162,7 @@ class _UserProfileChangeDialogState extends State<UserProfileChangeDialog> {
     _profileSettingsFormKey.currentState.save();
     if (_profileSettingsFormKey.currentState.validate()) {
       Map updatedUserData = {
-        'location' : addressController.text == null ? appUser.address : addressController.text,
+        'location' : addressController.text == null ? appUser.location : addressController.text,
         'phone' : phoneController.text == null ? appUser.phone : phoneController.text,
         'dob' : dob == null ? appUser.dob : dob.toIso8601String(),
         'weight' : weightController.text == null ? appUser.weight : weightController.text,

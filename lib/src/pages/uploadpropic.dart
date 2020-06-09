@@ -1,6 +1,10 @@
+import 'dart:io';
+
+import 'package:bestaid/src/models/registerinfo.dart';
 import 'package:bestaid/src/pages/medicalhistory.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class UploadPicture extends StatefulWidget {
   @override
@@ -11,6 +15,47 @@ class UploadPicture extends StatefulWidget {
 }
 
 class _UploadPictureState extends State<UploadPicture> {
+  ImagePicker mPicker = ImagePicker();
+  PickedFile _pickedFile;
+  bool pickedImage = false;
+  String path = "";
+
+  pickImageFromGallery(ImageSource source) async {
+    final imageFile = await mPicker.getImage(
+        source: source, maxWidth: 96, maxHeight: 96, imageQuality: 90);
+    setState(() {
+      _pickedFile = imageFile;
+      pickedImage = true;
+      path = _pickedFile.path;
+    });
+  }
+
+  Widget showImage() {
+    return Container(
+      height: 96.0,
+      width: 96.0,
+      decoration: new BoxDecoration(
+        shape: BoxShape.circle,
+        border: Border.all(color: const Color(0x33A6A6A6)),
+        image: DecorationImage(
+            image: Image.file(
+              File(
+                path,
+              ),
+            ).image,
+            fit: BoxFit.fill),
+        // image: new Image.asset(_image.)
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print(RegisterInfo.getInfo().email + RegisterInfo.getInfo().name);
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -38,11 +83,13 @@ class _UploadPictureState extends State<UploadPicture> {
           shrinkWrap: true,
           children: <Widget>[
             Center(
-              child: Image.asset(
-                'assets/img/user.png',
-                height: 96,
-                width: 96,
-              ),
+              child: pickedImage
+                  ? showImage()
+                  : Image.asset(
+                      'assets/img/user.png',
+                      height: 96,
+                      width: 96,
+                    ),
             ),
             SizedBox(
               height: 16.0,
@@ -70,7 +117,9 @@ class _UploadPictureState extends State<UploadPicture> {
                   Flexible(
                     child: MaterialButton(
                       color: Theme.of(context).primaryColor,
-                      onPressed: () {},
+                      onPressed: () {
+                        pickImageFromGallery(ImageSource.gallery);
+                      },
                       child: Text(
                         'Open Gallery',
                         textScaleFactor: .8,
@@ -119,6 +168,7 @@ class _UploadPictureState extends State<UploadPicture> {
             ),
             InkWell(
               onTap: () {
+                RegisterInfo.getInfo().photo = path;
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => MedicalHistoryPage()));
               },
@@ -148,3 +198,4 @@ class _UploadPictureState extends State<UploadPicture> {
     );
   }
 }
+

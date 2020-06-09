@@ -1,3 +1,10 @@
+import 'dart:io';
+
+import 'package:bestaid/splash.dart';
+import 'package:bestaid/src/models/registerinfo.dart';
+import 'package:bestaid/src/models/user.dart';
+import 'package:bestaid/src/providers/shared_pref_provider.dart';
+import 'package:bestaid/src/repository/user_repository.dart';
 import 'package:flutter/material.dart';
 
 class OverviewProfile extends StatefulWidget {
@@ -9,6 +16,24 @@ class OverviewProfile extends StatefulWidget {
 }
 
 class _OverviewProfileState extends State<OverviewProfile> {
+  String filePath = "";
+  String weight = "";
+  String location = "";
+  String height = "";
+
+  RegisterInfo mInfo = RegisterInfo.getInfo();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    filePath = RegisterInfo.getInfo().photo;
+    weight = RegisterInfo.getInfo().weight;
+    location = RegisterInfo.getInfo().location;
+    height = RegisterInfo.getInfo().height;
+    print(height);
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -59,11 +84,28 @@ class _OverviewProfileState extends State<OverviewProfile> {
               height: 24.0,
             ),
             Center(
-              child: Image.asset(
-                'assets/img/user.png',
-                height: 96,
-                width: 96,
-              ),
+              child: filePath == ""
+                  ? Image.asset(
+                      'assets/img/user.png',
+                      height: 96,
+                      width: 96,
+                    )
+                  : Container(
+                      height: 96.0,
+                      width: 96.0,
+                      decoration: new BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(color: const Color(0x33A6A6A6)),
+                        image: DecorationImage(
+                            image: Image.file(
+                              File(
+                                filePath,
+                              ),
+                            ).image,
+                            fit: BoxFit.fill),
+                        // image: new Image.asset(_image.)
+                      ),
+                    ),
             ),
             SizedBox(
               height: 24.0,
@@ -101,7 +143,9 @@ class _OverviewProfileState extends State<OverviewProfile> {
                         height: 24.0,
                         width: 24.0,
                       ),
-                      label: Text('60 kg'),
+                      label: Text(
+                        weight != "" ? weight + ' kg' : '60 kg',
+                      ),
                     ),
                     flex: 1,
                   ),
@@ -124,7 +168,9 @@ class _OverviewProfileState extends State<OverviewProfile> {
                         height: 24.0,
                         width: 24.0,
                       ),
-                      label: Text('Location'),
+                      label: Text(
+                        location != "" ? location : 'Location',
+                      ),
                     ),
                     flex: 1,
                   ),
@@ -136,7 +182,9 @@ class _OverviewProfileState extends State<OverviewProfile> {
                         height: 24.0,
                         width: 24.0,
                       ),
-                      label: Text('Height'),
+                      label: Text(
+                        height != "" ? height : 'Height',
+                      ),
                     ),
                     flex: 1,
                   ),
@@ -154,7 +202,24 @@ class _OverviewProfileState extends State<OverviewProfile> {
               padding: const EdgeInsets.only(left: 36.0, right: 36.0),
               child: MaterialButton(
                 height: 56.0,
-                onPressed: () {},
+                onPressed: () {
+                  if (filePath.isEmpty) {
+                    Map values = RegisterInfo.getInfo().toJson();
+                    print(values);
+                    UserRepository.registerUser(values).then((value) async {
+                      UserResponse mResponse = value;
+                      SharedPrefProvider.setString(
+                          'access_token', mResponse.accessToken);
+                      Map mUser = mResponse.user.toJson();
+                      SharedPrefProvider.saveUser('user', mUser);
+                      appUser = mResponse.user;
+                      setState(() {
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                            '/Starter', ModalRoute.withName('/'));
+                      });
+                    });
+                  }
+                },
                 color: Theme.of(context).primaryColor,
                 child: Text(
                   'Confirm and Save',
@@ -171,19 +236,3 @@ class _OverviewProfileState extends State<OverviewProfile> {
     );
   }
 }
-/*FlatButton.icon(
-onPressed: () {},
-icon: Icon(
-Icons.date_range,
-color: Theme.of(context).primaryColor,
-),
-label: Text('Birth date'),
-),
-FlatButton.icon(
-onPressed: () {},
-icon: Icon(
-Icons.date_range,
-color: Theme.of(context).primaryColor,
-),
-label: Text('Birth date'),
-),*/
