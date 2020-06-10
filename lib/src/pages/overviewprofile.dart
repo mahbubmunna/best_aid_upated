@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:bestaid/splash.dart';
@@ -208,15 +209,36 @@ class _OverviewProfileState extends State<OverviewProfile> {
                     print(values);
                     UserRepository.registerUser(values).then((value) async {
                       UserResponse mResponse = value;
+                      print(mResponse.user);
                       SharedPrefProvider.setString(
                           'access_token', mResponse.accessToken);
                       Map mUser = mResponse.user.toJson();
                       SharedPrefProvider.saveUser('user', mUser);
                       appUser = mResponse.user;
-                      setState(() {
-                        Navigator.of(context).pushNamedAndRemoveUntil(
-                            '/Starter', ModalRoute.withName('/'));
-                      });
+                      if (appUser != null) {
+                        setState(() {
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                              '/Starter', ModalRoute.withName('/'));
+                        });
+                      }
+                    });
+                  } else {
+                    Map values = RegisterInfo.getInfo().toJsonString();
+                    UserRepository.upload(filePath, values).then((value) {
+                      Map<String, dynamic> result = json.decode(value);
+                      UserResponse mResponse = UserResponse.fromJson(result);
+                      print(mResponse.toString());
+                      SharedPrefProvider.setString(
+                          'access_token', mResponse.accessToken);
+                      Map mUser = mResponse.user.toJson();
+                      SharedPrefProvider.saveUser('user', mUser);
+                      appUser = mResponse.user;
+                      if (appUser != null) {
+                        setState(() {
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                              '/Starter', ModalRoute.withName('/'));
+                        });
+                      }
                     });
                   }
                 },

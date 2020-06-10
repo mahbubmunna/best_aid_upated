@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bestaid/src/models/user.dart';
 import 'package:bestaid/src/providers/user_provider.dart';
 
@@ -16,5 +18,9 @@ class UserRepository {
 
   static Future<UserResponse> registerUser(Map registerInfo) {
     return UserProvider.postRegisterData(registerInfo);
+  }
+
+  static Future<String>upload(String imageFile, var values){
+   return  UserProvider.upload(imageFile, values);
   }
 }

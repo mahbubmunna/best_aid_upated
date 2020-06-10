@@ -1,10 +1,8 @@
-import 'dart:io';
-
 import 'package:bestaid/config/strings.dart';
 import 'package:bestaid/src/models/user.dart';
 import 'package:bestaid/src/providers/shared_pref_provider.dart';
 import 'package:dio/dio.dart';
-import 'package:path/path.dart';
+import 'package:http/http.dart' as http;
 
 class UserProvider {
   static final String _endpoint = "${api_base_url}login";
@@ -70,7 +68,7 @@ class UserProvider {
 
     try {
       Response response =
-      await _dio.post(_registerEndpoint, data: registerData);
+          await _dio.post(_registerEndpoint, data: registerData);
       return UserResponse.fromJson(response.data);
     } catch (error, stacktrace) {
       print("Exception occured: $error stackTrace: $stacktrace");
@@ -78,4 +76,16 @@ class UserProvider {
     }
   }
 
+  static Future<String> upload(String imageFile, var values) async {
+    var request = http.MultipartRequest("POST", Uri.parse(_registerEndpoint));
+    request.fields.addAll(values);
+    var pic = await http.MultipartFile.fromPath("photo", imageFile);
+    request.files.add(pic);
+    print(request.fields.toString());
+    var response = await request.send();
+    var responseData = await response.stream.toBytes();
+    var responseString = String.fromCharCodes(responseData);
+
+    return responseString;
+  }
 }

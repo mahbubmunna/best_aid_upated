@@ -33,7 +33,7 @@ class _MyAppState extends State<MyApp> {
   final FirebaseMessaging _fcm = FirebaseMessaging();
   @override
   void initState() {
-    /*_fcm.configure(
+    _fcm.configure(
       onMessage: (Map<String, dynamic> message) async {
         print("onMessage: $message");
         showDialog(context: context, builder: (context) => AlertDialog(
@@ -49,7 +49,7 @@ class _MyAppState extends State<MyApp> {
         _goToDeeplyNestedView();
       },
     );
-    _getFirebaseToken();*/
+    _getFirebaseToken();
     super.initState();
   }
 

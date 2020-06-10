@@ -17,7 +17,6 @@ class SharedPrefProvider {
 
   static saveUser(String key, value) async {
     final prefs = await SharedPreferences.getInstance();
-    print(value);
     return prefs.setString(key, json.encode(value));
   }
 

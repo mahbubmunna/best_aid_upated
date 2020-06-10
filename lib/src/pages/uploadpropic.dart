@@ -30,6 +30,17 @@ class _UploadPictureState extends State<UploadPicture> {
     });
   }
 
+  pickImageFromCamera(ImageSource source) async {
+    final imageFile = await mPicker.getImage(
+        source: source, maxHeight: 96, maxWidth: 96, imageQuality: 90);
+
+    setState(() {
+      _pickedFile = imageFile;
+      pickedImage = true;
+      path = _pickedFile.path;
+    });
+  }
+
   Widget showImage() {
     return Container(
       height: 96.0,
@@ -153,7 +164,9 @@ class _UploadPictureState extends State<UploadPicture> {
                           ),
                         ],
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        pickImageFromCamera(ImageSource.camera);
+                      },
                       shape: new RoundedRectangleBorder(
                         borderRadius: new BorderRadius.circular(8.0),
                       ),
@@ -198,4 +211,3 @@ class _UploadPictureState extends State<UploadPicture> {
     );
   }
 }
-

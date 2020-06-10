@@ -4,20 +4,30 @@ class UserResponse {
   User user;
   String error;
   String accessToken;
+  String message;
 
   UserResponse.fromJson(Map<String, dynamic> json)
-      : user = User.fromJson(json),
+      : user = json['user'] != null ? new User.fromJson(json['user']) : null,
         error = "",
-        accessToken = json['access_token'];
+        accessToken = json['access_token'],
+        message = json['message'];
 
   UserResponse.withError(String errorValue)
       : user = User.init(),
         error = errorValue;
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.user != null) {
+      data['user'] = this.user.toJson();
+    }
+    data['access_token'] = this.accessToken;
+    data['message'] = this.message;
+    return data;
+  }
 }
 
 class User {
-  static User user;
-
   int id;
   String name;
   String email;
@@ -38,34 +48,45 @@ class User {
 
   User.init();
 
-  static User initUser() {
-    if (user == null) {
-      user = User.init();
-    }
-    return user;
-  }
+  User(
+      {this.id,
+      this.name,
+      this.email,
+      this.emailVerifiedAt,
+      this.createdAt,
+      this.updatedAt,
+      this.role,
+      this.deviceToken,
+      this.phone,
+      this.dob,
+      this.location,
+      this.weight,
+      this.height,
+      this.gender,
+      this.history,
+      this.photo,
+      this.permanentLocation});
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    print(json);
-    name = json['name']== null ? json['name'] : "";
+    name = json['name'];
     email = json['email'];
     emailVerifiedAt =
-        json['email_verified_at'] == null ? json['email_verified_at'] : "";
-    createdAt = json['created_at'] == null ? json['created_at'] : "";
-    updatedAt = json['updated_at'] == null ? json['updated_at'] : "";
-    role = json['role'];
-    deviceToken = json['device_token'];
-    phone = json['phone'] == null ? json['phone'] : "";
-    dob = json['dob'] == null ? json['dob'] : "";
-    location = json['location'] == null ? json['location'] : "";
-    weight = json['weight'] == null ? json['weight'] : "";
-    height = json['height'] == null ? json['height'] : "";
-    gender = json['gender'] == null ? json['gender'] : "";
-    history = json['history'] == null ? json['history'] : "";
-    photo = json['photo'] == null ? json['photo'] : "";
+        json['email_verified_at'] != null ? json['email_verified_at'] : "";
+    createdAt = json['created_at'] != null ? json['created_at'] : "";
+    updatedAt = json['updated_at'] != null ? json['updated_at'] : "";
+    role = json['role'] != null ? json['role'] : "";
+    deviceToken = json['device_token'] != null ? json['device_token'] : "";
+    phone = json['phone'] != null ? json['phone'] : "";
+    dob = json['dob'] != null ? json['dob'] : "";
+    location = json['location'] != null ? json['location'] : "";
+    weight = json['weight'] != null ? json['weight'] : "";
+    height = json['height'] != null ? json['height'] : "";
+    gender = json['gender'] != null ? json['gender'] : "";
+    history = json['history'] != null ? json['history'] : "";
+    photo = json['photo'] != null ? json['photo'] : "";
     permanentLocation =
-        json['permanent_location'] == null ? json['permanent_location'] : "";
+        json['permanent_location'] != null ? json['permanent_location'] : "";
   }
 
   Map<String, dynamic> toJson() {
@@ -89,4 +110,7 @@ class User {
     data['permanent_location'] = this.permanentLocation;
     return data;
   }
+
+  @override
+  String toString() => this.location + " " + this.name + " " + this.email;
 }
