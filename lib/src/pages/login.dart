@@ -1,7 +1,4 @@
-
-
 import 'package:bestaid/config/helper.dart';
-import 'package:bestaid/src/pages/otpverify.dart';
 import 'package:bestaid/src/pages/registerfinal.dart';
 import 'package:bestaid/src/providers/shared_pref_provider.dart';
 import 'package:bestaid/src/repository/token_repository.dart';
@@ -126,8 +123,10 @@ class _LoginWidgetState extends State<LoginWidget> {
                   textColor: Theme.of(context).primaryColor,
                   onPressed: () {
                     //Navigator.of(context).pushNamed('/Register');
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => RegisterPage()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => RegisterPage()));
                   },
                   child: Text(
                     'Create Account',
@@ -176,11 +175,13 @@ class _LoginWidgetState extends State<LoginWidget> {
       UserRepository.postUser(loginInfo).then((user) {
         appUser = user.user;
       });
+
       setState(() {
         //Scaffold.of(context).showSnackBar(SnackBar(content: Text('Successfully logged in'),));
         Navigator.of(context)
             .pushNamedAndRemoveUntil('/Starter', ModalRoute.withName('/'));
       });
+
       var token = await SharedPrefProvider.getString('access_token');
       print('token: $token');
     }

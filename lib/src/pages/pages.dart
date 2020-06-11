@@ -7,7 +7,7 @@ import 'package:bestaid/src/pages/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-
+import 'doctor_home.dart';
 import 'home.dart';
 
 // ignore: must_be_immutable
@@ -15,15 +15,12 @@ class PagesTestWidget extends StatefulWidget {
   int currentTab;
   RouteArgument routeArgument;
   Widget currentPage = HomeWidget();
+
   //final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
 
-  PagesTestWidget({
-    Key key,
-    this.currentTab,
-    this.routeArgument
-  }) {
+  PagesTestWidget({Key key, this.currentTab, this.routeArgument}) {
     currentTab = currentTab != null ? currentTab : 2;
-    if(routeArgument != null) currentTab = routeArgument.param as int;
+    if (routeArgument != null) currentTab = routeArgument.param as int;
   }
 
   @override
@@ -55,7 +52,7 @@ class _PagesTestWidgetState extends State<PagesTestWidget> {
           widget.currentPage = ExpertOpinion();
           break;
         case 2:
-          widget.currentPage = HomeWidget();
+          widget.currentPage = DoctorHome();
           break;
         case 3:
           widget.currentPage = Cart();
@@ -63,8 +60,6 @@ class _PagesTestWidgetState extends State<PagesTestWidget> {
         case 4:
           widget.currentPage = Menu();
           break;
-
-
       }
     });
   }
@@ -87,7 +82,8 @@ class _PagesTestWidgetState extends State<PagesTestWidget> {
           iconSize: 36,
           elevation: 0,
           backgroundColor: Colors.white,
-          selectedIconTheme: IconThemeData(size: 40, color: Theme.of(context).accentColor),
+          selectedIconTheme:
+              IconThemeData(size: 40, color: Theme.of(context).accentColor),
           unselectedItemColor: Color(0xFF079E8A),
           currentIndex: widget.currentTab,
           onTap: (int i) {
@@ -97,14 +93,20 @@ class _PagesTestWidgetState extends State<PagesTestWidget> {
           items: [
             BottomNavigationBarItem(
               icon: new Icon(Icons.person),
-              title: Container(height: 0,),
+              title: Container(
+                height: 0,
+              ),
             ),
             BottomNavigationBarItem(
               icon: new Icon(Icons.dashboard),
-              title: Container(height: 0,),
+              title: Container(
+                height: 0,
+              ),
             ),
             BottomNavigationBarItem(
-              title: Container(height: 0,),
+                title: Container(
+                  height: 0,
+                ),
                 icon: Container(
 //                  decoration: BoxDecoration(
 //                    color: Theme.of(context).accentColor,
@@ -119,15 +121,24 @@ class _PagesTestWidgetState extends State<PagesTestWidget> {
 //                    ],
 //                  ),
                   child: new Icon(Icons.home),
-                )
-            ),
+                )),
             BottomNavigationBarItem(
               icon: new Icon(Icons.shopping_cart),
-              title: Container(height: 0,),
+              title: Container(
+                height: 0,
+              ),
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.menu),
-              title: Container(height: 0,),
+              title: Container(
+                height: 0,
+              ),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.notifications),
+              title: Container(
+                height: 0,
+              ),
             ),
           ],
         ),
