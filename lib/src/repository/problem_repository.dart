@@ -26,4 +26,8 @@ class ProblemRepository {
   static Future<dynamic> getOpenProblems() async {
     return ProblemProvider.getOpenProblems();
   }
+
+  static Future<dynamic> getSolvedProblems() async {
+    return ProblemProvider.getSolvedProblems();
+  }
 }

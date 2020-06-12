@@ -1,3 +1,5 @@
+import 'package:bestaid/src/models/user.dart';
+
 class OpenProblemResponse {
   List<Problem> problem;
 
@@ -30,6 +32,8 @@ class Problem {
   String createdAt;
   String updatedAt;
   String replyBy;
+  String name;
+  User user;
 
   Problem(
       {this.id,
@@ -39,7 +43,9 @@ class Problem {
       this.status,
       this.createdAt,
       this.updatedAt,
-      this.replyBy});
+      this.replyBy,
+      this.name,
+      this.user});
 
   Problem.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -49,7 +55,9 @@ class Problem {
     status = json['status'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    replyBy = json['reply_by'] != null ? json['reply_by'] : "";
+    replyBy = json['reply_by'];
+    name = json['name'];
+    user = json['user'] != null ? new User.fromJson(json['user']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -62,6 +70,10 @@ class Problem {
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
     data['reply_by'] = this.replyBy;
+    data['name'] = this.name;
+    if (this.user != null) {
+      data['user'] = this.user.toJson();
+    }
     return data;
   }
 }

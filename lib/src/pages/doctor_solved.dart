@@ -5,15 +5,15 @@ import 'package:bestaid/src/models/openproblem.dart';
 import 'package:bestaid/src/repository/problem_repository.dart';
 import 'package:flutter/material.dart';
 
-class DoctorProblemList extends StatefulWidget {
+class DoctorSolvedProblems extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return _DoctorProblemState();
+    return _DoctorSolvedProblemState();
   }
 }
 
-class _DoctorProblemState extends State<DoctorProblemList> {
+class _DoctorSolvedProblemState extends State<DoctorSolvedProblems> {
   var _futureProblems;
   List<Problem> openProblemList;
   bool isSwitched = false;
@@ -22,7 +22,7 @@ class _DoctorProblemState extends State<DoctorProblemList> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _futureProblems = ProblemRepository.getOpenProblems();
+    _futureProblems = ProblemRepository.getSolvedProblems();
   }
 
   @override
@@ -55,7 +55,7 @@ class _DoctorProblemState extends State<DoctorProblemList> {
                           width: 30,
                         ),
                         Text(
-                          'Problems',
+                          'Solved',
                           textScaleFactor: 1.5,
                         ),
                         SizedBox(
@@ -128,6 +128,7 @@ class _DoctorProblemState extends State<DoctorProblemList> {
         return Container(
           height: 196,
           child: Card(
+            color: Theme.of(context).primaryColor,
             elevation: 4,
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -148,8 +149,7 @@ class _DoctorProblemState extends State<DoctorProblemList> {
                             ),
                             overflow: TextOverflow.ellipsis,
                             text: TextSpan(
-                                style: TextStyle(
-                                    color: Theme.of(context).accentColor),
+                                style: TextStyle(color: Colors.white),
                                 text: activeProblem.name),
                           ),
                         ),
@@ -173,7 +173,7 @@ class _DoctorProblemState extends State<DoctorProblemList> {
                   child: Container(
                     margin: const EdgeInsets.only(left: 16.0, right: 16.0),
                     child: Divider(
-                      color: Colors.black,
+                      color: Colors.white,
                       height: 36,
                     ),
                   ),
@@ -193,7 +193,7 @@ class _DoctorProblemState extends State<DoctorProblemList> {
                       ),
                       overflow: TextOverflow.ellipsis,
                       text: TextSpan(
-                          style: TextStyle(color: Colors.green),
+                          style: TextStyle(color: Colors.white),
                           text: activeProblem.title),
                     ),
                   ),
@@ -203,7 +203,7 @@ class _DoctorProblemState extends State<DoctorProblemList> {
                   child: Text(
                     activeProblem.message,
                     style: TextStyle(
-                      color: Theme.of(context).accentColor,
+                      color: Colors.white,
                       fontSize: 16.0,
                     ),
                   ),
@@ -223,7 +223,7 @@ class _DoctorProblemState extends State<DoctorProblemList> {
                           ),
                           overflow: TextOverflow.ellipsis,
                           text: TextSpan(
-                              style: TextStyle(color: Colors.grey),
+                              style: TextStyle(color: Colors.white),
                               text: activeProblem.createdAt.substring(0, 10)),
                         ),
                       ),
@@ -234,8 +234,8 @@ class _DoctorProblemState extends State<DoctorProblemList> {
                           width: 100,
                           child: MaterialButton(
                             shape: StadiumBorder(),
-                            color: Theme.of(context).accentColor,
-                            textColor: Colors.white,
+                            color: Colors.white,
+                            textColor: Theme.of(context).primaryColor,
                             onPressed: () {},
                             child: Text(
                               'Read More',

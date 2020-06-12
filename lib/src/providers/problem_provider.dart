@@ -8,6 +8,7 @@ import 'package:dio/dio.dart';
 class ProblemProvider {
   static final _endpointProblems = "${api_base_url}problem";
   static final _endpointOpenProblems = "${api_base_url}problem-open";
+  static final _endpointSolvedProblems = "${api_base_url}problem-solved";
   static final Dio _dio = Dio();
 
   static Future<ProblemResponse> getProblems() async {
@@ -112,6 +113,23 @@ class ProblemProvider {
 
     try {
       Response response = await _dio.get(_endpointOpenProblems);
+      print(response);
+      return OpenProblemResponse.fromJson(response.data);
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      return error;
+    }
+  }
+
+  static Future<dynamic> getSolvedProblems() async {
+    var token = await SharedPrefProvider.getString('access_token');
+    _dio.options.headers = {
+      'Accept': 'application/json',
+      "Authorization": "Bearer $token"
+    };
+
+    try {
+      Response response = await _dio.get(_endpointSolvedProblems);
       print(response);
       return OpenProblemResponse.fromJson(response.data);
     } catch (error, stacktrace) {
