@@ -124,7 +124,7 @@ class _PostProblemState extends State<PostProblem> {
 
   _postProblemToTheServer(BuildContext context) {
     Map post = {
-      'title': _postInputController.text,
+      'title': _postHeadLineInputController.text,
       'message': _postInputController.text
     };
     ProblemRepository.postDataToProblem(post).then((value) {

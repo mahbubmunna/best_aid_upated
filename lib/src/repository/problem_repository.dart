@@ -11,8 +11,8 @@ class ProblemRepository {
   }
 
   static Future<dynamic> postDataToProblemDiscussion(
-      int postId, Map postData) async {
-    return ProblemProvider.postDataToProblemDiscussion(postId, postData);
+      int postId, Map postData,String userType) async {
+    return ProblemProvider.postDataToProblemDiscussion(postId, postData,userType);
   }
 
   static Future<dynamic> getDiscussions(int postId) async {
@@ -30,4 +30,5 @@ class ProblemRepository {
   static Future<dynamic> getSolvedProblems() async {
     return ProblemProvider.getSolvedProblems();
   }
+
 }

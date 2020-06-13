@@ -1,4 +1,5 @@
 import 'package:bestaid/elements/DrawerWidget.dart';
+import 'package:bestaid/splash.dart';
 import 'package:bestaid/src/models/route_argument.dart';
 import 'package:bestaid/src/pages/cart.dart';
 import 'package:bestaid/src/pages/expert_opinion.dart';
@@ -52,7 +53,8 @@ class _PagesTestWidgetState extends State<PagesTestWidget> {
           widget.currentPage = ExpertOpinion();
           break;
         case 2:
-          widget.currentPage = DoctorHome();
+          widget.currentPage =
+              appUser.role != 'user' ? DoctorHome() : HomeWidget();
           break;
         case 3:
           widget.currentPage = Cart();

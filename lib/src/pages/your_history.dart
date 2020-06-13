@@ -1,12 +1,11 @@
 import 'dart:math' as math;
 
 import 'package:bestaid/config/helper.dart';
-import 'package:bestaid/src/models/problems.dart';
+import 'package:bestaid/src/models/discussion.dart';
 import 'package:bestaid/src/models/route_argument.dart';
 import 'package:bestaid/src/repository/problem_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class YourHistory extends StatefulWidget {
   @override
@@ -202,10 +201,7 @@ class _YourHistoryState extends State<YourHistory> {
                           color: Colors.white,
                         ),
                       ),
-                      Text(
-                        DateFormat('d MMM yyyy').format(solvedProblem.time),
-                        style: TextStyle(color: Colors.white),
-                      ),
+                      Text(solvedProblem.updatedAt.substring(0, 10)),
                     ],
                   ),
                 ),
@@ -297,8 +293,7 @@ class _YourHistoryState extends State<YourHistory> {
                               color: Theme.of(context).primaryColor,
                               fontWeight: FontWeight.bold),
                         ),
-                        Text(DateFormat('d MMM yyyy')
-                            .format(activeProblem.time)),
+                        Text(activeProblem.updatedAt.substring(0, 10)),
                       ],
                     ),
                   ),
@@ -324,7 +319,7 @@ class _YourHistoryState extends State<YourHistory> {
                             Align(
                               alignment: Alignment.centerLeft,
                               child: Text(
-                                activeProblem.title,
+                                activeProblem.message,
                                 maxLines: 4,
                                 overflow: TextOverflow.ellipsis,
                               ),

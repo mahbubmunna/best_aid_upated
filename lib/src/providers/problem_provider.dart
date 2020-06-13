@@ -7,6 +7,7 @@ import 'package:dio/dio.dart';
 
 class ProblemProvider {
   static final _endpointProblems = "${api_base_url}problem";
+  static final _endPointReplayProblems = "${api_base_url}problem/replay";
   static final _endpointOpenProblems = "${api_base_url}problem-open";
   static final _endpointSolvedProblems = "${api_base_url}problem-solved";
   static final Dio _dio = Dio();
@@ -47,7 +48,7 @@ class ProblemProvider {
   }
 
   static Future<dynamic> postDataToProblemDiscussion(
-      int postId, Map postData) async {
+      int postId, Map postData, String userType) async {
     var token = await SharedPrefProvider.getString('access_token');
     print(token);
     print(postData);
@@ -56,15 +57,29 @@ class ProblemProvider {
       "Authorization": "Bearer $token"
     };
 
-    try {
-      Response response = await _dio
-          .post(_endpointProblems + '/' + postId.toString(), data: postData);
-      print(response);
-      print(postId);
-      return response;
-    } catch (error, stacktrace) {
-      print("Exception occured: $error stackTrace: $stacktrace");
-      return error;
+    if (userType == "user") {
+      try {
+        Response response = await _dio
+            .post(_endpointProblems + '/' + postId.toString(), data: postData);
+        print(response);
+        print(postId);
+        return response;
+      } catch (error, stacktrace) {
+        print("Exception occured: $error stackTrace: $stacktrace");
+        return error;
+      }
+    } else {
+      try {
+        Response response = await _dio.post(
+            _endPointReplayProblems + '/' + postId.toString(),
+            data: postData);
+        print(response);
+        print(postId);
+        return response;
+      } catch (error, stacktrace) {
+        print("Exception occured: $error stackTrace: $stacktrace");
+        return error;
+      }
     }
   }
 

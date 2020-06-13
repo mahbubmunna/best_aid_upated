@@ -1,4 +1,5 @@
 import 'package:bestaid/config/helper.dart';
+import 'package:bestaid/src/models/user.dart';
 import 'package:bestaid/src/pages/registerfinal.dart';
 import 'package:bestaid/src/providers/shared_pref_provider.dart';
 import 'package:bestaid/src/repository/token_repository.dart';
@@ -173,7 +174,12 @@ class _LoginWidgetState extends State<LoginWidget> {
       SharedPrefProvider.setString('access_token', tokenResponse.token);
       _isLoading = false;
       UserRepository.postUser(loginInfo).then((user) {
-        appUser = user.user;
+        UserResponse mResponse = user;
+        print(mResponse.user);
+        SharedPrefProvider.setString('access_token', mResponse.accessToken);
+        Map mUser = mResponse.user.toJson();
+        SharedPrefProvider.saveUser('user', mUser);
+        appUser = mResponse.user;
       });
 
       setState(() {
