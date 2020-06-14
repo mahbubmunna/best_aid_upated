@@ -6,6 +6,7 @@ import 'package:bestaid/src/pages/login.dart';
 import 'package:bestaid/src/pages/news_feed.dart';
 import 'package:bestaid/src/pages/online_consultancy.dart';
 import 'package:bestaid/src/pages/pages.dart';
+import 'package:bestaid/src/pages/pagesdoctor.dart';
 import 'package:bestaid/src/pages/post_detail.dart';
 import 'package:bestaid/src/pages/post_problem.dart';
 import 'package:bestaid/src/pages/problem_detail.dart';
@@ -44,6 +45,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => ProblemDetails(routeArgument: args as RouteArgument,));
       case '/PostDetails':
         return MaterialPageRoute(builder: (_) => PostDetails(routeArgument: args as RouteArgument,));
+      case '/PageDoctor':
+        return MaterialPageRoute(builder: (_) => PagesDoctorTestWidget(currentTab: 2, routeArgument: args as RouteArgument,));
       default:
         // If there is no such named route in the switch statement, e.g. /third
         return MaterialPageRoute(builder: (_) => PagesTestWidget(currentTab: 2, routeArgument: args as RouteArgument,));

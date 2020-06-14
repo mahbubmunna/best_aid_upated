@@ -16,6 +16,7 @@ class RegisterInfo {
   String gender;
   String history;
   String photo;
+  String deviceToken;
 
   RegisterInfo();
 
@@ -39,6 +40,7 @@ class RegisterInfo {
     data['height'] = height;
     data['gender'] = gender;
     data['history'] = history;
+    data['device_token'] = deviceToken;
     return data;
   }
 
@@ -55,6 +57,7 @@ class RegisterInfo {
     data['height'] = height==null?"":height;
     data['gender'] = gender==null?"":gender;
     data['history'] = history==null?"":history;
+    data['device_token'] = deviceToken==null?"":deviceToken;
     return data;
   }
 

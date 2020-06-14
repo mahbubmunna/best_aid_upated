@@ -17,12 +17,12 @@ class _UserProfileState extends State<UserProfile> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    loadSharedPrefs();
+   loadSharedPrefs();
   }
 
   loadSharedPrefs() async {
     try {
-      User user = User.fromJson(await SharedPrefProvider.read('user'));
+      User user = await SharedPrefProvider.read('user');
       setState(() {
         appUser = user;
         print(appUser.name);
@@ -41,14 +41,14 @@ class _UserProfileState extends State<UserProfile> {
         statusBarBrightness: Brightness.dark));
     return Scaffold(
         backgroundColor: Colors.white,
-        floatingActionButton: FloatingActionButton(
+        /*floatingActionButton: FloatingActionButton(
           child: UserProfileChangeDialog(
             onChanged: () {
               setState(() {});
             },
           ),
           onPressed: () {},
-        ),
+        ),*/
 //      appBar: AppBar(
 ////        leading: IconButton(
 ////          onPressed: () {

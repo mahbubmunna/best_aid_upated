@@ -1,47 +1,40 @@
 import 'package:bestaid/elements/DrawerWidget.dart';
 import 'package:bestaid/src/models/route_argument.dart';
-import 'package:bestaid/src/models/user.dart';
-import 'package:bestaid/src/pages/cart.dart';
+import 'package:bestaid/src/pages/doctor_home.dart';
 import 'package:bestaid/src/pages/doctor_problems.dart';
-import 'package:bestaid/src/pages/expert_opinion.dart';
 import 'package:bestaid/src/pages/menu.dart';
 import 'package:bestaid/src/pages/user_profile.dart';
-import 'package:bestaid/src/providers/shared_pref_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'doctor_home.dart';
-import 'home.dart';
+import 'cart.dart';
 
-// ignore: must_be_immutable
-class PagesTestWidget extends StatefulWidget {
+class PagesDoctorTestWidget extends StatefulWidget {
   int currentTab;
   RouteArgument routeArgument;
-  Widget currentPage = HomeWidget();
+  Widget currentPage = DoctorHome();
 
   //final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
 
-  PagesTestWidget({Key key, this.currentTab, this.routeArgument}) {
+  PagesDoctorTestWidget({Key key, this.currentTab, this.routeArgument}) {
     currentTab = currentTab != null ? currentTab : 2;
     if (routeArgument != null) currentTab = routeArgument.param as int;
   }
 
   @override
-  _PagesTestWidgetState createState() {
-    return _PagesTestWidgetState();
+  _PageDoctorTestState createState() {
+    return _PageDoctorTestState();
   }
 }
 
-class _PagesTestWidgetState extends State<PagesTestWidget> {
-  User mUser;
-
+class _PageDoctorTestState extends State<PagesDoctorTestWidget> {
   initState() {
-    loadSharedPrefs();
     super.initState();
+    _selectTab(widget.currentTab);
   }
 
   @override
-  void didUpdateWidget(PagesTestWidget oldWidget) {
+  void didUpdateWidget(PagesDoctorTestWidget oldWidget) {
     _selectTab(oldWidget.currentTab);
     super.didUpdateWidget(oldWidget);
   }
@@ -54,12 +47,10 @@ class _PagesTestWidgetState extends State<PagesTestWidget> {
           widget.currentPage = UserProfile();
           break;
         case 1:
-          widget.currentPage =
-              mUser.role == 'user' ? ExpertOpinion() : DoctorProblemList();
+          widget.currentPage = DoctorProblemList();
           break;
         case 2:
-          widget.currentPage =
-              mUser.role == 'user' ? HomeWidget() : DoctorHome();
+          widget.currentPage = DoctorHome();
           break;
         case 3:
           widget.currentPage = Cart();
@@ -90,7 +81,7 @@ class _PagesTestWidgetState extends State<PagesTestWidget> {
           elevation: 0,
           backgroundColor: Colors.white,
           selectedIconTheme:
-              IconThemeData(size: 40, color: Theme.of(context).accentColor),
+          IconThemeData(size: 40, color: Theme.of(context).accentColor),
           unselectedItemColor: Color(0xFF079E8A),
           currentIndex: widget.currentTab,
           onTap: (int i) {
@@ -136,9 +127,7 @@ class _PagesTestWidgetState extends State<PagesTestWidget> {
               ),
             ),
             BottomNavigationBarItem(
-              icon: mUser.role == 'user'
-                  ? Icon(Icons.menu)
-                  : Icon(Icons.notifications),
+              icon: Icon(Icons.notifications),
               title: Container(
                 height: 0,
               ),
@@ -147,20 +136,5 @@ class _PagesTestWidgetState extends State<PagesTestWidget> {
         ),
       ),
     );
-  }
-
-  loadSharedPrefs() async {
-    try {
-      User user = await SharedPrefProvider.read('user');
-      print(user);
-      setState(() {
-        mUser = user;
-        _selectTab(widget.currentTab);
-        print(mUser.role);
-      });
-    } catch (e) {
-      // do something
-      print(e);
-    }
   }
 }

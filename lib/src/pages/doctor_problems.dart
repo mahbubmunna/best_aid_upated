@@ -1,7 +1,12 @@
 import 'dart:math' as math;
 
 import 'package:bestaid/config/helper.dart';
+import 'package:bestaid/splash.dart';
+import 'package:bestaid/src/models/discussion.dart';
 import 'package:bestaid/src/models/openproblem.dart';
+import 'package:bestaid/src/models/route_argument.dart';
+import 'package:bestaid/src/models/user.dart';
+import 'package:bestaid/src/providers/shared_pref_provider.dart';
 import 'package:bestaid/src/repository/problem_repository.dart';
 import 'package:flutter/material.dart';
 
@@ -18,9 +23,11 @@ class _DoctorProblemState extends State<DoctorProblemList> {
   List<Problem> openProblemList;
   bool isSwitched = false;
 
+  User mUser;
   @override
   void initState() {
     // TODO: implement initState
+    loadSharedPrefs();
     super.initState();
     _futureProblems = ProblemRepository.getOpenProblems();
   }
@@ -201,7 +208,7 @@ class _DoctorProblemState extends State<DoctorProblemList> {
                 ),
                 Flexible(
                   child: Text(
-                    activeProblem.message,
+                    activeProblem.message != null ? activeProblem.message : "",
                     style: TextStyle(
                       color: Theme.of(context).accentColor,
                       fontSize: 16.0,
@@ -236,7 +243,25 @@ class _DoctorProblemState extends State<DoctorProblemList> {
                             shape: StadiumBorder(),
                             color: Theme.of(context).accentColor,
                             textColor: Colors.white,
-                            onPressed: () {},
+                            onPressed: () {
+                              //  print(activeProblem.replyBy + " ${appUser.id}");
+                              int id = mUser.id;
+                              if (activeProblem.replyBy == null ||
+                                  activeProblem.replyBy == id) {
+                                Navigator.of(context).pushNamed(
+                                    '/ProblemDetails',
+                                    arguments:
+                                        RouteArgument(param: activeProblem));
+                              } else if (activeProblem.replyBy != null) {
+                                if (activeProblem.replyBy != id) {
+                                  showErrorDialog(
+                                      context,
+                                      "Permission Denied",
+                                      "Another Doctor is already working on it",
+                                      "close");
+                                }
+                              }
+                            },
                             child: Text(
                               'Read More',
                               textScaleFactor: .8,
@@ -259,5 +284,20 @@ class _DoctorProblemState extends State<DoctorProblemList> {
         );
       },
     );
+  }
+
+  loadSharedPrefs() async {
+    try {
+      User user = await SharedPrefProvider.read('user');
+      print(user);
+      setState(() {
+        mUser = user;
+
+        print(appUser.role);
+      });
+    } catch (e) {
+      // do something
+      print(e);
+    }
   }
 }

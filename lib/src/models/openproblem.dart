@@ -1,4 +1,4 @@
-import 'package:bestaid/src/models/user.dart';
+import 'package:bestaid/src/models/discussion.dart';
 
 class OpenProblemResponse {
   List<Problem> problem;
@@ -23,7 +23,7 @@ class OpenProblemResponse {
   }
 }
 
-class Problem {
+/*class Problem {
   int id;
   int userId;
   String title;
@@ -76,4 +76,4 @@ class Problem {
     }
     return data;
   }
-}
+}*/

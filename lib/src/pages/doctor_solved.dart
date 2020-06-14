@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:bestaid/config/helper.dart';
+import 'package:bestaid/src/models/discussion.dart';
 import 'package:bestaid/src/models/openproblem.dart';
 import 'package:bestaid/src/repository/problem_repository.dart';
 import 'package:flutter/material.dart';

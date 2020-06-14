@@ -1,5 +1,6 @@
 import 'package:bestaid/route_generator.dart';
 import 'package:bestaid/splash.dart';
+import 'package:bestaid/src/providers/shared_pref_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:country_code_picker/country_localizations.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
@@ -60,6 +61,7 @@ class _MyAppState extends State<MyApp> {
   _getFirebaseToken() async {
     await _fcm.getToken().then((value) {token = value;});
     print(token);
+    SharedPrefProvider.setString("device_token", token);
   }
 
   @override

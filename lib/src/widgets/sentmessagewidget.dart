@@ -1,17 +1,12 @@
+import 'package:bestaid/src/models/discussion.dart';
 import 'package:flutter/material.dart';
 
 class SentMessageWidget extends StatelessWidget {
-  final String message;
-  final String imageUrl;
-  final String contactName;
-  final String time;
+  final Discussion discussion;
 
   const SentMessageWidget({
     Key key,
-    this.message,
-    this.imageUrl,
-    this.contactName,
-    this.time,
+    this.discussion,
   }) : super(key: key);
 
   @override
@@ -22,7 +17,7 @@ class SentMessageWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           Text(
-            "$time",
+            "${discussion.updatedAt.substring(10)}",
             style: Theme.of(context).textTheme.body2.apply(color: Colors.grey),
           ),
           SizedBox(width: 15),
@@ -31,7 +26,7 @@ class SentMessageWidget extends StatelessWidget {
                 maxWidth: MediaQuery.of(context).size.width * .6),
             padding: const EdgeInsets.all(15.0),
             decoration: BoxDecoration(
-              color: Colors.green,
+              color: Theme.of(context).primaryColor,
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(25),
                 topRight: Radius.circular(25),
@@ -39,7 +34,7 @@ class SentMessageWidget extends StatelessWidget {
               ),
             ),
             child: Text(
-              "$message",
+              "${discussion.message}",
               style: Theme.of(context).textTheme.body2.apply(
                     color: Colors.white,
                   ),

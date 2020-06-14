@@ -205,6 +205,7 @@ class _OverviewProfileState extends State<OverviewProfile> {
                 height: 56.0,
                 onPressed: () {
                   if (filePath.isEmpty) {
+                    RegisterInfo.getInfo().deviceToken = token;
                     Map values = RegisterInfo.getInfo().toJson();
                     print(values);
                     UserRepository.registerUser(values).then((value) async {
@@ -212,8 +213,8 @@ class _OverviewProfileState extends State<OverviewProfile> {
                       print(mResponse.user);
                       SharedPrefProvider.setString(
                           'access_token', mResponse.accessToken);
-                      Map mUser = mResponse.user.toJson();
-                      SharedPrefProvider.saveUser('user', mUser);
+
+                      SharedPrefProvider.saveUser('user', mResponse.user);
                       appUser = mResponse.user;
                       if (appUser != null) {
                         setState(() {
@@ -223,6 +224,7 @@ class _OverviewProfileState extends State<OverviewProfile> {
                       }
                     });
                   } else {
+                    RegisterInfo.getInfo().deviceToken = token;
                     Map values = RegisterInfo.getInfo().toJsonString();
                     UserRepository.upload(filePath, values).then((value) {
                       Map<String, dynamic> result = json.decode(value);
@@ -230,8 +232,7 @@ class _OverviewProfileState extends State<OverviewProfile> {
                       print(mResponse.toString());
                       SharedPrefProvider.setString(
                           'access_token', mResponse.accessToken);
-                      Map mUser = mResponse.user.toJson();
-                      SharedPrefProvider.saveUser('user', mUser);
+                      SharedPrefProvider.saveUser('user', mResponse.user);
                       appUser = mResponse.user;
                       if (appUser != null) {
                         setState(() {

@@ -156,7 +156,8 @@ class _LoginWidgetState extends State<LoginWidget> {
   _getAndSaveToken() async {
     var loginInfo = {
       'email': _emailController.text,
-      'password': _passwordController.text
+      'password': _passwordController.text,
+      'device_token': token,
     };
     print(loginInfo);
     var tokenResponse = await TokenRepository.getToken(loginInfo);
@@ -173,19 +174,22 @@ class _LoginWidgetState extends State<LoginWidget> {
       print(tokenResponse.token);
       SharedPrefProvider.setString('access_token', tokenResponse.token);
       _isLoading = false;
-      UserRepository.postUser(loginInfo).then((user) {
+      UserRepository.postUser(loginInfo).then((user) async {
         UserResponse mResponse = user;
+        appUser = mResponse.user;
         print(mResponse.user);
         SharedPrefProvider.setString('access_token', mResponse.accessToken);
-        Map mUser = mResponse.user.toJson();
-        SharedPrefProvider.saveUser('user', mUser);
-        appUser = mResponse.user;
+
+      bool result = await  SharedPrefProvider.saveUser('user', mResponse.user);
+      if(result){
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil('/Starter', ModalRoute.withName('/'));
+      }
       });
 
       setState(() {
         //Scaffold.of(context).showSnackBar(SnackBar(content: Text('Successfully logged in'),));
-        Navigator.of(context)
-            .pushNamedAndRemoveUntil('/Starter', ModalRoute.withName('/'));
+
       });
 
       var token = await SharedPrefProvider.getString('access_token');

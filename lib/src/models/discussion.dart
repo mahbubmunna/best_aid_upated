@@ -27,7 +27,7 @@ class Problem {
   int status;
   String createdAt;
   String updatedAt;
-  String replyBy;
+  int replyBy;
   String name;
   List<Discussion> discussion;
   User user;
@@ -93,7 +93,7 @@ class Discussion {
   String type;
   String createdAt;
   String updatedAt;
-  String replyBy;
+  int replyBy;
 
   Discussion(
       {this.id,
