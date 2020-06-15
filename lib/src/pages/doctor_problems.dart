@@ -245,7 +245,8 @@ class _DoctorProblemState extends State<DoctorProblemList> {
                             textColor: Colors.white,
                             onPressed: () {
                               //  print(activeProblem.replyBy + " ${appUser.id}");
-                              int id = mUser.id;
+                              int id = mUser.doctor.id;
+                              print("$id ${activeProblem}");
                               if (activeProblem.replyBy == null ||
                                   activeProblem.replyBy == id) {
                                 Navigator.of(context).pushNamed(

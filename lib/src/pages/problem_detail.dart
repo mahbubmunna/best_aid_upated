@@ -26,12 +26,20 @@ class ProblemDetails extends StatefulWidget {
 class _ProblemDetailsState extends State<ProblemDetails> {
   User mUser;
   TextEditingController _postInputController = TextEditingController();
+  ScrollController _scrollController = new ScrollController();
 
   @override
   void initState() {
     // TODO: implement initState
     loadSharedPrefs();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+
+    super.dispose();
   }
 
   @override
@@ -224,6 +232,7 @@ class _ProblemDetailsState extends State<ProblemDetails> {
       return ListView.separated(
         shrinkWrap: true,
         physics: ClampingScrollPhysics(),
+        controller: _scrollController,
         itemCount: discussions.length,
         itemBuilder: (context, index) {
           if (discussions[index].type == 'question') {
@@ -247,6 +256,11 @@ class _ProblemDetailsState extends State<ProblemDetails> {
   _postProblemToTheServer(BuildContext context, Problem problem) async {
     Map replay = {'message': _postInputController.text};
     print(replay.containsKey('message'));
+    _scrollController.animateTo(
+      0.0,
+      curve: Curves.easeOut,
+      duration: const Duration(milliseconds: 300),
+    );
     ProblemRepository.postDataToProblemDiscussion(
             problem.id, replay, mUser.role)
         .then((value) {

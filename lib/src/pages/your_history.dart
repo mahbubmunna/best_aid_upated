@@ -290,7 +290,7 @@ class _YourHistoryState extends State<YourHistory> {
                           'Active',
                           textScaleFactor: 1.5,
                           style: TextStyle(
-                              color: Theme.of(context).primaryColor,
+                              color: Colors.green,
                               fontWeight: FontWeight.bold),
                         ),
                         Text(activeProblem.updatedAt.substring(0, 10)),
@@ -314,6 +314,12 @@ class _YourHistoryState extends State<YourHistory> {
                                 activeProblem.title,
                                 maxLines: 3,
                                 overflow: TextOverflow.ellipsis,
+                                textScaleFactor: 1.2,
+                                style: TextStyle(
+                                  color: Colors.green,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16.0,
+                                ),
                               ),
                             ),
                             Align(
@@ -322,6 +328,11 @@ class _YourHistoryState extends State<YourHistory> {
                                 activeProblem.message,
                                 maxLines: 4,
                                 overflow: TextOverflow.ellipsis,
+                                textScaleFactor: 1.2,
+                                style: TextStyle(
+                                  color: Theme.of(context).accentColor,
+
+                                ),
                               ),
                             ),
                             Align(

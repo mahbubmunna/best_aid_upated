@@ -1,3 +1,5 @@
+import 'package:bestaid/src/models/doctors.dart';
+
 enum UserState { available, away, busy }
 
 class UserResponse {
@@ -45,27 +47,9 @@ class User {
   String history;
   String photo;
   String permanentLocation;
+  Doctors doctor;
 
   User.init();
-
-  User(
-      {this.id,
-      this.name,
-      this.email,
-      this.emailVerifiedAt,
-      this.createdAt,
-      this.updatedAt,
-      this.role,
-      this.deviceToken,
-      this.phone,
-      this.dob,
-      this.location,
-      this.weight,
-      this.height,
-      this.gender,
-      this.history,
-      this.photo,
-      this.permanentLocation});
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -87,6 +71,8 @@ class User {
     photo = json['photo'] != null ? json['photo'] : "";
     permanentLocation =
         json['permanent_location'] != null ? json['permanent_location'] : "";
+    doctor =
+        json['doctor'] != null ? new Doctors.fromJson(json['doctor']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -108,6 +94,9 @@ class User {
     data['history'] = this.history;
     data['photo'] = this.photo;
     data['permanent_location'] = this.permanentLocation;
+    if (this.doctor != null) {
+      data['doctor'] = this.doctor.toJson();
+    }
     return data;
   }
 

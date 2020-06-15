@@ -35,7 +35,7 @@ class SentMessageWidget extends StatelessWidget {
             ),
             child: Text(
               "${discussion.message}",
-              style: Theme.of(context).textTheme.body2.apply(
+              style: Theme.of(context).textTheme.body1.apply(
                     color: Colors.white,
                   ),
             ),
