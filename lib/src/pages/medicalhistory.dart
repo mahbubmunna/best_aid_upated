@@ -90,7 +90,11 @@ class _MedicalHistoryState extends State<MedicalHistoryPage> {
               padding: const EdgeInsets.only(left: 24.0, right: 24.0),
               child: MaterialButton(
                 height: 56.0,
-                onPressed: () {},
+                onPressed: () {
+                  RegisterInfo.getInfo().history = history;
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => OverviewProfile()));
+                },
                 color: Theme.of(context).primaryColor,
                 child: Text(
                   'NEXT',

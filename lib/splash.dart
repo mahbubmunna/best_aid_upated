@@ -36,6 +36,10 @@ class _SplashState extends State<Splash> {
   }
 
   checkLoggedInOrNot() async {
+
+    if(await SharedPrefProvider.getBool('first_time')== null || await SharedPrefProvider.getBool('first_time') == false){
+      
+    }
     if ( await SharedPrefProvider.getString('access_token') == null
         ||  await SharedPrefProvider.getString('access_token') == '') {
       isLogged = false;

@@ -38,7 +38,6 @@ class _ProblemDetailsState extends State<ProblemDetails> {
   @override
   void dispose() {
     // TODO: implement dispose
-
     super.dispose();
   }
 

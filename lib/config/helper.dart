@@ -83,3 +83,5 @@ buildLoadingWidget() {
         children: [Loading(indicator: BallPulseIndicator(), size: 50, color: config.Colors().primaryColor(1),)],
       ));
 }
+
+

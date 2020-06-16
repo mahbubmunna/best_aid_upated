@@ -177,7 +177,29 @@ class _UploadPictureState extends State<UploadPicture> {
               ),
             ),
             SizedBox(
-              height: 8.0,
+              height: 24.0,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 24.0, right: 24.0),
+              child: MaterialButton(
+                height: 56.0,
+                onPressed: () {
+                  RegisterInfo.getInfo().photo = path;
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => MedicalHistoryPage()));
+                },
+                color: Theme.of(context).primaryColor,
+                child: Text(
+                  'NEXT',
+                  textScaleFactor: 1.5,
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 16.0,
             ),
             InkWell(
               onTap: () {

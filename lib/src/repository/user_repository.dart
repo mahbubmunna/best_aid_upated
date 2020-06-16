@@ -23,4 +23,7 @@ class UserRepository {
   static Future<String>upload(String imageFile, var values){
    return  UserProvider.upload(imageFile, values);
   }
+  static Future<String>updateUserDataWithPhoto(String imageFile, var values){
+    return  UserProvider.updateUserDataWithPhoto(imageFile, values);
+  }
 }

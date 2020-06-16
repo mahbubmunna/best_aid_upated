@@ -4,6 +4,16 @@ import 'package:bestaid/src/models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPrefProvider {
+  static setBool(String key) async {
+    final sharedPref = await SharedPreferences.getInstance();
+    sharedPref.setBool(key, true);
+  }
+
+  static getBool(String key) async {
+    final sharedPref = await SharedPreferences.getInstance();
+    sharedPref.getBool(key);
+  }
+
   static setString(String key, dynamic value) async {
     final sharedPref = await SharedPreferences.getInstance();
     sharedPref.setString(key, value);

@@ -105,7 +105,18 @@ class _PostProblemState extends State<PostProblem> {
                   shape: StadiumBorder(),
                   textColor: Colors.white,
                   onPressed: () {
-                    _postProblemToTheServer(context);
+                   if(_postHeadLineInputController.text.isNotEmpty && _postInputController.text.isNotEmpty){
+                     _postProblemToTheServer(context);
+                   }else{
+                     Scaffold.of(context).showSnackBar(SnackBar(
+                       content: Column(
+                         crossAxisAlignment: CrossAxisAlignment.center,
+                         mainAxisSize: MainAxisSize.min,
+                         children: <Widget>[Text('Fields can not be empty')],
+                       ),
+                       backgroundColor: Theme.of(context).primaryColor,
+                     ));
+                   }
                   },
                   child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 40),

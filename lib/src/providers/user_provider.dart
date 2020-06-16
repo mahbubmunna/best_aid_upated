@@ -35,12 +35,24 @@ class UserProvider {
     };
 
     try {
-      await _dio.post(_userEndpoint, data: updatedUserData);
-      return getUser();
+      Response response = await _dio.post(_userEndpoint, data: updatedUserData);
+      return UserResponse.fromJson(response.data);
     } catch (error, stacktrace) {
       print("Exception occured: $error stackTrace: $stacktrace");
       return UserResponse.withError("$error");
     }
+  }
+
+  static Future<String> updateUserDataWithPhoto(String imageFile, var values) async {
+    var request = http.MultipartRequest("POST", Uri.parse(_userEndpoint));
+    request.fields.addAll(values);
+    var pic = await http.MultipartFile.fromPath("photo", imageFile);
+    request.files.add(pic);
+    print(request.fields.toString());
+    var response = await request.send();
+    var responseData = await response.stream.toBytes();
+    var responseString = String.fromCharCodes(responseData);
+    return responseString;
   }
 
   static Future<UserResponse> postLoginData(Map loginData) async {
