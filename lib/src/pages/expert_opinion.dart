@@ -67,8 +67,8 @@ class _ExpertOpinionState extends State<ExpertOpinion> {
                 mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
                   MaterialButton(
-                      color: Theme.of(context).primaryColor,
-                      textColor: Colors.white,
+                      color: Colors.white,
+                      textColor: Theme.of(context).accentColor,
                       shape: StadiumBorder(),
                       onPressed: () {
                         Navigator.of(context).pushNamed('/PostProblem');
@@ -96,8 +96,8 @@ class _ExpertOpinionState extends State<ExpertOpinion> {
                     height: 20,
                   ),
                   MaterialButton(
-                      color: Theme.of(context).primaryColor,
-                      textColor: Colors.white,
+                      color: Colors.white,
+                      textColor: Theme.of(context).accentColor,
                       shape: StadiumBorder(),
                       onPressed: () {
                         Navigator.of(context).pushNamed('/YourHistory');
@@ -125,8 +125,8 @@ class _ExpertOpinionState extends State<ExpertOpinion> {
                     height: 20,
                   ),
                   MaterialButton(
-                      color: Theme.of(context).primaryColor,
-                      textColor: Colors.white,
+                      color: Colors.white,
+                      textColor: Theme.of(context).accentColor,
                       shape: StadiumBorder(),
                       onPressed: () {
                         Navigator.of(context).pushNamed('/NewsFeed');

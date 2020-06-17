@@ -9,6 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../splash.dart';
 
 class UserProfile extends StatefulWidget {
   @override
@@ -102,17 +105,25 @@ class _UserProfileState extends State<UserProfile> {
           },
         ),
         appBar: AppBar(
-          leading: IconButton(
+          /*leading: IconButton(
             onPressed: () {
               Navigator.pop(context);
             },
             icon: Icon(Icons.arrow_back_ios),
             color: Colors.white,
-          ),
+          ),*/
           actions: <Widget>[
             InkWell(
+              onTap: () async {
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                bool user = await prefs?.remove('user');
+                bool token = await prefs?.remove('access_token');
+                print('$user $token');
+                Navigator.pushReplacement(
+                    context, MaterialPageRoute(builder: (_) => Splash()));
+              },
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(16.0),
                 child: Center(
                     child: Text(
                   'Log out',
@@ -121,7 +132,7 @@ class _UserProfileState extends State<UserProfile> {
               ),
             ),
           ],
-          title: Text('Back'),
+          /*title: Text('Back'),*/
           elevation: 0,
         ),
         body: appUser != null
@@ -130,24 +141,21 @@ class _UserProfileState extends State<UserProfile> {
                   SizedBox(
                     height: 20,
                   ),
-                  SizedBox(
-                    height: 150,
-                    width: 150,
-                    child: InkWell(
-                      onTap: () {
-                        showAlertDialog(context);
-                      },
-                      child: CircleAvatar(
-                        backgroundColor: Theme.of(context).accentColor,
-                        child: appUser.photo != null &&
-                                    appUser.photo.endsWith('.jpg') ||
-                                appUser.photo.endsWith('png') ||
-                                appUser.photo.endsWith('jpeg')
-                            ? Image.network(appUser.photo)
-                            : Image.asset(
-                                'assets/img/user.png',
-                              ),
-                      ),
+                  CircleAvatar(
+                    radius: 72,
+                    backgroundColor: Colors.transparent,
+                    child: ClipOval(
+                      child: appUser.photo != null &&
+                                  appUser.photo.endsWith('.jpg') ||
+                              appUser.photo.endsWith('png') ||
+                              appUser.photo.endsWith('jpeg')
+                          ? Image.network(
+                              appUser.photo,
+                              fit: BoxFit.cover,
+                            )
+                          : Image.asset(
+                              'assets/img/user.png',
+                            ),
                     ),
                   ),
                   SizedBox(
@@ -524,7 +532,7 @@ class _UserProfileState extends State<UserProfile> {
     _profileSettingsFormKey.currentState.save();
     print('image path $path');
     if (_profileSettingsFormKey.currentState.validate()) {
-      Map<String,dynamic> updatedUserData = {
+      Map<String, dynamic> updatedUserData = {
         'name': name == null ? appUser.name : name,
         'location': address == null ? appUser.location : address,
         'phone': phone == null ? appUser.phone : phone,

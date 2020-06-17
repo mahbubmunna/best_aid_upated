@@ -101,22 +101,23 @@ class _PostProblemState extends State<PostProblem> {
             Center(
               child: Builder(builder: (BuildContext context) {
                 return MaterialButton(
-                  color: Theme.of(context).primaryColor,
+                  color: Colors.white,
                   shape: StadiumBorder(),
-                  textColor: Colors.white,
+                  textColor: Theme.of(context).accentColor,
                   onPressed: () {
-                   if(_postHeadLineInputController.text.isNotEmpty && _postInputController.text.isNotEmpty){
-                     _postProblemToTheServer(context);
-                   }else{
-                     Scaffold.of(context).showSnackBar(SnackBar(
-                       content: Column(
-                         crossAxisAlignment: CrossAxisAlignment.center,
-                         mainAxisSize: MainAxisSize.min,
-                         children: <Widget>[Text('Fields can not be empty')],
-                       ),
-                       backgroundColor: Theme.of(context).primaryColor,
-                     ));
-                   }
+                    if (_postHeadLineInputController.text.isNotEmpty &&
+                        _postInputController.text.isNotEmpty) {
+                      _postProblemToTheServer(context);
+                    } else {
+                      Scaffold.of(context).showSnackBar(SnackBar(
+                        content: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[Text('Fields can not be empty')],
+                        ),
+                        backgroundColor: Theme.of(context).primaryColor,
+                      ));
+                    }
                   },
                   child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 40),

@@ -71,7 +71,7 @@ class _OnlineConsultancyState extends State<OnlineConsultancy> {
                     constraints: BoxConstraints(minWidth: double.infinity),
                     child: MaterialButton(
                       height: 44.0,
-                      color: Theme.of(context).primaryColor,
+                      color: Colors.white,
                       textColor: Colors.white,
                       elevation: 8,
                       shape: StadiumBorder(),
@@ -92,11 +92,17 @@ class _OnlineConsultancyState extends State<OnlineConsultancy> {
                                   Center(
                                     child: Text(
                                       'General Practitioner',
-                                      style: TextStyle(fontSize: 16.0),
+                                      style: TextStyle(
+                                        fontSize: 16.0,
+                                        color: Theme.of(context).accentColor,
+                                      ),
                                     ),
                                   ),
                                   Positioned(
-                                    child: Icon(Icons.arrow_forward_ios),
+                                    child: Icon(
+                                      Icons.arrow_forward_ios,
+                                      color: Theme.of(context).accentColor,
+                                    ),
                                     right: 4,
                                   )
                                 ],
@@ -115,7 +121,7 @@ class _OnlineConsultancyState extends State<OnlineConsultancy> {
                     child: MaterialButton(
                       elevation: 8,
                       height: 44.0,
-                      color: Theme.of(context).primaryColor,
+                      color: Colors.white,
                       textColor: Colors.white,
                       shape: StadiumBorder(),
                       onPressed: () {
@@ -135,11 +141,17 @@ class _OnlineConsultancyState extends State<OnlineConsultancy> {
                                   Center(
                                     child: Text(
                                       'Specialist',
-                                      style: TextStyle(fontSize: 16.0),
+                                      style: TextStyle(
+                                        fontSize: 16.0,
+                                        color: Theme.of(context).accentColor,
+                                      ),
                                     ),
                                   ),
                                   Positioned(
-                                    child: Icon(Icons.arrow_forward_ios),
+                                    child: Icon(
+                                      Icons.arrow_forward_ios,
+                                      color: Theme.of(context).accentColor,
+                                    ),
                                     right: 4,
                                   )
                                 ],

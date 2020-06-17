@@ -1,4 +1,6 @@
+import 'package:bestaid/src/pages/login.dart';
 import 'package:bestaid/src/pages/registerfinal.dart';
+import 'package:bestaid/src/providers/shared_pref_provider.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -43,7 +45,7 @@ class _VerifyCodeState extends State<VerifyCode> {
               backgroundColor: Colors.transparent,
               leading: IconButton(
                 onPressed: () {
-                  Navigator.pop(context);
+
                 },
                 icon: Icon(Icons.arrow_back_ios),
                 color: Theme.of(context).primaryColor,
@@ -114,7 +116,7 @@ class _VerifyCodeState extends State<VerifyCode> {
                       ? TextField(
                           controller: codeController,
                           autocorrect: false,
-                          keyboardType: TextInputType.visiblePassword,
+                          keyboardType: TextInputType.number,
                           obscureText: true,
                           decoration: InputDecoration(
                             border: InputBorder.none,
@@ -285,10 +287,18 @@ class _VerifyCodeState extends State<VerifyCode> {
   signIn() {
     AuthCredential authCredential = PhoneAuthProvider.getCredential(
         verificationId: verificationId, smsCode: code);
-    FirebaseAuth.instance.signInWithCredential(authCredential).then((user) {
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => RegisterPage()));
+    FirebaseAuth.instance
+        .signInWithCredential(authCredential)
+        .then((user) async {
+      bool result = await SharedPrefProvider.setBool('otp', false);
+     if(result){
+       Navigator.of(context)
+           .push(MaterialPageRoute(builder: (context) => LoginWidget()));
+     }
     }).catchError((e) {
+      setState(() {
+        codeSent = false;
+      });
       Fluttertoast.showToast(msg: e.toString());
     });
   }

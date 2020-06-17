@@ -53,9 +53,7 @@ class _SpecialistState extends State<SpecialistPage> {
             ),
             MaterialButton(
               height: 56,
-              onPressed: () {
-
-              },
+              onPressed: () {},
               elevation: 8,
               color: Colors.white,
               shape: RoundedRectangleBorder(
@@ -129,16 +127,16 @@ class _SpecialistState extends State<SpecialistPage> {
                   constraints: BoxConstraints(minWidth: double.infinity),
                   child: MaterialButton(
                       height: 44.0,
-                      color: Theme.of(context).primaryColor,
-                      textColor: Colors.white,
+                      color: Colors.white,
+                      textColor: Theme.of(context).accentColor,
                       elevation: 8,
                       shape: StadiumBorder(),
                       onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => DoctorListScreen(post.id.toString(), post.name)));
-
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => DoctorListScreen(
+                                    post.id.toString(), post.name)));
                       },
                       child: Padding(
                         padding: EdgeInsets.all(8),
@@ -155,7 +153,10 @@ class _SpecialistState extends State<SpecialistPage> {
                                     ),
                                   ),
                                   Positioned(
-                                    child: Icon(Icons.arrow_forward_ios),
+                                    child: Icon(
+                                      Icons.arrow_forward_ios,
+                                      color: Theme.of(context).accentColor,
+                                    ),
                                     right: 4,
                                   )
                                 ],

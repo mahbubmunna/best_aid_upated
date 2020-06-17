@@ -129,7 +129,7 @@ class _DoctorSolvedProblemState extends State<DoctorSolvedProblems> {
         return Container(
           height: 196,
           child: Card(
-            color: Theme.of(context).primaryColor,
+            color: Colors.white,
             elevation: 4,
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -150,7 +150,7 @@ class _DoctorSolvedProblemState extends State<DoctorSolvedProblems> {
                             ),
                             overflow: TextOverflow.ellipsis,
                             text: TextSpan(
-                                style: TextStyle(color: Colors.white),
+                                style: TextStyle(color: Theme.of(context).accentColor),
                                 text: activeProblem.name),
                           ),
                         ),
@@ -194,7 +194,7 @@ class _DoctorSolvedProblemState extends State<DoctorSolvedProblems> {
                       ),
                       overflow: TextOverflow.ellipsis,
                       text: TextSpan(
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: Theme.of(context).accentColor),
                           text: activeProblem.title),
                     ),
                   ),
@@ -202,9 +202,9 @@ class _DoctorSolvedProblemState extends State<DoctorSolvedProblems> {
                 ),
                 Flexible(
                   child: Text(
-                    activeProblem.message,
+                    activeProblem.message!=null?activeProblem.message:"",
                     style: TextStyle(
-                      color: Colors.white,
+                      color: Theme.of(context).accentColor,
                       fontSize: 16.0,
                     ),
                   ),
@@ -224,7 +224,7 @@ class _DoctorSolvedProblemState extends State<DoctorSolvedProblems> {
                           ),
                           overflow: TextOverflow.ellipsis,
                           text: TextSpan(
-                              style: TextStyle(color: Colors.white),
+                              style: TextStyle(color: Theme.of(context).accentColor),
                               text: activeProblem.createdAt.substring(0, 10)),
                         ),
                       ),
@@ -235,8 +235,8 @@ class _DoctorSolvedProblemState extends State<DoctorSolvedProblems> {
                           width: 100,
                           child: MaterialButton(
                             shape: StadiumBorder(),
-                            color: Colors.white,
-                            textColor: Theme.of(context).primaryColor,
+                            color: Theme.of(context).accentColor,
+                            textColor: Colors.white,
                             onPressed: () {},
                             child: Text(
                               'Read More',

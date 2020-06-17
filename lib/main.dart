@@ -73,8 +73,8 @@ class _MyAppState extends State<MyApp> {
           if (brightness == Brightness.light) {
             return ThemeData(
               fontFamily: 'Poppins',
-              scaffoldBackgroundColor: config.Colors().accentColor(1),
-              appBarTheme: AppBarTheme(color: config.Colors().accentColor(1)),
+              scaffoldBackgroundColor: config.Colors().primaryColor(1),
+              appBarTheme: AppBarTheme(color: config.Colors().primaryColor(1)),
               primaryColor: config.Colors().primaryColor(1),
               brightness: brightness,
               accentColor: config.Colors().accentColor(1),
