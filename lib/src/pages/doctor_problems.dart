@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 
+import 'package:bestaid/config/database.dart';
 import 'package:bestaid/config/helper.dart';
 import 'package:bestaid/splash.dart';
 import 'package:bestaid/src/models/discussion.dart';
@@ -249,6 +250,7 @@ class _DoctorProblemState extends State<DoctorProblemList> {
                               print("$id ${activeProblem}");
                               if (activeProblem.replyBy == null ||
                                   activeProblem.replyBy == id) {
+
                                 Navigator.of(context).pushNamed(
                                     '/ProblemDetails',
                                     arguments:

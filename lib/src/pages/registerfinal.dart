@@ -1,6 +1,7 @@
 import 'package:bestaid/src/models/registerinfo.dart';
 import 'package:bestaid/src/pages/userinfo.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -111,6 +112,8 @@ class _RegisterState extends State<RegisterPage> {
                         RegisterInfo.getInfo().password = password;
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => UserInfoPage()));
+                      }else{
+                        Fluttertoast.showToast(msg: "Password doesn't match, please type again");
                       }
                     }
                   },

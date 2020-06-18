@@ -1,7 +1,6 @@
 import 'package:animated_splash/animated_splash.dart';
 import 'package:bestaid/src/models/user.dart';
 import 'package:bestaid/src/pages/login.dart';
-import 'package:bestaid/src/pages/otpverify.dart';
 import 'package:bestaid/src/pages/pages.dart';
 import 'package:bestaid/src/providers/shared_pref_provider.dart';
 import 'package:flutter/material.dart';
@@ -13,23 +12,17 @@ class Splash extends StatefulWidget {
   _SplashState createState() => _SplashState();
 }
 
-class _SplashState extends State<Splash> {
-  Map<dynamic, Widget> returnValueAndHomeScreen = {
-    1: LoginWidget(),
-    2: PagesTestWidget(),
-    3: VerifyCode(),
-  };
 
+
+class _SplashState extends State<Splash> {
+  Map<dynamic, Widget> returnValueAndHomeScreen = {1: LoginWidget(), 2: PagesTestWidget()};
   bool isLogged = false;
-  bool isFirstTime = true;
 
   @override
   void initState() {
-    checkIfOnlyFirstTime();
     checkLoggedInOrNot();
     super.initState();
   }
-
   @override
   Widget build(BuildContext context) {
     return AnimatedSplash(
@@ -43,8 +36,8 @@ class _SplashState extends State<Splash> {
   }
 
   checkLoggedInOrNot() async {
-    if (await SharedPrefProvider.getString('access_token') == null ||
-        await SharedPrefProvider.getString('access_token') == '') {
+    if ( await SharedPrefProvider.getString('access_token') == null
+        ||  await SharedPrefProvider.getString('access_token') == '') {
       isLogged = false;
     } else {
       isLogged = true;
@@ -55,32 +48,9 @@ class _SplashState extends State<Splash> {
   }
 
   properNavigation() {
-    if (isFirstTime) {
-      return 3;
-    } else {
-      if (isLogged) {
-        return 2;
-      } else {
-        return 1;
-      }
-    }
-  }
-
-  void checkIfOnlyFirstTime() async {
-    if (await SharedPrefProvider.getBool('otp') == null) {
-      bool result = await SharedPrefProvider.setBool('otp', true);
-      print('shared pref is $result');
-      setState(() {
-        isFirstTime = true;
-      });
-    } else if (await SharedPrefProvider.getBool('otp') != null &&
-        await SharedPrefProvider.getBool('otp') == false) {
-      bool result = await SharedPrefProvider.getBool('otp');
-      print('the result is $result');
-      setState(() {
-        isFirstTime = false;
-      });
-    }
+    if(isLogged) {
+      return 2;
+    } else return 1;
   }
 }
 

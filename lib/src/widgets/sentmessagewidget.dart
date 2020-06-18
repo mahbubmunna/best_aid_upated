@@ -2,11 +2,13 @@ import 'package:bestaid/src/models/discussion.dart';
 import 'package:flutter/material.dart';
 
 class SentMessageWidget extends StatelessWidget {
-  final Discussion discussion;
+  final String message;
+  final String time;
 
   const SentMessageWidget({
     Key key,
-    this.discussion,
+    @required this.message,
+    this.time,
   }) : super(key: key);
 
   @override
@@ -17,7 +19,7 @@ class SentMessageWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           Text(
-            "${discussion.updatedAt.substring(10)}",
+            "${time.substring(0,10)}",
             style: Theme.of(context).textTheme.body2.apply(color: Colors.grey),
           ),
           SizedBox(width: 15),
@@ -34,7 +36,7 @@ class SentMessageWidget extends StatelessWidget {
               ),
             ),
             child: Text(
-              "${discussion.message}",
+              "$message",
               style: Theme.of(context).textTheme.body1.apply(
                     color: Colors.white,
                   ),

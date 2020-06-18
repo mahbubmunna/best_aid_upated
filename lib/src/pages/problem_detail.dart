@@ -1,3 +1,4 @@
+import 'package:bestaid/config/database.dart';
 import 'package:bestaid/config/helper.dart';
 import 'package:bestaid/splash.dart';
 import 'package:bestaid/src/models/discussion.dart';
@@ -6,9 +7,11 @@ import 'package:bestaid/src/models/user.dart';
 import 'package:bestaid/src/providers/shared_pref_provider.dart';
 import 'package:bestaid/src/repository/problem_repository.dart';
 import 'package:bestaid/src/widgets/widgets.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class ProblemDetails extends StatefulWidget {
   final RouteArgument routeArgument;
@@ -27,11 +30,17 @@ class _ProblemDetailsState extends State<ProblemDetails> {
   User mUser;
   TextEditingController _postInputController = TextEditingController();
   ScrollController _scrollController = new ScrollController();
+  Stream<QuerySnapshot> chats;
 
   @override
   void initState() {
     // TODO: implement initState
     loadSharedPrefs();
+    DatabaseHelper.getChats(widget.problem).then((val) {
+      setState(() {
+        chats = val;
+      });
+    });
     super.initState();
   }
 
@@ -135,20 +144,28 @@ class _ProblemDetailsState extends State<ProblemDetails> {
                         SizedBox(
                           height: 24.0,
                         ),
-                        FutureBuilder(
+                        /*   FutureBuilder(
                           future: ProblemRepository.getDiscussions(
                               widget.problem.id),
                           builder: (context, snapshot) {
                             if (snapshot.hasData) {
-                              /* if(snapshot.data.error != null && snapshot.data.error.length > 0){
+                              */ /* if(snapshot.data.error != null && snapshot.data.error.length > 0){
                     buildErrorWidget(snapshot.data.error);
-                  }*/
+                  }*/ /*
                               return _buildConversationsList(snapshot.data);
                             } else if (snapshot.hasError) {
                               return buildErrorWidget(snapshot.error);
                             } else {
                               return buildLoadingWidget();
                             }
+                          },
+                        ),*/
+                        StreamBuilder(
+                          stream: chats,
+                          builder: (context, snapshot) {
+                            return snapshot.hasData
+                                ? _buildConversationsList(snapshot.data)
+                                : Container();
                           },
                         ),
                       ],
@@ -208,79 +225,86 @@ class _ProblemDetailsState extends State<ProblemDetails> {
         ));
   }
 
-  _buildConversationsList(var data) {
-    if (data is DiscussionResponse) {
-      DiscussionResponse mResponse = data;
-      List<Discussion> discussions = mResponse.problem.discussion;
-      if (discussions.length == 0) {
-        return Center(
-            child: Column(
-          children: <Widget>[
-            Icon(
-              Icons.cancel,
-              color: Colors.white,
-            ),
-            Text(
-              'No reply yet',
-              textScaleFactor: 2,
-              style: TextStyle(color: Colors.white),
-            ),
-          ],
-        ));
-      }
-      return ListView.separated(
-        shrinkWrap: true,
-        physics: ClampingScrollPhysics(),
-        controller: _scrollController,
-        itemCount: discussions.length,
-        itemBuilder: (context, index) {
-          if (discussions[index].type == 'question') {
-            return _userConversationItem(discussions[index]);
-          }
-
-          if (discussions[index].type == 'reply') {
-            return _doctorConversationItem(discussions[index]);
-          }
-          return buildErrorWidget('No reply yet');
-        },
-        separatorBuilder: (BuildContext context, int index) {
-          return SizedBox(
-            height: 10,
-          );
-        },
-      );
+  _buildConversationsList(data) {
+    /*  DiscussionResponse mResponse = data;
+    List<Discussion> discussions = mResponse.problem.discussion;*/
+    if (data.documents.length == 0 || data.documents == null) {
+      return Center(
+          child: Column(
+        children: <Widget>[
+          Icon(
+            Icons.cancel,
+            color: Colors.white,
+          ),
+          Text(
+            'No reply yet',
+            textScaleFactor: 2,
+            style: TextStyle(color: Colors.white),
+          ),
+        ],
+      ));
     }
+    return ListView.separated(
+      shrinkWrap: true,
+      physics: ClampingScrollPhysics(),
+      controller: _scrollController,
+      itemCount: data.documents.length,
+      itemBuilder: (context, index) {
+        if (data.documents[index].data['role'] == 'user') {
+          return _userConversationItem(data.documents[index].data['message'],
+              data.documents[index].data['time']);
+        }
+
+        if (data.documents[index].data['role'] == 'doctor') {
+          return _doctorConversationItem(data.documents[index].data['message'],
+              data.documents[index].data['time']);
+        }
+        return buildErrorWidget('No reply yet');
+      },
+      separatorBuilder: (BuildContext context, int index) {
+        return SizedBox(
+          height: 10,
+        );
+      },
+    );
   }
 
   _postProblemToTheServer(BuildContext context, Problem problem) async {
     Map replay = {'message': _postInputController.text};
     print(replay.containsKey('message'));
-    _scrollController.animateTo(
+    /* _scrollController.animateTo(
       0.0,
       curve: Curves.easeOut,
       duration: const Duration(milliseconds: 300),
-    );
-    ProblemRepository.postDataToProblemDiscussion(
-            problem.id, replay, mUser.role)
-        .then((value) {
-      _postInputController.clear();
-      ProblemRepository.getDiscussions(widget.problem.id).then((onValue) {
-        setState(() {});
+    );*/
+    String message = _postInputController.text;
+    if(_postInputController.text.isNotEmpty){
+      ProblemRepository.postDataToProblemDiscussion(
+          problem.id, replay, mUser.role)
+          .then((value) {
+        _postInputController.clear();
+        DatabaseHelper.addMessage(problem, message, mUser.role);
+      }).catchError((onError) {
+        print(onError.toString());
       });
-    }).catchError((onError) {
-      print(onError.toString());
-    });
+    }else{
+      Fluttertoast.showToast(msg: 'Please type something....');
+    }
     SystemChannels.textInput.invokeMethod('TextInput.hide');
     // Navigator.of(context).pop();
   }
 
-  _doctorConversationItem(Discussion discussion) {
-    return ReceivedMessagesWidget(discussion: discussion);
+  _doctorConversationItem(String discussion, String time) {
+    return ReceivedMessagesWidget(
+      message: discussion,
+      time: time,
+    );
   }
 
-  _userConversationItem(Discussion discussion) {
+  _userConversationItem(String discussion, String time) {
     return SentMessageWidget(
-      discussion: discussion,
+      message: discussion,
+      time: time,
     );
   }
 

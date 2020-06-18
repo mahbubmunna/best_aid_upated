@@ -7,6 +7,7 @@ import 'package:bestaid/src/models/user.dart';
 import 'package:bestaid/src/providers/shared_pref_provider.dart';
 import 'package:bestaid/src/repository/user_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class OverviewProfile extends StatefulWidget {
   @override
@@ -210,17 +211,23 @@ class _OverviewProfileState extends State<OverviewProfile> {
                     print(values);
                     UserRepository.registerUser(values).then((value) async {
                       UserResponse mResponse = value;
-                      print(mResponse.user);
-                      SharedPrefProvider.setString(
-                          'access_token', mResponse.accessToken);
+                      print(mResponse.toString());
+                      if (mResponse.user != null) {
+                        SharedPrefProvider.setString(
+                            'access_token', mResponse.accessToken);
 
-                      SharedPrefProvider.saveUser('user', mResponse.user);
-                      appUser = mResponse.user;
-                      if (appUser != null) {
-                        setState(() {
-                          Navigator.of(context).pushNamedAndRemoveUntil(
-                              '/Starter', ModalRoute.withName('/'));
-                        });
+                        SharedPrefProvider.saveUser('user', mResponse.user);
+                        appUser = mResponse.user;
+                        if (appUser != null) {
+                          setState(() {
+                            Navigator.of(context).pushNamedAndRemoveUntil(
+                                '/Starter', ModalRoute.withName('/'));
+                          });
+                        }
+                      } else {
+                        Fluttertoast.showToast(
+                            msg:
+                                "${mResponse.message} ${mResponse.errors.email}");
                       }
                     });
                   } else {
@@ -228,17 +235,25 @@ class _OverviewProfileState extends State<OverviewProfile> {
                     Map values = RegisterInfo.getInfo().toJsonString();
                     UserRepository.upload(filePath, values).then((value) {
                       Map<String, dynamic> result = json.decode(value);
-                      UserResponse mResponse = UserResponse.fromJson(result);
-                      print(mResponse.toString());
-                      SharedPrefProvider.setString(
-                          'access_token', mResponse.accessToken);
-                      SharedPrefProvider.saveUser('user', mResponse.user);
-                      appUser = mResponse.user;
-                      if (appUser != null) {
-                        setState(() {
-                          Navigator.of(context).pushNamedAndRemoveUntil(
-                              '/Starter', ModalRoute.withName('/'));
-                        });
+                      try {
+                        UserResponse mResponse = UserResponse.fromJson(result);
+                        print(mResponse.toString());
+                        SharedPrefProvider.setString(
+                            'access_token', mResponse.accessToken);
+                        SharedPrefProvider.saveUser('user', mResponse.user);
+                        appUser = mResponse.user;
+                        if (appUser != null) {
+                          setState(() {
+                            Navigator.of(context).pushNamedAndRemoveUntil(
+                                '/Starter', ModalRoute.withName('/'));
+                          });
+                        }
+                      } catch (e) {
+                        UserResponse mResponse =
+                            UserResponse.fromErrorJson(result);
+                        Fluttertoast.showToast(
+                            msg:
+                                "${mResponse.message} ${mResponse.errors.email}");
                       }
                     });
                   }

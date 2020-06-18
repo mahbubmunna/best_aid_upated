@@ -40,7 +40,7 @@ class ProblemProvider {
     try {
       Response response = await _dio.post(_endpointProblems, data: postData);
       print(response);
-      return response;
+      return response.data;
     } catch (error, stacktrace) {
       print("Exception occured: $error stackTrace: $stacktrace");
       return error;
@@ -63,7 +63,7 @@ class ProblemProvider {
             .post(_endpointProblems + '/' + postId.toString(), data: postData);
         print(response);
         print(postId);
-        return response;
+        return response.data;
       } catch (error, stacktrace) {
         print("Exception occured: $error stackTrace: $stacktrace");
         return error;
@@ -75,7 +75,7 @@ class ProblemProvider {
             data: postData);
         print(response);
         print(postId);
-        return response;
+        return response.data;
       } catch (error, stacktrace) {
         print("Exception occured: $error stackTrace: $stacktrace");
         return error;

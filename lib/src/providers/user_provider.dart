@@ -78,13 +78,14 @@ class UserProvider {
       'Accept': 'application/json',
     };
 
-    try {
+
       Response response =
           await _dio.post(_registerEndpoint, data: registerData);
+    try {
       return UserResponse.fromJson(response.data);
     } catch (error, stacktrace) {
       print("Exception occured: $error stackTrace: $stacktrace");
-      return UserResponse.withError("$error");
+      return UserResponse.fromErrorJson(response.data);
     }
   }
 
@@ -97,7 +98,6 @@ class UserProvider {
     var response = await request.send();
     var responseData = await response.stream.toBytes();
     var responseString = String.fromCharCodes(responseData);
-
     return responseString;
   }
 }

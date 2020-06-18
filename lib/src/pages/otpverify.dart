@@ -1,5 +1,4 @@
 import 'package:bestaid/src/pages/login.dart';
-import 'package:bestaid/src/pages/registerfinal.dart';
 import 'package:bestaid/src/providers/shared_pref_provider.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -44,9 +43,7 @@ class _VerifyCodeState extends State<VerifyCode> {
           ? AppBar(
               backgroundColor: Colors.transparent,
               leading: IconButton(
-                onPressed: () {
-
-                },
+                onPressed: () {},
                 icon: Icon(Icons.arrow_back_ios),
                 color: Theme.of(context).primaryColor,
               ),
@@ -257,13 +254,18 @@ class _VerifyCodeState extends State<VerifyCode> {
     FirebaseAuth _auth = FirebaseAuth.instance;
     codeSent = true;
 
+    print('the phone $phone');
     _auth.verifyPhoneNumber(
         phoneNumber: phone,
         timeout: Duration(seconds: 60),
         verificationCompleted: (AuthCredential credential) async {
           AuthResult result = await _auth.signInWithCredential(credential);
           FirebaseUser user = result.user;
-          print(user.toString());
+          bool otp = await SharedPrefProvider.setBool('otp', false);
+          if (otp) {
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => LoginWidget()));
+          }
         },
         verificationFailed: (AuthException exception) {
           print(exception.message.toString());
@@ -291,15 +293,16 @@ class _VerifyCodeState extends State<VerifyCode> {
         .signInWithCredential(authCredential)
         .then((user) async {
       bool result = await SharedPrefProvider.setBool('otp', false);
-     if(result){
-       Navigator.of(context)
-           .push(MaterialPageRoute(builder: (context) => LoginWidget()));
-     }
+      if (result) {
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => LoginWidget()));
+      }
     }).catchError((e) {
       setState(() {
         codeSent = false;
       });
       Fluttertoast.showToast(msg: e.toString());
+      print(e.toString());
     });
   }
 }

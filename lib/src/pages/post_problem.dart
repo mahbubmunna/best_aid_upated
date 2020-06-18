@@ -1,6 +1,9 @@
 import 'dart:math' as math;
 
+import 'package:bestaid/config/database.dart';
 import 'package:bestaid/generated/l10n.dart';
+import 'package:bestaid/src/models/problem_response.dart';
+import 'package:bestaid/src/pages/your_history.dart';
 import 'package:bestaid/src/repository/problem_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +36,17 @@ class _PostProblemState extends State<PostProblem> {
         ),
         title: Text('Back'),
         elevation: 0,
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => YourHistory()));
+        },
+        backgroundColor: Theme.of(context).accentColor,
+        child: Icon(
+          Icons.chat,
+          color: Colors.white,
+        ),
       ),
       body: Padding(
         padding: EdgeInsets.only(left: 50, right: 50),
@@ -140,6 +154,8 @@ class _PostProblemState extends State<PostProblem> {
       'message': _postInputController.text
     };
     ProblemRepository.postDataToProblem(post).then((value) {
+      ProblemResponse response = ProblemResponse.fromJson(value);
+      DatabaseHelper.createChatRoom(response.problem);
       SystemChannels.textInput.invokeMethod('TextInput.hide');
       _postInputController.clear();
       _postHeadLineInputController.clear();

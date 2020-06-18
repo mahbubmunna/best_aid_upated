@@ -2,11 +2,13 @@ import 'package:bestaid/src/models/discussion.dart';
 import 'package:flutter/material.dart';
 
 class ReceivedMessagesWidget extends StatelessWidget {
-  final Discussion discussion;
+  final String message;
+  final String time;
 
   const ReceivedMessagesWidget({
     Key key,
-    @required this.discussion,
+    @required this.message,
+    this.time,
   }) : super(key: key);
 
   @override
@@ -33,7 +35,7 @@ class ReceivedMessagesWidget extends StatelessWidget {
                 ),
               ),
               child: Text(
-                "${discussion.message}",
+                "$message",
                 style: Theme.of(context).textTheme.body1.apply(
                       color: Colors.white,
                     ),
@@ -43,7 +45,7 @@ class ReceivedMessagesWidget extends StatelessWidget {
         ),
         SizedBox(width: 15),
         Text(
-          "${discussion.updatedAt.substring(0,10)}",
+          "${time.substring(0, 10)}",
           style: Theme.of(context).textTheme.body2.apply(color: Colors.grey),
         ),
       ],
