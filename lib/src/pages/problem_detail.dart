@@ -26,7 +26,10 @@ class ProblemDetails extends StatefulWidget {
   _ProblemDetailsState createState() => _ProblemDetailsState();
 }
 
-class _ProblemDetailsState extends State<ProblemDetails> {
+class _ProblemDetailsState extends State<ProblemDetails>
+    with SingleTickerProviderStateMixin {
+  AnimationController _controller;
+  Animation _animation;
   User mUser;
   TextEditingController _postInputController = TextEditingController();
   ScrollController _scrollController = new ScrollController();
@@ -35,6 +38,14 @@ class _ProblemDetailsState extends State<ProblemDetails> {
   @override
   void initState() {
     // TODO: implement initState
+    _controller = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 1),
+    );
+    _animation = Tween(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(_controller);
     loadSharedPrefs();
     DatabaseHelper.getChats(widget.problem).then((val) {
       setState(() {
@@ -47,182 +58,206 @@ class _ProblemDetailsState extends State<ProblemDetails> {
   @override
   void dispose() {
     // TODO: implement dispose
+    _controller.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: Colors.grey.shade200,
-        appBar: AppBar(
-          leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: Icon(Icons.arrow_back_ios),
-            color: Colors.white,
+    _controller.forward();
+
+    return FadeTransition(
+      opacity: _animation,
+      child: Scaffold(
+          backgroundColor: Colors.grey.shade200,
+          appBar: AppBar(
+            leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Icon(Icons.arrow_back_ios),
+              color: Colors.white,
+            ),
+            title: Text('Back'),
+            elevation: 0,
           ),
-          title: Text('Back'),
-          elevation: 0,
-        ),
-        body: Stack(
-          children: <Widget>[
-            Positioned.fill(
-                child: Column(
-              children: <Widget>[
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.only(top: 30, left: 10, right: 10),
-                    child: ListView(
-                      children: <Widget>[
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).accentColor,
-                            borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(10),
-                              topLeft: Radius.circular(10),
-                              bottomRight: Radius.circular(10),
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey,
-                                offset: Offset(0.0, 1.0), //(x,y)
-                                blurRadius: 6.0,
+          body: Stack(
+            children: <Widget>[
+              Positioned.fill(
+                  child: Column(
+                children: <Widget>[
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 30, left: 10, right: 10),
+                      child: ListView(
+                        children: <Widget>[
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).accentColor,
+                              borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(10),
+                                topLeft: Radius.circular(10),
+                                bottomRight: Radius.circular(10),
                               ),
-                            ],
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.all(20),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  widget.problem.title,
-                                  textScaleFactor: 1.2,
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey,
+                                  offset: Offset(0.0, 1.0), //(x,y)
+                                  blurRadius: 6.0,
                                 ),
-                                Text(
-                                  widget.problem.message,
-                                  textScaleFactor: 1.2,
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                /*Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Row(
-                          children: <Widget>[
-                            CircleAvatar(
-                              backgroundImage:
-                                  AssetImage('assets/img/user.png'),
-                              backgroundColor: Colors.white,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              'User',
-                              textScaleFactor: 1.2,
-                            )
-                          ],
-                        ),
-                        _replayIcon()
-                      ],
-                    )*/
                               ],
                             ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 24.0,
-                        ),
-                        /*   FutureBuilder(
-                          future: ProblemRepository.getDiscussions(
-                              widget.problem.id),
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              */ /* if(snapshot.data.error != null && snapshot.data.error.length > 0){
-                    buildErrorWidget(snapshot.data.error);
-                  }*/ /*
-                              return _buildConversationsList(snapshot.data);
-                            } else if (snapshot.hasError) {
-                              return buildErrorWidget(snapshot.error);
-                            } else {
-                              return buildLoadingWidget();
-                            }
-                          },
-                        ),*/
-                        StreamBuilder(
-                          stream: chats,
-                          builder: (context, snapshot) {
-                            return snapshot.hasData
-                                ? _buildConversationsList(snapshot.data)
-                                : Container();
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Container(
-                  color: Theme.of(context).accentColor,
-                  height: 61,
-                  child: Row(
-                    children: <Widget>[
-                      IconButton(
-                        icon: Icon(Icons.add_circle_outline),
-                        color: Colors.white,
-                        onPressed: () {},
-                      ),
-                      Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(12.0),
-                            boxShadow: [
-                              BoxShadow(
-                                  offset: Offset(0, 3),
-                                  blurRadius: 5,
-                                  color: Colors.grey)
+                            child: Padding(
+                              padding: EdgeInsets.all(20),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    widget.problem.title,
+                                    textScaleFactor: 1.2,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Text(
+                                    widget.problem.message != null
+                                        ? widget.problem.message
+                                        : "",
+                                    textScaleFactor: 1.2,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  /*Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Row(
+                            children: <Widget>[
+                              CircleAvatar(
+                                backgroundImage:
+                                    AssetImage('assets/img/user.png'),
+                                backgroundColor: Colors.white,
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                'User',
+                                textScaleFactor: 1.2,
+                              )
                             ],
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                              left: 8.0,
-                            ),
-                            child: TextField(
-                              controller: _postInputController,
-                              decoration: InputDecoration(
-                                  hintText: "Type Something...",
-                                  border: InputBorder.none),
+                          _replayIcon()
+                        ],
+                      )*/
+                                ],
+                              ),
                             ),
                           ),
-                        ),
+                          SizedBox(
+                            height: 24.0,
+                          ),
+                          /*   FutureBuilder(
+                            future: ProblemRepository.getDiscussions(
+                                widget.problem.id),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                */ /* if(snapshot.data.error != null && snapshot.data.error.length > 0){
+                      buildErrorWidget(snapshot.data.error);
+                    }*/ /*
+                                return _buildConversationsList(snapshot.data);
+                              } else if (snapshot.hasError) {
+                                return buildErrorWidget(snapshot.error);
+                              } else {
+                                return buildLoadingWidget();
+                              }
+                            },
+                          ),*/
+                          StreamBuilder(
+                            stream: chats,
+                            builder: (context, snapshot) {
+                              return snapshot.hasData
+                                  ? _buildConversationsList(snapshot.data)
+                                  : Container();
+                            },
+                          ),
+                        ],
                       ),
-                      IconButton(
-                        icon: Icon(
-                          Icons.send,
-                          color: Colors.white,
-                        ),
-                        onPressed: () async {
-                          _postProblemToTheServer(context, widget.problem);
-                        },
-                      )
-                    ],
+                    ),
                   ),
-                ),
-              ],
-            ))
-          ],
-        ));
+                  widget.problem.status == 1
+                      ? Container(
+                          color: Theme.of(context).accentColor,
+                          height: 61,
+                          child: Row(
+                            children: <Widget>[
+                              IconButton(
+                                icon: Icon(Icons.add_circle_outline),
+                                color: Colors.white,
+                                onPressed: () {},
+                              ),
+                              Expanded(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(12.0),
+                                    boxShadow: [
+                                      BoxShadow(
+                                          offset: Offset(0, 3),
+                                          blurRadius: 5,
+                                          color: Colors.grey)
+                                    ],
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                      left: 8.0,
+                                    ),
+                                    child: TextField(
+                                      controller: _postInputController,
+                                      decoration: InputDecoration(
+                                          hintText: "Type Something...",
+                                          border: InputBorder.none),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              IconButton(
+                                icon: Icon(
+                                  Icons.send,
+                                  color: Colors.white,
+                                ),
+                                onPressed: () async {
+                                  _postProblemToTheServer(
+                                      context, widget.problem);
+                                },
+                              )
+                            ],
+                          ),
+                        )
+                      : Container(
+                          height: 56.0,
+                          color: Theme.of(context).primaryColor,
+                          child: Center(
+                            child: Text(
+                              "You can't reply to this conversation anymore. The problem has been solved",
+                              textScaleFactor: 1.2,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        )
+                ],
+              ))
+            ],
+          )),
+    );
   }
 
   _buildConversationsList(data) {
@@ -278,16 +313,16 @@ class _ProblemDetailsState extends State<ProblemDetails> {
       duration: const Duration(milliseconds: 300),
     );*/
     String message = _postInputController.text;
-    if(_postInputController.text.isNotEmpty){
+    if (_postInputController.text.isNotEmpty) {
       ProblemRepository.postDataToProblemDiscussion(
-          problem.id, replay, mUser.role)
+              problem.id, replay, mUser.role)
           .then((value) {
         _postInputController.clear();
         DatabaseHelper.addMessage(problem, message, mUser.role);
       }).catchError((onError) {
         print(onError.toString());
       });
-    }else{
+    } else {
       Fluttertoast.showToast(msg: 'Please type something....');
     }
     SystemChannels.textInput.invokeMethod('TextInput.hide');

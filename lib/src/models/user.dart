@@ -19,10 +19,10 @@ class UserResponse {
       : user = User.init(),
         error = errorValue;
 
-  UserResponse.fromErrorJson(Map<String, dynamic> json){
+  UserResponse.fromErrorJson(Map<String, dynamic> json) {
     message = json['message'];
     errors =
-    json['errors'] != null ? new Errors.fromJson(json['errors']) : null;
+        json['errors'] != null ? new Errors.fromJson(json['errors']) : null;
   }
 
   Map<String, dynamic> toErrorJson() {
@@ -46,17 +46,44 @@ class UserResponse {
 }
 
 class Errors {
+  List<String> name;
+  List<String> password;
   List<String> email;
 
-  Errors({this.email});
-
   Errors.fromJson(Map<String, dynamic> json) {
-    email = json['email'].cast<String>();
+    if (json['email'] != null) {
+      email = new List<String>();
+      json['email'].forEach((v) {
+        email.add(v);
+      });
+    }
+    if (json['name'] != null) {
+      name = new List<String>();
+      json['name'].forEach((v) {
+        name.add(v);
+      });
+    }
+
+    if (json['password'] != null) {
+      password = new List<String>();
+      json['password'].forEach((v) {
+        password.add(v);
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['email'] = this.email;
+
+    if (this.email != null) {
+      data['email'] = this.email.map((v) => v).toList();
+    }
+    if (this.name != null) {
+      data['name'] = this.name.map((v) => v).toList();
+    }
+    if (this.password != null) {
+      data['password'] = this.password.map((v) => v).toList();
+    }
     return data;
   }
 }

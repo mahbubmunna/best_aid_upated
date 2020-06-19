@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:bestaid/config/strings.dart';
 import 'package:bestaid/src/models/user.dart';
 import 'package:bestaid/src/providers/shared_pref_provider.dart';
@@ -43,7 +45,8 @@ class UserProvider {
     }
   }
 
-  static Future<String> updateUserDataWithPhoto(String imageFile, var values) async {
+  static Future<String> updateUserDataWithPhoto(
+      String imageFile, var values) async {
     var request = http.MultipartRequest("POST", Uri.parse(_userEndpoint));
     request.fields.addAll(values);
     var pic = await http.MultipartFile.fromPath("photo", imageFile);
@@ -63,8 +66,6 @@ class UserProvider {
 
     try {
       Response response = await _dio.post(_endpoint, data: loginData);
-//      var token = TokenResponse.fromJson(response.data);
-//      SharedPrefProvider.setString('access_token', token.token);
       return UserResponse.fromJson(response.data);
     } catch (error, stacktrace) {
       print("Exception occured: $error stackTrace: $stacktrace");
@@ -77,19 +78,42 @@ class UserProvider {
       'Content-type': '${Headers.formUrlEncodedContentType}',
       'Accept': 'application/json',
     };
-
-
+    try {
       Response response =
           await _dio.post(_registerEndpoint, data: registerData);
-    try {
+      print(response.data.toString());
+      if (response.statusCode == 422) {
+        return UserResponse.fromErrorJson(response.data);
+      }
       return UserResponse.fromJson(response.data);
-    } catch (error, stacktrace) {
-      print("Exception occured: $error stackTrace: $stacktrace");
-      return UserResponse.fromErrorJson(response.data);
+    } catch (error) {
+      print("Exception occured: $error");
     }
   }
 
-  static Future<String> upload(String imageFile, var values) async {
+  static Future<UserResponse> registerUser(Map<String,String> registerData) async {
+    Map<String, String> headers = {
+      'Content-type': '${Headers.formUrlEncodedContentType}',
+      'Accept': 'application/json',
+    };
+
+
+
+    var request = http.MultipartRequest('POST', Uri.parse(_registerEndpoint))
+      ..headers.addAll(
+          headers)
+      ..fields.addAll(registerData);
+    var response = await request.send();
+    final respStr = await response.stream.bytesToString();
+    print(respStr);
+    Map data = jsonDecode(respStr);
+    if (response.statusCode == 422) {
+      return UserResponse.fromErrorJson(data);
+    }
+    return UserResponse.fromJson(data);
+  }
+
+  static Future<UserResponse> upload(String imageFile, var values) async {
     var request = http.MultipartRequest("POST", Uri.parse(_registerEndpoint));
     request.fields.addAll(values);
     var pic = await http.MultipartFile.fromPath("photo", imageFile);
@@ -98,6 +122,10 @@ class UserProvider {
     var response = await request.send();
     var responseData = await response.stream.toBytes();
     var responseString = String.fromCharCodes(responseData);
-    return responseString;
+    Map data = jsonDecode(responseString);
+    if (response.statusCode == 422) {
+      return UserResponse.fromErrorJson(data);
+    }
+    return UserResponse.fromJson(data);
   }
 }

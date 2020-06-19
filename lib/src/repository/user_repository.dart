@@ -16,11 +16,11 @@ class UserRepository {
     return UserProvider.postLoginData(loginInfo);
   }
 
-  static Future<UserResponse> registerUser(Map registerInfo) {
-    return UserProvider.postRegisterData(registerInfo);
+  static Future<UserResponse> registerUser(Map<String,String> registerInfo) {
+    return UserProvider.registerUser(registerInfo);
   }
 
-  static Future<String>upload(String imageFile, var values){
+  static Future<UserResponse>upload(String imageFile, var values){
    return  UserProvider.upload(imageFile, values);
   }
   static Future<String>updateUserDataWithPhoto(String imageFile, var values){

@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:bestaid/config/helper.dart';
 import 'package:bestaid/src/models/discussion.dart';
 import 'package:bestaid/src/models/openproblem.dart';
+import 'package:bestaid/src/models/route_argument.dart';
 import 'package:bestaid/src/repository/problem_repository.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +18,7 @@ class DoctorSolvedProblems extends StatefulWidget {
 class _DoctorSolvedProblemState extends State<DoctorSolvedProblems> {
   var _futureProblems;
   List<Problem> openProblemList;
-  bool isSwitched = false;
+  bool isSwitched = true;
 
   @override
   void initState() {
@@ -237,7 +238,12 @@ class _DoctorSolvedProblemState extends State<DoctorSolvedProblems> {
                             shape: StadiumBorder(),
                             color: Theme.of(context).accentColor,
                             textColor: Colors.white,
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.of(context).pushNamed(
+                                  '/ProblemDetails',
+                                  arguments:
+                                  RouteArgument(param: activeProblem));
+                            },
                             child: Text(
                               'Read More',
                               textScaleFactor: .8,

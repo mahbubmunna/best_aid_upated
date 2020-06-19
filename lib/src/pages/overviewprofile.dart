@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:bestaid/splash.dart';
@@ -207,11 +206,12 @@ class _OverviewProfileState extends State<OverviewProfile> {
                 onPressed: () {
                   if (filePath.isEmpty) {
                     RegisterInfo.getInfo().deviceToken = token;
-                    Map values = RegisterInfo.getInfo().toJson();
+                    Map<String, String> values =
+                        RegisterInfo.getInfo().toJsonString();
                     print(values);
                     UserRepository.registerUser(values).then((value) async {
                       UserResponse mResponse = value;
-                      print(mResponse.toString());
+                      print('THis is the response $mResponse');
                       if (mResponse.user != null) {
                         SharedPrefProvider.setString(
                             'access_token', mResponse.accessToken);
@@ -225,16 +225,14 @@ class _OverviewProfileState extends State<OverviewProfile> {
                           });
                         }
                       } else {
-                        Fluttertoast.showToast(
-                            msg:
-                                "${mResponse.message} ${mResponse.errors.email}");
+                        Fluttertoast.showToast(msg: mResponse.errors.email[0]);
                       }
                     });
                   } else {
                     RegisterInfo.getInfo().deviceToken = token;
                     Map values = RegisterInfo.getInfo().toJsonString();
                     UserRepository.upload(filePath, values).then((value) {
-                      Map<String, dynamic> result = json.decode(value);
+                      /*      Map<String, dynamic> result = json.decode(value);
                       try {
                         UserResponse mResponse = UserResponse.fromJson(result);
                         print(mResponse.toString());
@@ -249,11 +247,24 @@ class _OverviewProfileState extends State<OverviewProfile> {
                           });
                         }
                       } catch (e) {
-                        UserResponse mResponse =
-                            UserResponse.fromErrorJson(result);
-                        Fluttertoast.showToast(
-                            msg:
-                                "${mResponse.message} ${mResponse.errors.email}");
+
+                      }*/
+                      UserResponse mResponse = value;
+                      print('THis is the response $mResponse');
+                      if (mResponse.user != null) {
+                        SharedPrefProvider.setString(
+                            'access_token', mResponse.accessToken);
+
+                        SharedPrefProvider.saveUser('user', mResponse.user);
+                        appUser = mResponse.user;
+                        if (appUser != null) {
+                          setState(() {
+                            Navigator.of(context).pushNamedAndRemoveUntil(
+                                '/Starter', ModalRoute.withName('/'));
+                          });
+                        }
+                      } else {
+                        Fluttertoast.showToast(msg: mResponse.errors.email[0]);
                       }
                     });
                   }

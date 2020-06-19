@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:loading/indicator/ball_pulse_indicator.dart';
 import 'package:loading/loading.dart';
+
 import 'app_config.dart' as config;
 
 String handleError(Error error) {
@@ -36,14 +37,14 @@ String handleError(Error error) {
   return errorDescription;
 }
 
- showProgressBar() {
+showProgressBar() {
   return Column(
     children: <Widget>[CircularProgressIndicator()],
   );
 }
 
 //
- showErrorDialog(
+showErrorDialog(
     BuildContext context, String title, String content, String action) {
   showDialog(
       context: context,
@@ -64,24 +65,46 @@ String handleError(Error error) {
       });
 }
 
- buildErrorWidget(String error) {
+showLoaderDialog(BuildContext context) {
+  AlertDialog alert = AlertDialog(
+    content: new Row(
+      children: [
+        CircularProgressIndicator(),
+        Container(margin: EdgeInsets.only(left: 7), child: Text("Loading...")),
+      ],
+    ),
+  );
+  showDialog(
+    barrierDismissible: false,
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
+buildErrorWidget(String error) {
   return Center(
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text("Something went wrong"),
-          //Text("Network Error"),
-        ],
-      ));
+    mainAxisAlignment: MainAxisAlignment.center,
+    crossAxisAlignment: CrossAxisAlignment.center,
+    children: [
+      Text("Something went wrong"),
+      //Text("Network Error"),
+    ],
+  ));
 }
 
 buildLoadingWidget() {
   return Center(
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [Loading(indicator: BallPulseIndicator(), size: 50, color: config.Colors().primaryColor(1),)],
-      ));
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      Loading(
+        indicator: BallPulseIndicator(),
+        size: 50,
+        color: config.Colors().primaryColor(1),
+      )
+    ],
+  ));
 }
-
-

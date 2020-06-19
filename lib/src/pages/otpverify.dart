@@ -1,3 +1,4 @@
+import 'package:bestaid/config/helper.dart';
 import 'package:bestaid/src/pages/login.dart';
 import 'package:bestaid/src/providers/shared_pref_provider.dart';
 import 'package:country_code_picker/country_code_picker.dart';
@@ -5,7 +6,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class VerifyCode extends StatefulWidget {
   @override
@@ -26,6 +26,8 @@ class _VerifyCodeState extends State<VerifyCode> {
   String verificationId;
   String verifyString = "Verification";
   String otpDetails = "You'll get a OTP via SMS.";
+  var firebaseAuth = FirebaseAuth.instance;
+  var _authCredential;
 
   @override
   void dispose() {
@@ -43,7 +45,13 @@ class _VerifyCodeState extends State<VerifyCode> {
           ? AppBar(
               backgroundColor: Colors.transparent,
               leading: IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  if (codeSent) {
+                    setState(() {
+                      codeSent = false;
+                    });
+                  }
+                },
                 icon: Icon(Icons.arrow_back_ios),
                 color: Theme.of(context).primaryColor,
               ),
@@ -188,12 +196,25 @@ class _VerifyCodeState extends State<VerifyCode> {
                   padding: const EdgeInsets.only(left: 24.0, right: 24.0),
                   child: MaterialButton(
                     onPressed: () {
+                      /*  bool result =
+                            AuthService().signInWithOTP(code, verificationId);
+                        if (result) {
+                          codeController.clear();
+                          AuthService().signOut();
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => LoginWidget()));
+                        }*/
+                      /*   AuthCredential authCredential =
+                            PhoneAuthProvider.getCredential(
+                                verificationId: verificationId, smsCode: code);
+                        _verificationComplete(authCredential, context);
+                      } else {*/
                       if (codeSent) {
-                        signIn();
+                        showLoaderDialog(context);
+                        _signInWithPhoneNumber(code);
                       } else {
                         phoneNumber = "$dialCode$phoneNumber";
-                        print(phoneNumber);
-                        verifyOTP(phoneNumber);
+                        startAuth(phoneNumber);
                       }
                     },
                     color: Theme.of(context).primaryColor,
@@ -246,49 +267,10 @@ class _VerifyCodeState extends State<VerifyCode> {
     );
   }
 
-  Future<bool> verifyOTP(String phone) async {
-    print(phone);
-    setState(() {
-      phoneNumber = "";
-    });
-    FirebaseAuth _auth = FirebaseAuth.instance;
-    codeSent = true;
-
-    print('the phone $phone');
-    _auth.verifyPhoneNumber(
-        phoneNumber: phone,
-        timeout: Duration(seconds: 60),
-        verificationCompleted: (AuthCredential credential) async {
-          AuthResult result = await _auth.signInWithCredential(credential);
-          FirebaseUser user = result.user;
-          bool otp = await SharedPrefProvider.setBool('otp', false);
-          if (otp) {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => LoginWidget()));
-          }
-        },
-        verificationFailed: (AuthException exception) {
-          print(exception.message.toString());
-        },
-        codeSent: (String verificationId, [int forceSendingToken]) async {
-          this.verificationId = verificationId;
-          codeSent = true;
-          FirebaseAuth.instance.currentUser().then((user) {
-            if (user != null) {
-              Fluttertoast.showToast(msg: "Code has been sent to your phone");
-            } else {
-              signIn();
-            }
-          });
-        },
-        codeAutoRetrievalTimeout: (String verId) {
-          print(verId);
-        });
-  }
-
-  signIn() {
+/*  signIn() {
     AuthCredential authCredential = PhoneAuthProvider.getCredential(
         verificationId: verificationId, smsCode: code);
+    codeController.clear();
     FirebaseAuth.instance
         .signInWithCredential(authCredential)
         .then((user) async {
@@ -298,11 +280,109 @@ class _VerifyCodeState extends State<VerifyCode> {
             .push(MaterialPageRoute(builder: (context) => LoginWidget()));
       }
     }).catchError((e) {
-      setState(() {
+      */ /*setState(() {
         codeSent = false;
-      });
-      Fluttertoast.showToast(msg: e.toString());
+      });*/ /*
+      //  Fluttertoast.showToast(msg: e.toString());
       print(e.toString());
     });
+  }
+
+  Future<void> verifyPhone(phoneNo) async {
+    setState(() {
+      phoneNumber = "";
+      phoneController.clear();
+    });
+    final PhoneVerificationCompleted verified = (AuthCredential authResult) {
+      AuthService().signIn(authResult);
+    };
+
+    final PhoneVerificationFailed verificationfailed =
+        (AuthException authException) {
+      print('${authException.message}');
+    };
+
+    final PhoneCodeSent smsSent = (String verId, [int forceResend]) {
+      this.verificationId = verId;
+      setState(() {
+        this.codeSent = true;
+      });
+      Fluttertoast.showToast(msg: "Code has been sent to your phone");
+    };
+
+    final PhoneCodeAutoRetrievalTimeout autoTimeout = (String verId) {
+      this.verificationId = verId;
+    };
+
+    codeSent = true;
+    await FirebaseAuth.instance.verifyPhoneNumber(
+        phoneNumber: phoneNo,
+        timeout: const Duration(seconds: 60),
+        verificationCompleted: verified,
+        verificationFailed: verificationfailed,
+        codeSent: smsSent,
+        codeAutoRetrievalTimeout: autoTimeout);
+  }*/
+
+  Future<void> startAuth(phoneNumber) async {
+    setState(() {
+      this.phoneNumber = "";
+    });
+    phoneController.clear();
+    final PhoneCodeSent phoneCodeSent =
+        (String verificationId, [int forceResendingToken]) async {
+      this.verificationId = verificationId;
+    };
+    final PhoneCodeAutoRetrievalTimeout codeAutoRetrievalTimeout =
+        (String verificationId) {
+      this.verificationId = verificationId;
+    };
+    final PhoneVerificationFailed verificationFailed =
+        (AuthException authException) {
+      print(authException.message);
+    };
+    final PhoneVerificationCompleted verificationCompleted =
+        (AuthCredential auth) {
+      //_authCredential = auth;
+
+      firebaseAuth
+          .signInWithCredential(_authCredential)
+          .then((AuthResult value) {
+        if (value.user != null) {
+          onAuthenticationSuccessful();
+        } else {
+          _signInWithPhoneNumber(code);
+        }
+      }).catchError((error) {
+        print(error.toString());
+      });
+    };
+    codeSent = true;
+    await FirebaseAuth.instance.verifyPhoneNumber(
+        phoneNumber: phoneNumber,
+        timeout: const Duration(seconds: 60),
+        verificationCompleted: verificationCompleted,
+        verificationFailed: verificationFailed,
+        codeSent: phoneCodeSent,
+        codeAutoRetrievalTimeout: codeAutoRetrievalTimeout);
+  }
+
+  void _signInWithPhoneNumber(String smsCode) async {
+    _authCredential = PhoneAuthProvider.getCredential(
+        verificationId: this.verificationId, smsCode: smsCode);
+    firebaseAuth
+        .signInWithCredential(_authCredential)
+        .catchError((error) {})
+        .then((AuthResult result) async {
+      onAuthenticationSuccessful();
+    });
+  }
+
+  void onAuthenticationSuccessful() async {
+    bool result = await SharedPrefProvider.setBool('otp', false);
+    if (result) {
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => LoginWidget()));
+    }
   }
 }

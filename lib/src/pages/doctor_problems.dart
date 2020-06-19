@@ -1,6 +1,5 @@
 import 'dart:math' as math;
 
-import 'package:bestaid/config/database.dart';
 import 'package:bestaid/config/helper.dart';
 import 'package:bestaid/splash.dart';
 import 'package:bestaid/src/models/discussion.dart';
@@ -25,6 +24,7 @@ class _DoctorProblemState extends State<DoctorProblemList> {
   bool isSwitched = false;
 
   User mUser;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -141,83 +141,80 @@ class _DoctorProblemState extends State<DoctorProblemList> {
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             child: Column(
               children: <Widget>[
-                Expanded(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Flexible(
-                        child: Padding(
-                          padding: EdgeInsets.only(left: 16.0, top: 8.0),
-                          child: RichText(
-                            strutStyle: StrutStyle(
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                            text: TextSpan(
-                                style: TextStyle(
-                                    color: Theme.of(context).accentColor),
-                                text: activeProblem.name),
-                          ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(left: 16.0, top: 8.0),
+                      child: RichText(
+                        strutStyle: StrutStyle(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.bold,
                         ),
-                        flex: 2,
+                        overflow: TextOverflow.ellipsis,
+                        text: TextSpan(
+                            style:
+                                TextStyle(color: Theme.of(context).accentColor),
+                            text: activeProblem.name),
                       ),
-                      Flexible(
-                        child: Switch(
-                          value: isSwitched,
-                          onChanged: (value) {
-                            isSwitched = value;
-                          },
-                          activeTrackColor: Colors.lightGreenAccent,
-                          activeColor: Colors.green,
-                        ),
-                        flex: 1,
-                      )
-                    ],
+                    ),
+                    Switch(
+                      value: isSwitched,
+                      onChanged: (value) {
+                        isSwitched = value;
+                      },
+                      activeTrackColor: Colors.lightGreenAccent,
+                      activeColor: Colors.green,
+                    )
+                  ],
+                ),
+                Container(
+                  margin: const EdgeInsets.only(left: 16.0, right: 16.0),
+                  child: Divider(
+                    color: Colors.black,
+                    height: 36,
                   ),
                 ),
-                Flexible(
-                  child: Container(
-                    margin: const EdgeInsets.only(left: 16.0, right: 16.0),
-                    child: Divider(
-                      color: Colors.black,
-                      height: 36,
-                    ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 16.0,
+                    right: 16.0,
                   ),
-                  flex: 1,
-                ),
-                Flexible(
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                      left: 16.0,
-                      right: 16.0,
+                  child: RichText(
+                    textAlign: TextAlign.start,
+                    strutStyle: StrutStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold,
                     ),
-                    child: RichText(
-                      textAlign: TextAlign.start,
-                      strutStyle: StrutStyle(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      overflow: TextOverflow.ellipsis,
-                      text: TextSpan(
-                          style: TextStyle(color: Colors.green),
-                          text: activeProblem.title),
-                    ),
+                    overflow: TextOverflow.ellipsis,
+                    text: TextSpan(
+                        style: TextStyle(color: Colors.green),
+                        text: activeProblem.title),
                   ),
-                  flex: 1,
                 ),
-                Flexible(
+                SizedBox(
+                  height: 8,
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                    left: 16,
+                    right: 16,
+                  ),
                   child: Text(
                     activeProblem.message != null ? activeProblem.message : "",
+                    maxLines: 1,
                     style: TextStyle(
                       color: Theme.of(context).accentColor,
                       fontSize: 16.0,
                     ),
                   ),
-                  flex: 1,
                 ),
-                Flexible(
+                SizedBox(
+                  height: 16.0,
+                ),
+                Align(
+                  alignment: Alignment.bottomCenter,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -250,7 +247,6 @@ class _DoctorProblemState extends State<DoctorProblemList> {
                               print("$id ${activeProblem}");
                               if (activeProblem.replyBy == null ||
                                   activeProblem.replyBy == id) {
-
                                 Navigator.of(context).pushNamed(
                                     '/ProblemDetails',
                                     arguments:
@@ -274,7 +270,6 @@ class _DoctorProblemState extends State<DoctorProblemList> {
                       ),
                     ],
                   ),
-                  flex: 0,
                 ),
               ],
             ),

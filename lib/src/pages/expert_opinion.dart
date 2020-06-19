@@ -12,148 +12,176 @@ class ExpertOpinion extends StatefulWidget {
   _ExpertOpinionState createState() => _ExpertOpinionState();
 }
 
-class _ExpertOpinionState extends State<ExpertOpinion> {
+class _ExpertOpinionState extends State<ExpertOpinion>
+    with SingleTickerProviderStateMixin {
+  AnimationController _controller;
+  Animation _animation;
+
+  @override
+  void initState() {
+    _controller = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 1),
+    );
+    _animation = Tween(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(_controller);
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: Icon(Icons.arrow_back_ios),
-            color: Colors.white,
-          ),
-          title: Text('Back'),
-          elevation: 0,
-        ),
-        body: Padding(
-          padding: const EdgeInsets.only(top: 100, left: 20, right: 20),
-          child: ListView(
-            children: <Widget>[
-
-              MaterialButton(
-                elevation: 20,
-                color: Colors.white,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5)),
-                child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 8),
-                  child: ListTile(
-                    leading: Image.asset(
-                      'assets/img/expert.png',
+    _controller.forward();
+    return FadeTransition(
+      opacity: _animation,
+      child: Scaffold(
+          /*appBar: AppBar(
+            leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Icon(Icons.arrow_back_ios),
+              color: Colors.white,
+            ),
+            title: Text('Back'),
+            elevation: 0,
+          ),*/
+          body: Padding(
+        padding: const EdgeInsets.only(top: 100, left: 20, right: 20),
+        child: ListView(
+          children: <Widget>[
+            MaterialButton(
+              elevation: 20,
+              color: Colors.white,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5)),
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 8),
+                child: ListTile(
+                  leading: Image.asset(
+                    'assets/img/expert.png',
+                    color: Theme.of(context).accentColor,
+                  ),
+                  title: Text(
+                    'Expert Option',
+                    style: TextStyle(
                       color: Theme.of(context).accentColor,
                     ),
-                    title: Text(
-                      'Expert Option',
-                      style: TextStyle(
+                  ),
+                  trailing: Transform.rotate(
+                      angle: 90 * math.pi / 180,
+                      child: Icon(
+                        Icons.arrow_forward_ios,
                         color: Theme.of(context).accentColor,
-                      ),
-                    ),
-                    trailing: Transform.rotate(
-                        angle: 90 * math.pi / 180,
-                        child: Icon(
-                          Icons.arrow_forward_ios,
-                          color: Theme.of(context).accentColor,
-                        )),
-                  ),
+                      )),
                 ),
-                onPressed: () {},
               ),
-              SizedBox(
-                height: 80,
-              ),
-              Column(
-                mainAxisSize: MainAxisSize.max,
-                children: <Widget>[
-                  MaterialButton(
-                      color: Colors.white,
-                      textColor: Theme.of(context).accentColor,
-                      shape: StadiumBorder(),
-                      onPressed: () {
-                        Navigator.of(context).pushNamed('/PostProblem');
-                      },
-                      child: Padding(
-                        padding: EdgeInsets.all(8),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            SizedBox(
-                              width: 30,
-                            ),
-                            Text(
-                              'Post Your Problem',
-                              textScaleFactor: 1.5,
-                            ),
-                            SizedBox(
-                              width: 15,
-                            ),
-                            Icon(Icons.arrow_forward_ios)
-                          ],
-                        ),
-                      )),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  MaterialButton(
-                      color: Colors.white,
-                      textColor: Theme.of(context).accentColor,
-                      shape: StadiumBorder(),
-                      onPressed: () {
-                        Navigator.of(context).pushNamed('/YourHistory');
-                      },
-                      child: Padding(
-                        padding: EdgeInsets.all(8),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            SizedBox(
-                              width: 30,
-                            ),
-                            Text(
-                              'Your History',
-                              textScaleFactor: 1.5,
-                            ),
-                            SizedBox(
-                              width: 15,
-                            ),
-                            Icon(Icons.arrow_forward_ios)
-                          ],
-                        ),
-                      )),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  MaterialButton(
-                      color: Colors.white,
-                      textColor: Theme.of(context).accentColor,
-                      shape: StadiumBorder(),
-                      onPressed: () {
-                        Navigator.of(context).pushNamed('/NewsFeed');
-                      },
-                      child: Padding(
-                        padding: EdgeInsets.all(8),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            SizedBox(
-                              width: 30,
-                            ),
-                            Text(
-                              'News Feed',
-                              textScaleFactor: 1.5,
-                            ),
-                            SizedBox(
-                              width: 15,
-                            ),
-                            Icon(Icons.arrow_forward_ios)
-                          ],
-                        ),
-                      )),
-                ],
-              )
-            ],
-          ),
-        ));
+              onPressed: () {},
+            ),
+            SizedBox(
+              height: 80,
+            ),
+            Column(
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                MaterialButton(
+                    color: Colors.white,
+                    textColor: Theme.of(context).accentColor,
+                    shape: StadiumBorder(),
+                    onPressed: () {
+                      Navigator.of(context).pushNamed('/PostProblem');
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.all(8),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          SizedBox(
+                            width: 30,
+                          ),
+                          Text(
+                            'Post Your Problem',
+                            textScaleFactor: 1.5,
+                          ),
+                          SizedBox(
+                            width: 15,
+                          ),
+                          Icon(Icons.arrow_forward_ios)
+                        ],
+                      ),
+                    )),
+                SizedBox(
+                  height: 20,
+                ),
+                MaterialButton(
+                    color: Colors.white,
+                    textColor: Theme.of(context).accentColor,
+                    shape: StadiumBorder(),
+                    onPressed: () {
+                      Navigator.of(context).pushNamed('/YourHistory');
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.all(8),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          SizedBox(
+                            width: 30,
+                          ),
+                          Text(
+                            'Your History',
+                            textScaleFactor: 1.5,
+                          ),
+                          SizedBox(
+                            width: 15,
+                          ),
+                          Icon(Icons.arrow_forward_ios)
+                        ],
+                      ),
+                    )),
+                SizedBox(
+                  height: 20,
+                ),
+                MaterialButton(
+                    color: Colors.white,
+                    textColor: Theme.of(context).accentColor,
+                    shape: StadiumBorder(),
+                    onPressed: () {
+                      Navigator.of(context).pushNamed('/NewsFeed');
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.all(8),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          SizedBox(
+                            width: 30,
+                          ),
+                          Text(
+                            'News Feed',
+                            textScaleFactor: 1.5,
+                          ),
+                          SizedBox(
+                            width: 15,
+                          ),
+                          Icon(Icons.arrow_forward_ios)
+                        ],
+                      ),
+                    )),
+              ],
+            )
+          ],
+        ),
+      )),
+    );
   }
 }

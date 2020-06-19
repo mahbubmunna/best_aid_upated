@@ -14,15 +14,34 @@ class LoginWidget extends StatefulWidget {
   _LoginWidgetState createState() => _LoginWidgetState();
 }
 
-class _LoginWidgetState extends State<LoginWidget> {
+class _LoginWidgetState extends State<LoginWidget>
+    with SingleTickerProviderStateMixin {
+  AnimationController _controller;
+  Animation _animation;
+
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _isLoading = false;
 
   @override
+  void initState() {
+    // TODO: implement initState
+    _controller = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 1),
+    );
+    _animation = Tween(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(_controller);
+    super.initState();
+  }
+
+  @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    _controller.dispose();
     super.dispose();
   }
 
@@ -32,115 +51,119 @@ class _LoginWidgetState extends State<LoginWidget> {
         statusBarColor: Theme.of(context).accentColor,
         statusBarIconBrightness: Brightness.light,
         statusBarBrightness: Brightness.dark));
-
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: PreferredSize(
-        child: Container(
-          color: Theme.of(context).accentColor,
+    _controller.forward();
+    return FadeTransition(
+      opacity: _animation,
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: PreferredSize(
+          child: Container(
+            color: Theme.of(context).accentColor,
+          ),
+          preferredSize: Size.fromHeight(40),
         ),
-        preferredSize: Size.fromHeight(40),
-      ),
-      body: Container(
-        padding: EdgeInsets.only(left: 20, right: 20, top: 40),
-        child: ListView(
-          children: <Widget>[
-            Text(
-              'Sign In',
-              style: TextStyle(
-                  fontSize: 30, color: Theme.of(context).secondaryHeaderColor),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            TextField(
-              decoration: InputDecoration(hintText: 'Email'),
-              controller: _emailController,
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            TextField(
-              decoration: InputDecoration(hintText: 'Password'),
-              obscureText: true,
-              controller: _passwordController,
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Checkbox(
-                      value: true,
-                      onChanged: (value) {},
-                    ),
-                    Text('Remember')
-                  ],
-                ),
-                FlatButton(onPressed: () {}, child: Text('Forgot Password?'))
-              ],
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            ButtonTheme(
-              height: 50,
-              child: RaisedButton(
-                color: Theme.of(context).primaryColor,
-                textColor: Colors.white,
-                onPressed: () {
-                  _login();
-                },
-                child: _isLoading
-                    ? showProgressBar()
-                    : Text(
-                        'Sign In',
-                        style: TextStyle(fontSize: 20),
-                      ),
+        body: Container(
+          padding: EdgeInsets.only(left: 20, right: 20, top: 40),
+          child: ListView(
+            children: <Widget>[
+              Text(
+                'Sign In',
+                style: TextStyle(
+                    fontSize: 30,
+                    color: Theme.of(context).secondaryHeaderColor),
               ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Center(
-                child: Text(
-              'Or',
-              style: TextStyle(fontSize: 16),
-            )),
-            SizedBox(
-              height: 20,
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 70),
-              child: ButtonTheme(
-                height: 60,
-                buttonColor: Colors.white,
-                child: OutlineButton(
-                  borderSide: BorderSide(
-                      color: Theme.of(context).primaryColor, width: 2),
-                  textColor: Theme.of(context).primaryColor,
+              SizedBox(
+                height: 20,
+              ),
+              TextField(
+                decoration: InputDecoration(hintText: 'Email'),
+                controller: _emailController,
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              TextField(
+                decoration: InputDecoration(hintText: 'Password'),
+                obscureText: true,
+                controller: _passwordController,
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Checkbox(
+                        value: true,
+                        onChanged: (value) {},
+                      ),
+                      Text('Remember')
+                    ],
+                  ),
+                  FlatButton(onPressed: () {}, child: Text('Forgot Password?'))
+                ],
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              ButtonTheme(
+                height: 50,
+                child: RaisedButton(
+                  color: Theme.of(context).primaryColor,
+                  textColor: Colors.white,
                   onPressed: () {
-                    //Navigator.of(context).pushNamed('/Register');
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => RegisterPage()));
+                    _login();
                   },
+                  child: _isLoading
+                      ? showProgressBar()
+                      : Text(
+                          'Sign In',
+                          style: TextStyle(fontSize: 20),
+                        ),
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Center(
                   child: Text(
-                    'Create Account',
-                    style: TextStyle(fontSize: 20),
+                'Or',
+                style: TextStyle(fontSize: 16),
+              )),
+              SizedBox(
+                height: 20,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 70),
+                child: ButtonTheme(
+                  height: 60,
+                  buttonColor: Colors.white,
+                  child: OutlineButton(
+                    borderSide: BorderSide(
+                        color: Theme.of(context).primaryColor, width: 2),
+                    textColor: Theme.of(context).primaryColor,
+                    onPressed: () {
+                      //Navigator.of(context).pushNamed('/Register');
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => RegisterPage()));
+                    },
+                    child: Text(
+                      'Create Account',
+                      style: TextStyle(fontSize: 20),
+                    ),
                   ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Center(child: Text('Already have account?'))
-          ],
+              SizedBox(
+                height: 10,
+              ),
+              Center(child: Text('Already have account?'))
+            ],
+          ),
         ),
       ),
     );
@@ -180,16 +203,15 @@ class _LoginWidgetState extends State<LoginWidget> {
         print(mResponse.user);
         SharedPrefProvider.setString('access_token', mResponse.accessToken);
 
-      bool result = await  SharedPrefProvider.saveUser('user', mResponse.user);
-      if(result){
-        Navigator.of(context)
-            .pushNamedAndRemoveUntil('/Starter', ModalRoute.withName('/'));
-      }
+        bool result = await SharedPrefProvider.saveUser('user', mResponse.user);
+        if (result) {
+          Navigator.of(context)
+              .pushNamedAndRemoveUntil('/Starter', ModalRoute.withName('/'));
+        }
       });
 
       setState(() {
         //Scaffold.of(context).showSnackBar(SnackBar(content: Text('Successfully logged in'),));
-
       });
 
       var token = await SharedPrefProvider.getString('access_token');

@@ -149,9 +149,16 @@ class _UserProfileState extends State<UserProfile> {
                                   appUser.photo.endsWith('.jpg') ||
                               appUser.photo.endsWith('png') ||
                               appUser.photo.endsWith('jpeg')
-                          ? Image.network(
+                          ? /*Image.network(
                               appUser.photo,
                               fit: BoxFit.cover,
+                            )*/
+                          FadeInImage(
+                              fit: BoxFit.fill,
+                              height: 100,
+                              width: 100,
+                              placeholder: AssetImage('assets/img/user.png'),
+                              image: NetworkImage(appUser.photo),
                             )
                           : Image.asset(
                               'assets/img/user.png',
