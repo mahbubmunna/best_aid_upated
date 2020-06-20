@@ -55,7 +55,7 @@ class DoctorDetailsState extends State<DoctorDetailsPage> {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
-                    height: 320,
+                    height: 350,
                     width: 300,
                     child: FutureBuilder(
                       future: doctorDetails,
@@ -89,7 +89,7 @@ class DoctorDetailsState extends State<DoctorDetailsPage> {
               bottom: 36.0,
               child: MaterialButton(
                 height: 44.0,
-                color: Theme.of(context).primaryColor,
+                color: Colors.white,
                 textColor: Colors.white,
                 elevation: 8,
                 shape: StadiumBorder(),
@@ -101,7 +101,7 @@ class DoctorDetailsState extends State<DoctorDetailsPage> {
                   child: Text(
                     'GET AN APPOINTMENT',
                     style: TextStyle(
-                      color: Colors.white,
+                      color: Theme.of(context).primaryColor,
                     ),
                   ),
                 ),
@@ -137,64 +137,139 @@ class DoctorDetailsState extends State<DoctorDetailsPage> {
             SizedBox(
               height: 18.0,
             ),
-            Text(
-              "Qualifications: ${doctor.qualification}",
+            RichText(
               maxLines: 1,
-              overflow: TextOverflow.ellipsis,
               textScaleFactor: 1.2,
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
+              text: new TextSpan(
+                // Note: Styles for TextSpans must be explicitly defined.
+                // Child text spans will inherit styles from parent
+                style: new TextStyle(
+                  fontSize: 14.0,
+                  color: Colors.black,
+                ),
+                children: <TextSpan>[
+                  new TextSpan(
+                      text: 'Qualifications:',
+                      style: new TextStyle(fontWeight: FontWeight.bold)),
+                  new TextSpan(
+                    text: ' ${doctor.qualification}',
+                  ),
+                ],
               ),
             ),
-            Text(
-              "Speciality: ${doctor.specialistId}",
-              textScaleFactor: 1.2,
+            SizedBox(
+              height: 8.0,
+            ),
+            RichText(
               maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
+              textScaleFactor: 1.2,
+              text: new TextSpan(
+                // Note: Styles for TextSpans must be explicitly defined.
+                // Child text spans will inherit styles from parent
+                style: new TextStyle(
+                  fontSize: 14.0,
+                  color: Colors.black,
+                ),
+                children: <TextSpan>[
+                  new TextSpan(
+                      text: 'Speciality:',
+                      style: new TextStyle(fontWeight: FontWeight.bold)),
+                  new TextSpan(
+                    text: ' ${doctor.specialistId}',
+                  ),
+                ],
               ),
             ),
-            Text(
-              "Language Spoken: ${doctor.language}",
-              textScaleFactor: 1.2,
+            SizedBox(
+              height: 8.0,
+            ),
+            RichText(
               maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
+              textScaleFactor: 1.2,
+              text: new TextSpan(
+                // Note: Styles for TextSpans must be explicitly defined.
+                // Child text spans will inherit styles from parent
+                style: new TextStyle(
+                  fontSize: 14.0,
+                  color: Colors.black,
+                ),
+                children: <TextSpan>[
+                  new TextSpan(
+                      text: 'Language Spoken:',
+                      style: new TextStyle(fontWeight: FontWeight.bold)),
+                  new TextSpan(
+                    text: ' ${doctor.language}',
+                  ),
+                ],
               ),
             ),
-            Text(
-              "Email: ${doctor.email}",
-              textScaleFactor: 1.2,
+            SizedBox(
+              height: 8.0,
+            ),
+            RichText(
               maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
+              textScaleFactor: 1.2,
+              text: new TextSpan(
+                // Note: Styles for TextSpans must be explicitly defined.
+                // Child text spans will inherit styles from parent
+                style: new TextStyle(
+                  fontSize: 14.0,
+                  color: Colors.black,
+                ),
+                children: <TextSpan>[
+                  new TextSpan(
+                      text: 'Email',
+                      style: new TextStyle(fontWeight: FontWeight.bold)),
+                  new TextSpan(
+                    text: ' ${doctor.email}',
+                  ),
+                ],
               ),
             ),
-            Text(
-              "Designation: ${doctor.designation}",
-              textScaleFactor: 1.2,
+            SizedBox(
+              height: 8.0,
+            ),
+            RichText(
               maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
+              textScaleFactor: 1.2,
+              text: new TextSpan(
+                // Note: Styles for TextSpans must be explicitly defined.
+                // Child text spans will inherit styles from parent
+                style: new TextStyle(
+                  fontSize: 14.0,
+                  color: Colors.black,
+                ),
+                children: <TextSpan>[
+                  new TextSpan(
+                      text: 'Designation:',
+                      style: new TextStyle(fontWeight: FontWeight.bold)),
+                  new TextSpan(
+                    text: ' ${doctor.designation}',
+                  ),
+                ],
               ),
             ),
-            Text(
-              "Institute: ${doctor.institute}",
-              textScaleFactor: 1.2,
+            SizedBox(
+              height: 8.0,
+            ),
+            RichText(
               maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
+              textScaleFactor: 1.2,
+              text: new TextSpan(
+                // Note: Styles for TextSpans must be explicitly defined.
+                // Child text spans will inherit styles from parent
+                style: new TextStyle(
+                  fontSize: 14.0,
+                  color: Colors.black,
+                ),
+                children: <TextSpan>[
+                  new TextSpan(
+                      text: 'Institute:',
+                      style: new TextStyle(fontWeight: FontWeight.bold)),
+                  new TextSpan(
+                    text: ' ${doctor.institute}',
+                  ),
+                ],
               ),
             ),
           ],

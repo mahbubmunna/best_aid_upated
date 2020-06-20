@@ -9,6 +9,16 @@ class SharedPrefProvider {
    return await sharedPref.setBool(key, value);
   }
 
+  static Future<bool> setPhone(String key,String value) async {
+    final sharedPref = await SharedPreferences.getInstance();
+    return await sharedPref.setString(key, value);
+  }
+
+  static Future<String> getPhone(String key) async {
+    final sharedPref = await SharedPreferences.getInstance();
+    return sharedPref.getString(key);
+  }
+
   static Future<bool> getBool(String key) async {
     final sharedPref = await SharedPreferences.getInstance();
    return sharedPref.getBool(key);

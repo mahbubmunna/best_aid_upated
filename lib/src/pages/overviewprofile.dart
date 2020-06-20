@@ -21,17 +21,20 @@ class _OverviewProfileState extends State<OverviewProfile> {
   String weight = "";
   String location = "";
   String height = "";
+  String phone = "";
 
   RegisterInfo mInfo = RegisterInfo.getInfo();
 
   @override
   void initState() {
     // TODO: implement initState
+    loadPhoneNumber();
     super.initState();
     filePath = RegisterInfo.getInfo().photo;
     weight = RegisterInfo.getInfo().weight;
     location = RegisterInfo.getInfo().location;
     height = RegisterInfo.getInfo().height;
+
     print(height);
   }
 
@@ -206,6 +209,7 @@ class _OverviewProfileState extends State<OverviewProfile> {
                 onPressed: () {
                   if (filePath.isEmpty) {
                     RegisterInfo.getInfo().deviceToken = token;
+                    RegisterInfo.getInfo().phone = phone;
                     Map<String, String> values =
                         RegisterInfo.getInfo().toJsonString();
                     print(values);
@@ -230,6 +234,7 @@ class _OverviewProfileState extends State<OverviewProfile> {
                     });
                   } else {
                     RegisterInfo.getInfo().deviceToken = token;
+                    RegisterInfo.getInfo().phone = phone;
                     Map values = RegisterInfo.getInfo().toJsonString();
                     UserRepository.upload(filePath, values).then((value) {
                       /*      Map<String, dynamic> result = json.decode(value);
@@ -283,5 +288,13 @@ class _OverviewProfileState extends State<OverviewProfile> {
         ),
       ),
     );
+  }
+
+  void loadPhoneNumber() {
+    SharedPrefProvider.getPhone('phone').then((value) {
+      setState(() {
+        phone = value;
+      });
+    });
   }
 }

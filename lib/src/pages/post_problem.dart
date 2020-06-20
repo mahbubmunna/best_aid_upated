@@ -1,8 +1,10 @@
 import 'dart:math' as math;
 
 import 'package:bestaid/config/database.dart';
+import 'package:bestaid/config/helper.dart';
 import 'package:bestaid/generated/l10n.dart';
 import 'package:bestaid/src/models/problem_response.dart';
+import 'package:bestaid/src/models/route_argument.dart';
 import 'package:bestaid/src/pages/your_history.dart';
 import 'package:bestaid/src/repository/problem_repository.dart';
 import 'package:flutter/cupertino.dart';
@@ -172,6 +174,7 @@ class _PostProblemState extends State<PostProblem>
   }
 
   _postProblemToTheServer(BuildContext context) {
+    showLoaderDialog(context);
     Map post = {
       'title': _postHeadLineInputController.text,
       'message': _postInputController.text
@@ -182,6 +185,7 @@ class _PostProblemState extends State<PostProblem>
       SystemChannels.textInput.invokeMethod('TextInput.hide');
       _postInputController.clear();
       _postHeadLineInputController.clear();
+      Navigator.pop(context);
       Scaffold.of(context).showSnackBar(SnackBar(
         content: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -190,6 +194,10 @@ class _PostProblemState extends State<PostProblem>
         ),
         backgroundColor: Theme.of(context).accentColor,
       ));
+      setState(() {
+        Navigator.of(context).pushNamed('/ProblemDetails',
+            arguments: RouteArgument(param: response.problem));
+      });
     }).catchError((onError) {
       Scaffold.of(context).showSnackBar(SnackBar(
         content: Column(

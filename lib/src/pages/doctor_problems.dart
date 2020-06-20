@@ -163,6 +163,7 @@ class _DoctorProblemState extends State<DoctorProblemList> {
                       value: isSwitched,
                       onChanged: (value) {
                         isSwitched = value;
+                        showAlertDialog(context, activeProblem);
                       },
                       activeTrackColor: Colors.lightGreenAccent,
                       activeColor: Colors.green,
@@ -280,6 +281,51 @@ class _DoctorProblemState extends State<DoctorProblemList> {
         return SizedBox(
           height: 10,
         );
+      },
+    );
+  }
+
+  showAlertDialog(BuildContext context, Problem activeProblem) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("No"),
+      onPressed: () {
+        setState(() {
+          isSwitched = false;
+        });
+        Navigator.pop(context);
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("Yes"),
+      onPressed: () {
+        setState(() {
+          isSwitched = false;
+        });
+        ProblemRepository.markAsSolved(activeProblem.id).then((value) {
+          setState(() {
+            _futureProblems = ProblemRepository.getOpenProblems();
+          });
+          Navigator.pop(context);
+        });
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Confirm"),
+      content: Text("Are you sure the problem is solved?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
       },
     );
   }

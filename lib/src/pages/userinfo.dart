@@ -1,6 +1,5 @@
 import 'package:bestaid/src/models/registerinfo.dart';
 import 'package:bestaid/src/pages/uploadpropic.dart';
-import 'package:bestaid/src/repository/settings_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -18,12 +17,15 @@ class _UserInfoState extends State<UserInfoPage> {
   TextEditingController lastNameEditingController = TextEditingController();
   TextEditingController heightEditingController = TextEditingController();
   TextEditingController weightEditingController = TextEditingController();
+  TextEditingController dobEditingController = TextEditingController();
   TextEditingController presentAddressEditingController =
       TextEditingController();
   TextEditingController permanentAddressEditingController =
       TextEditingController();
 
   String gender = "Male";
+
+  DateTime selectedDate = DateTime.now();
 
   List<String> genderList = ['Male', 'Female', 'Other'];
 
@@ -40,6 +42,25 @@ class _UserInfoState extends State<UserInfoPage> {
     // TODO: implement initState
     super.initState();
   }
+
+  Future<Null> _selectDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(1901, 1),
+        lastDate: DateTime(2100));
+    if (picked != null && picked != selectedDate)
+      setState(() {
+        selectedDate = picked;
+        dobEditingController.value = TextEditingValue(text: picked.toString().substring(0,10));
+      });
+    else if (picked == selectedDate){
+      setState(() {
+        dobEditingController.value = TextEditingValue(text: picked.toString().substring(0,10));
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -207,6 +228,25 @@ class _UserInfoState extends State<UserInfoPage> {
               SizedBox(
                 height: 16.0,
               ),
+              GestureDetector(
+                onTap: () {
+                  _selectDate(context);
+                },
+                child: AbsorbPointer(
+                  child: TextField(
+                    controller: dobEditingController,
+                    autocorrect: false,
+                    textAlign: TextAlign.center,
+                    keyboardType: TextInputType.datetime,
+                    decoration: InputDecoration(
+                      hintText: 'Date of Birth',
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 16.0,
+              ),
               TextField(
                 controller: presentAddressEditingController,
                 autocorrect: false,
@@ -242,16 +282,17 @@ class _UserInfoState extends State<UserInfoPage> {
                 child: MaterialButton(
                   height: 56.0,
                   onPressed: () {
-                    if(firstName!=""){
-                      RegisterInfo.getInfo().name = firstName+" "+lastName;
-                    }else{
-                      RegisterInfo.getInfo().name= firstName;
+                    if (firstName != "") {
+                      RegisterInfo.getInfo().name = firstName + " " + lastName;
+                    } else {
+                      RegisterInfo.getInfo().name = firstName;
                     }
                     RegisterInfo.getInfo().gender = gender;
                     RegisterInfo.getInfo().height = height;
                     RegisterInfo.getInfo().weight = weight;
                     RegisterInfo.getInfo().location = presentAddress;
                     RegisterInfo.getInfo().permanentLocation = permanentAddress;
+                    RegisterInfo.getInfo().dob = dobEditingController.text;
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => UploadPicture()));
                   },

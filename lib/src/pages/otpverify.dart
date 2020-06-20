@@ -1,4 +1,5 @@
-import 'package:bestaid/config/helper.dart';
+import 'dart:async';
+
 import 'package:bestaid/src/pages/login.dart';
 import 'package:bestaid/src/providers/shared_pref_provider.dart';
 import 'package:country_code_picker/country_code_picker.dart';
@@ -209,13 +210,14 @@ class _VerifyCodeState extends State<VerifyCode> {
                                 verificationId: verificationId, smsCode: code);
                         _verificationComplete(authCredential, context);
                       } else {*/
-                      if (codeSent) {
-                        showLoaderDialog(context);
-                        _signInWithPhoneNumber(code);
-                      } else {
+                /*      if (codeSent) {
+                        *//*  showLoaderDialog(context);
+                        _signInWithPhoneNumber(code);*//*
+
+                      } else {*/
                         phoneNumber = "$dialCode$phoneNumber";
                         startAuth(phoneNumber);
-                      }
+                     // }
                     },
                     color: Theme.of(context).primaryColor,
                     child: Text(
@@ -325,6 +327,7 @@ class _VerifyCodeState extends State<VerifyCode> {
   }*/
 
   Future<void> startAuth(phoneNumber) async {
+    await SharedPrefProvider.setPhone('phone', phoneNumber);
     setState(() {
       this.phoneNumber = "";
     });
@@ -365,6 +368,16 @@ class _VerifyCodeState extends State<VerifyCode> {
         verificationFailed: verificationFailed,
         codeSent: phoneCodeSent,
         codeAutoRetrievalTimeout: codeAutoRetrievalTimeout);
+
+    Timer(Duration(seconds: 3), () async {
+      bool result =
+      await SharedPrefProvider.setBool('otp', false);
+      await SharedPrefProvider.setPhone('phone', phoneNumber);
+      if (result) {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => LoginWidget()));
+      }
+    });
   }
 
   void _signInWithPhoneNumber(String smsCode) async {

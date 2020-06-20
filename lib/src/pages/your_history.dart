@@ -184,7 +184,7 @@ class _YourHistoryState extends State<YourHistory> {
       itemBuilder: (context, index) {
         Problem solvedProblem = _problemHistories[index];
         return Card(
-            color: Theme.of(context).primaryColor,
+            color: Colors.white,
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             child: Row(
@@ -198,7 +198,7 @@ class _YourHistoryState extends State<YourHistory> {
                         'Solved',
                         textScaleFactor: 1.5,
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Theme.of(context).primaryColor,
                         ),
                       ),
                       Text(solvedProblem.updatedAt.substring(0, 10)),
@@ -219,14 +219,14 @@ class _YourHistoryState extends State<YourHistory> {
                       children: <Widget>[
                         Text(solvedProblem.title,
                             overflow: TextOverflow.ellipsis,
-                            style: TextStyle(color: Colors.white)),
+                            style: TextStyle(color: Theme.of(context).primaryColor)),
                         SizedBox(
                           height: 25,
                           width: 100,
                           child: MaterialButton(
                             shape: StadiumBorder(),
-                            color: Colors.white,
-                            textColor: Theme.of(context).primaryColor,
+                            color: Theme.of(context).primaryColor,
+                            textColor: Colors.white,
                             onPressed: () {
                               Navigator.of(context).pushNamed('/ProblemDetails',
                                   arguments:

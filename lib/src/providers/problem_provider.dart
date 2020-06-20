@@ -10,6 +10,7 @@ class ProblemProvider {
   static final _endPointReplayProblems = "${api_base_url}problem/replay";
   static final _endpointOpenProblems = "${api_base_url}problem-open";
   static final _endpointSolvedProblems = "${api_base_url}problem-solved";
+  static final _endpointClosedProblems = "${api_base_url}problem-close";
   static final Dio _dio = Dio();
 
   static Future<ProblemResponse> getProblems() async {
@@ -147,6 +148,24 @@ class ProblemProvider {
       Response response = await _dio.get(_endpointSolvedProblems);
       print(response);
       return OpenProblemResponse.fromJson(response.data);
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      return error;
+    }
+  }
+
+  static Future<dynamic> markAsSolved(int problemId) async {
+    var token = await SharedPrefProvider.getString('access_token');
+
+    _dio.options.headers = {
+      'Accept': 'application/json',
+      "Authorization": "Bearer $token"
+    };
+    try {
+      Response response =
+          await _dio.get(_endpointClosedProblems + '/' + problemId.toString());
+      print(response);
+      return response;
     } catch (error, stacktrace) {
       print("Exception occured: $error stackTrace: $stacktrace");
       return error;
