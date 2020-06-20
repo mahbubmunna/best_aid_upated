@@ -4,7 +4,7 @@ import 'package:bestaid/config/database.dart';
 import 'package:bestaid/config/helper.dart';
 import 'package:bestaid/generated/l10n.dart';
 import 'package:bestaid/src/models/problem_response.dart';
-import 'package:bestaid/src/models/route_argument.dart';
+import 'package:bestaid/src/pages/expert_opiniontwo.dart';
 import 'package:bestaid/src/pages/your_history.dart';
 import 'package:bestaid/src/repository/problem_repository.dart';
 import 'package:flutter/cupertino.dart';
@@ -195,8 +195,7 @@ class _PostProblemState extends State<PostProblem>
         backgroundColor: Theme.of(context).accentColor,
       ));
       setState(() {
-        Navigator.of(context).pushNamed('/ProblemDetails',
-            arguments: RouteArgument(param: response.problem));
+        Navigator.pop(context);
       });
     }).catchError((onError) {
       Scaffold.of(context).showSnackBar(SnackBar(

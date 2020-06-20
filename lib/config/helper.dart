@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:loading/indicator/ball_pulse_indicator.dart';
 import 'package:loading/loading.dart';
 
@@ -82,6 +83,10 @@ showLoaderDialog(BuildContext context) {
     },
   );
 }
+
+final spinkit = SpinKitFadingCube(
+  color: Colors.white,
+);
 
 buildErrorWidget(String error) {
   return Center(
