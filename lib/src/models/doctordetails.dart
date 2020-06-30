@@ -37,6 +37,12 @@ class Doctor {
   String createdAt;
   String updatedAt;
 
+  String code;
+  String type;
+  String about;
+  String specialistOn;
+  Specialist specialist;
+
   Doctor(
       {this.id,
       this.userId,
@@ -53,6 +59,7 @@ class Doctor {
 
   Doctor.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    code = json['code'];
     userId = json['user_id'];
     specialistId = json['specialist_id'];
     name = json['name'];
@@ -62,13 +69,20 @@ class Doctor {
     language = json['language'];
     designation = json['designation'];
     institute = json['institute'];
+    type = json['type'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    about = json['about'];
+    specialistOn = json['specialist_on'];
+    specialist = json['specialist'] != null
+        ? new Specialist.fromJson(json['specialist'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
+    data['code'] = this.code;
     data['user_id'] = this.userId;
     data['specialist_id'] = this.specialistId;
     data['name'] = this.name;
@@ -78,6 +92,37 @@ class Doctor {
     data['language'] = this.language;
     data['designation'] = this.designation;
     data['institute'] = this.institute;
+    data['type'] = this.type;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    data['about'] = this.about;
+    data['specialist_on'] = this.specialistOn;
+    if (this.specialist != null) {
+      data['specialist'] = this.specialist.toJson();
+    }
+    return data;
+  }
+}
+
+class Specialist {
+  int id;
+  String name;
+  String createdAt;
+  String updatedAt;
+
+  Specialist({this.id, this.name, this.createdAt, this.updatedAt});
+
+  Specialist.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
     return data;

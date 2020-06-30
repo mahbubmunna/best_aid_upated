@@ -53,12 +53,15 @@ class _UserInfoState extends State<UserInfoPage> {
       setState(() {
         selectedDate = picked;
         dobEditingController.value = TextEditingValue(text: picked.toString().substring(0,10));
+
       });
     else if (picked == selectedDate){
       setState(() {
         dobEditingController.value = TextEditingValue(text: picked.toString().substring(0,10));
       });
     }
+    FocusScope.of(context).nextFocus();
+    FocusScope.of(context).nextFocus();
   }
 
   @override
