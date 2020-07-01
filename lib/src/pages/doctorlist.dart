@@ -6,6 +6,8 @@ import 'package:bestaid/src/pages/doctordetails.dart';
 import 'package:bestaid/src/repository/doctor_repository.dart';
 import 'package:flutter/material.dart';
 
+import 'doctordetailsfinal.dart';
+
 class DoctorListScreen extends StatefulWidget {
   String id;
   String title;
@@ -166,7 +168,7 @@ class DoctorListState extends State<DoctorListScreen> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        DoctorDetailsPage(post.id)));
+                                        DoctorDetailsFinal(post.id)));
                           },
                           child: Text(
                             'More Details',

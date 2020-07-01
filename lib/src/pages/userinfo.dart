@@ -200,7 +200,7 @@ class _UserInfoState extends State<UserInfoPage> {
                       textAlign: TextAlign.center,
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
-                        hintText: 'Height (in feet)',
+                        hintText: 'Height {exmp: 5\' ".6"}',
                       ),
                       onChanged: (value) {
                         height = value;
@@ -218,7 +218,7 @@ class _UserInfoState extends State<UserInfoPage> {
                       textAlign: TextAlign.center,
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
-                        hintText: 'Weight (in kg)',
+                        hintText: 'Weight {exmp: 40.4kg"}',
                       ),
                       onChanged: (value) {
                         weight = value;

@@ -36,7 +36,6 @@ class Doctor {
   String institute;
   String createdAt;
   String updatedAt;
-
   String code;
   String type;
   String about;
