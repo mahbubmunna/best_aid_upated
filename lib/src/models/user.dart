@@ -45,6 +45,34 @@ class UserResponse {
   }
 }
 
+class UserUpdateResponse {
+  String message;
+  User user;
+
+  UserUpdateResponse({this.message, this.user});
+
+  UserUpdateResponse.fromJson(Map<String, dynamic> json) {
+    message = json['message'];
+    user = json['user'] != null ? new User.fromJson(json['user']) : null;
+  }
+/*
+  UserUpdateResponse.fromErrorJson(Map<String, dynamic> json) {
+    message = json['message'];
+    errors =
+    json['errors'] != null ? new Errors.fromJson(json['errors']) : null;
+  }
+*/
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['message'] = this.message;
+    if (this.user != null) {
+      data['user'] = this.user.toJson();
+    }
+    return data;
+  }
+}
+
 class Errors {
   List<String> name;
   List<String> password;

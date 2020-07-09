@@ -2,11 +2,9 @@ import 'dart:math' as math;
 
 import 'package:bestaid/config/helper.dart';
 import 'package:bestaid/src/models/doctors.dart';
-import 'package:bestaid/src/pages/doctordetails.dart';
 import 'package:bestaid/src/repository/doctor_repository.dart';
+import 'package:bestaid/src/widgets/doctor_list_item.dart';
 import 'package:flutter/material.dart';
-
-import 'doctordetailsfinal.dart';
 
 class DoctorListScreen extends StatefulWidget {
   String id;
@@ -48,8 +46,8 @@ class DoctorListState extends State<DoctorListScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.only(
-          left: 24,
-          right: 24,
+          left: 18,
+          right: 18,
         ),
         child: Column(
           children: <Widget>[
@@ -109,8 +107,7 @@ class DoctorListState extends State<DoctorListScreen> {
                   } else {
                     buildLoadingWidget();
                   }
-                  return Center(
-                  );
+                  return Center();
                 },
               ),
             ),
@@ -121,67 +118,28 @@ class DoctorListState extends State<DoctorListScreen> {
   }
 
   Widget _postListWidget(data) {
+    print(data);
     if (data is DoctorResponse) {
-      print(data.doctors.length);
+      if (data.doctors.isEmpty) {
+        return Center(
+          child: Text(
+            'Sorry, currently no doctor is available',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 24.0,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        );
+      }
       return ListView.builder(
         shrinkWrap: true,
         physics: ClampingScrollPhysics(),
         itemCount: data.doctors.length,
         itemBuilder: (context, index) {
           Doctors post = data.doctors[index];
-
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Padding(
-              padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-              child: Container(
-                height: 120,
-                child: Card(
-                  child: Center(
-                    child: ListTile(
-                      leading: Image.asset(
-                        'assets/img/17.png',
-                      ),
-                      title: Text(
-                        post.name,
-                        style: TextStyle(
-                          color: Theme.of(context).primaryColor,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      subtitle: Text(
-                        post.qualification,
-                        style: TextStyle(
-                          color: Theme.of(context).primaryColor,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      trailing: SizedBox(
-                        height: 25,
-                        width: 100,
-                        child: MaterialButton(
-                          shape: StadiumBorder(),
-                          color: Theme.of(context).primaryColor,
-                          textColor: Colors.white,
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        DoctorDetailsFinal(post.id)));
-                          },
-                          child: Text(
-                            'More Details',
-                            textScaleFactor: .7,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          );
+          return DoctorItem(post);
         },
       );
     } else {

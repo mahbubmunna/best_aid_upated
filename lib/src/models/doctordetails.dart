@@ -40,21 +40,8 @@ class Doctor {
   String type;
   String about;
   String specialistOn;
+  String photo;
   Specialist specialist;
-
-  Doctor(
-      {this.id,
-      this.userId,
-      this.specialistId,
-      this.name,
-      this.email,
-      this.phone,
-      this.qualification,
-      this.language,
-      this.designation,
-      this.institute,
-      this.createdAt,
-      this.updatedAt});
 
   Doctor.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -72,6 +59,7 @@ class Doctor {
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     about = json['about'];
+    photo = json['photo'];
     specialistOn = json['specialist_on'];
     specialist = json['specialist'] != null
         ? new Specialist.fromJson(json['specialist'])
@@ -96,6 +84,7 @@ class Doctor {
     data['updated_at'] = this.updatedAt;
     data['about'] = this.about;
     data['specialist_on'] = this.specialistOn;
+    data['photo'] = this.photo;
     if (this.specialist != null) {
       data['specialist'] = this.specialist.toJson();
     }

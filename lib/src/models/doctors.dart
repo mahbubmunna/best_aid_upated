@@ -39,7 +39,8 @@ class Doctors {
   String institute;
   String createdAt;
   String updatedAt;
-  
+  String photo;
+
   Doctors(
       {this.id,
       this.userId,
@@ -65,6 +66,7 @@ class Doctors {
     institute = json['institute'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    photo = json['photo'];
   }
 
   Map<String, dynamic> toJson() {
@@ -80,6 +82,7 @@ class Doctors {
     data['institute'] = this.institute;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
+    data['photo'] = this.photo;
     return data;
   }
 }

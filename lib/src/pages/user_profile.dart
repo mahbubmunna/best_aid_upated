@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:bestaid/config/strings.dart';
 import 'package:bestaid/src/models/user.dart';
 import 'package:bestaid/src/providers/shared_pref_provider.dart';
@@ -77,6 +75,7 @@ class _UserProfileState extends State<UserProfile> {
       path = _pickedFile.path;
     });
     Navigator.pop(context);
+    confirmUpdateProfilePicture(path);
   }
 
   pickImageFromCamera(ImageSource source) async {
@@ -89,6 +88,48 @@ class _UserProfileState extends State<UserProfile> {
       path = _pickedFile.path;
     });
     Navigator.pop(context);
+    confirmUpdateProfilePicture(path);
+  }
+
+  confirmUpdateProfilePicture(path) {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Confirm new Profile picture'),
+            content: Text('Update your profile picture right now...'),
+            actions: <Widget>[
+              FlatButton(
+                  onPressed: () async {
+                    Map<String, String> updatedUserData = {
+                      'name': name == null ? appUser.name : name,
+                      'location': address == null ? appUser.location : address,
+                      'phone': phone == null ? appUser.phone : phone,
+                      'dob': dob == null ? appUser.dob : dob.toIso8601String(),
+                      'weight': weight == null ? appUser.weight : weight,
+                      'height': height == null ? appUser.height : height,
+                      'history': history == null ? appUser.history : history,
+                    };
+                    await UserRepository.updateUserDataWithPhoto(path,updatedUserData)
+                        .then((response) async {
+                      appUser = response.user;
+                      print("Updated user is ${response.user}");
+                      bool result = await SharedPrefProvider.saveUser(
+                          'user', response.user);
+                      showSnackBar(result);
+                    });
+                  },
+                  child: Text('Confirm')),
+              FlatButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('Close'),
+              ),
+            ],
+          );
+        });
   }
 
   @override
@@ -141,28 +182,33 @@ class _UserProfileState extends State<UserProfile> {
                   SizedBox(
                     height: 20,
                   ),
-                  CircleAvatar(
-                    radius: 72,
-                    backgroundColor: Colors.transparent,
-                    child: ClipOval(
-                      child: appUser.photo != null &&
-                                  appUser.photo.endsWith('.jpg') ||
-                              appUser.photo.endsWith('png') ||
-                              appUser.photo.endsWith('jpeg')
-                          ? /*Image.network(
-                              appUser.photo,
-                              fit: BoxFit.cover,
-                            )*/
-                          FadeInImage(
-                              fit: BoxFit.fill,
-                              height: 100,
-                              width: 100,
-                              placeholder: AssetImage('assets/img/user.png'),
-                              image: NetworkImage(appUser.photo),
-                            )
-                          : Image.asset(
-                              'assets/img/user.png',
-                            ),
+                  GestureDetector(
+                    onTap: () {
+                      showAlertDialog(context);
+                    },
+                    child: CircleAvatar(
+                      radius: 72,
+                      backgroundColor: Colors.transparent,
+                      child: ClipOval(
+                        child: appUser.photo != null &&
+                                    appUser.photo.endsWith('.jpg') ||
+                                appUser.photo.endsWith('png') ||
+                                appUser.photo.endsWith('jpeg')
+                            ? /*Image.network(
+                                appUser.photo,
+                                fit: BoxFit.cover,
+                              )*/
+                            FadeInImage(
+                                fit: BoxFit.fill,
+                                height: 100,
+                                width: 100,
+                                placeholder: AssetImage('assets/img/user.png'),
+                                image: NetworkImage(appUser.photo),
+                              )
+                            : Image.asset(
+                                'assets/img/user.png',
+                              ),
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -549,7 +595,7 @@ class _UserProfileState extends State<UserProfile> {
         'history': history == null ? appUser.history : history,
       };
 
-      if (path != null && path != appUser.photo) {
+/*      if (path != null && path != appUser.photo) {
         await UserRepository.updateUserDataWithPhoto(path, updatedUserData)
             .then((response) async {
           Map<String, dynamic> data = json.decode(response);
@@ -560,16 +606,15 @@ class _UserProfileState extends State<UserProfile> {
           appUser = mResponse.user;
           showSnackBar(result);
         });
-      } else {
-        await UserRepository.updateUserData(updatedUserData)
-            .then((response) async {
-          appUser = response.user;
-          print("Updated user is ${response.user}");
-          bool result =
-              await SharedPrefProvider.saveUser('user', response.user);
-          showSnackBar(result);
-        });
-      }
+      } else {*/
+      await UserRepository.updateUserData(updatedUserData)
+          .then((response) async {
+        appUser = response.user;
+        print("Updated user is ${response.user}");
+        bool result = await SharedPrefProvider.saveUser('user', response.user);
+        showSnackBar(result);
+      });
+      // }
     }
   }
 

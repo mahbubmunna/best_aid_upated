@@ -114,6 +114,7 @@ class _SpecialistState extends State<SpecialistPage> {
 
   Widget _postListWidget(data) {
     if (data is SpecialistResponse) {
+    //  print(data.specialist.toString());
       return ListView.builder(
           shrinkWrap: true,
           physics: ClampingScrollPhysics(),

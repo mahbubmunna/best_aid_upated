@@ -237,25 +237,8 @@ class _OverviewProfileState extends State<OverviewProfile> {
                     RegisterInfo.getInfo().phone = phone;
                     Map values = RegisterInfo.getInfo().toJsonString();
                     UserRepository.upload(filePath, values).then((value) {
-                      /*      Map<String, dynamic> result = json.decode(value);
-                      try {
-                        UserResponse mResponse = UserResponse.fromJson(result);
-                        print(mResponse.toString());
-                        SharedPrefProvider.setString(
-                            'access_token', mResponse.accessToken);
-                        SharedPrefProvider.saveUser('user', mResponse.user);
-                        appUser = mResponse.user;
-                        if (appUser != null) {
-                          setState(() {
-                            Navigator.of(context).pushNamedAndRemoveUntil(
-                                '/Starter', ModalRoute.withName('/'));
-                          });
-                        }
-                      } catch (e) {
 
-                      }*/
                       UserResponse mResponse = value;
-                      print('THis is the response $mResponse');
                       if (mResponse.user != null) {
                         SharedPrefProvider.setString(
                             'access_token', mResponse.accessToken);

@@ -108,13 +108,40 @@ class _DoctorDetailsFinalState extends State<DoctorDetailsFinal> {
       Doctor doctor = data.doctor;
       return Column(
         children: <Widget>[
+          SizedBox(
+            height: 16.0,
+          ),
           Align(
             alignment: Alignment.topCenter,
-            child: Container(
-              padding: EdgeInsets.only(top: 24.0),
-              height: 144,
-              child: Image.asset('assets/img/33.png'),
-            ),
+            child: doctor.photo.endsWith("storage/")
+                ? Container(
+                    padding: EdgeInsets.only(top: 24.0),
+                    height: 144,
+                    child: Image.asset('assets/img/33.png'),
+                  )
+                : Positioned(
+                    bottom: 10.0,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black45,
+                            offset: Offset(0, 2),
+                            blurRadius: 6.0,
+                          ),
+                        ],
+                      ),
+                      child: ClipOval(
+                        child: Image(
+                          height: 120.0,
+                          width: 120.0,
+                          image: NetworkImage(doctor.photo),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  ),
           ),
           SizedBox(
             height: 16.0,
@@ -132,24 +159,37 @@ class _DoctorDetailsFinalState extends State<DoctorDetailsFinal> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Text(
-                "${doctor.designation}",
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                textScaleFactor: 1.2,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontStyle: FontStyle.italic,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Text(
+                  "${doctor.designation}",
+                  maxLines: 2,
+                  textAlign: TextAlign.center,
+                  overflow: TextOverflow.ellipsis,
+                  textScaleFactor: 1.2,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontStyle: FontStyle.italic,
+                  ),
                 ),
               ),
-              Text(
-                "${doctor.qualification}",
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                textScaleFactor: 1.2,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontStyle: FontStyle.italic,
+              SizedBox(
+                height: 8.0,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 16.0,
+                ),
+                child: Text(
+                  "${doctor.qualification}",
+                  maxLines: 3,
+                  textAlign: TextAlign.center,
+                  overflow: TextOverflow.ellipsis,
+                  textScaleFactor: 1.2,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontStyle: FontStyle.italic,
+                  ),
                 ),
               ),
               SizedBox(
@@ -200,7 +240,9 @@ class _DoctorDetailsFinalState extends State<DoctorDetailsFinal> {
                       height: 16.0,
                     ),
                     Text(
-                      "${doctor.about}",
+                      doctor.about != null
+                          ? "${doctor.about}"
+                          : "Info not found",
                       maxLines: 5,
                       textAlign: TextAlign.center,
                       textScaleFactor: 1.2,

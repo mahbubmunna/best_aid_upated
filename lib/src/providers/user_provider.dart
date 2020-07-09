@@ -45,17 +45,29 @@ class UserProvider {
     }
   }
 
-  static Future<String> updateUserDataWithPhoto(
-      String imageFile, var values) async {
-    var request = http.MultipartRequest("POST", Uri.parse(_userEndpoint));
-    request.fields.addAll(values);
+  static Future<UserUpdateResponse> updateUserDataWithPhoto(
+      String imageFile, Map<String, String>  values) async {
+    var token = await SharedPrefProvider.getString('access_token');
+    Map<String, String> headers = {
+      'Accept': 'application/json',
+      "Authorization": "Bearer $token"
+    };
+    var request = http.MultipartRequest("POST", Uri.parse(_userEndpoint))
+      ..headers.addAll(headers);
+
+
     var pic = await http.MultipartFile.fromPath("photo", imageFile);
     request.files.add(pic);
+    request.fields.addAll(values);
     print(request.fields.toString());
     var response = await request.send();
     var responseData = await response.stream.toBytes();
     var responseString = String.fromCharCodes(responseData);
-    return responseString;
+    print(responseString);
+
+    Map data = jsonDecode(responseString);
+
+    return UserUpdateResponse.fromJson(data);
   }
 
   static Future<UserResponse> postLoginData(Map loginData) async {
@@ -91,17 +103,15 @@ class UserProvider {
     }
   }
 
-  static Future<UserResponse> registerUser(Map<String,String> registerData) async {
+  static Future<UserResponse> registerUser(
+      Map<String, String> registerData) async {
     Map<String, String> headers = {
       'Content-type': '${Headers.formUrlEncodedContentType}',
       'Accept': 'application/json',
     };
 
-
-
     var request = http.MultipartRequest('POST', Uri.parse(_registerEndpoint))
-      ..headers.addAll(
-          headers)
+      ..headers.addAll(headers)
       ..fields.addAll(registerData);
     var response = await request.send();
     final respStr = await response.stream.bytesToString();

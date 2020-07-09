@@ -1,4 +1,5 @@
 import 'package:bestaid/src/pages/expert_opiniontwo.dart';
+import 'package:bestaid/src/pages/online_consultancy.dart';
 import 'package:flutter/material.dart';
 
 class HomeWidget extends StatefulWidget {
@@ -27,6 +28,7 @@ class _HomeWidgetState extends State<HomeWidget>
     ).animate(_controller);
     super.initState();
   }
+
   @override
   void dispose() {
     // TODO: implement dispose
@@ -88,8 +90,8 @@ class _HomeWidgetState extends State<HomeWidget>
             MaterialButton(
               elevation: 8,
               color: Colors.white,
-              shape:
-                  RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5)),
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 8),
                 child: ListTile(
@@ -110,7 +112,9 @@ class _HomeWidgetState extends State<HomeWidget>
                 ),
               ),
               onPressed: () {
-                Navigator.of(context).pushNamed('/OnlineConsultancy');
+                //Navigator.of(context).pushNamed('/OnlineConsultancy');
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (_) => OnlineConsultancy()));
               },
             ),
             SizedBox(
@@ -119,8 +123,8 @@ class _HomeWidgetState extends State<HomeWidget>
             MaterialButton(
               elevation: 8,
               color: Colors.white,
-              shape:
-                  RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5)),
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 8),
                 child: ListTile(
