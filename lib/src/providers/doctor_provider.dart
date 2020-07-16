@@ -33,6 +33,7 @@ class DoctorProvider{
 
     try {
       Response response = await _dio.get(_endPointDoctorDetails+"$id");
+      print(response.data);
       return DoctorDetails.fromJson(response.data);
     } catch (error, stacktrace) {
       print('Exception occured: $error stackTrace: $stacktrace');

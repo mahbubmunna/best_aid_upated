@@ -113,18 +113,18 @@ class _DoctorDetailsFinalState extends State<DoctorDetailsFinal> {
           ),
           Align(
             alignment: Alignment.topCenter,
-            child: doctor.photo.endsWith("storage/")
+            child: doctor.photo.endsWith("storage/") ||
+                    doctor.photo.isEmpty ||
+                    doctor.photo == null
                 ? Container(
                     padding: EdgeInsets.only(top: 24.0),
                     height: 144,
                     child: Image.asset('assets/img/33.png'),
                   )
-                : Positioned(
-                    bottom: 10.0,
-                    child: Container(
-                      decoration: BoxDecoration(
+                : Container(
+                    decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        boxShadow: [
+                       boxShadow: [
                           BoxShadow(
                             color: Colors.black45,
                             offset: Offset(0, 2),
@@ -132,7 +132,8 @@ class _DoctorDetailsFinalState extends State<DoctorDetailsFinal> {
                           ),
                         ],
                       ),
-                      child: ClipOval(
+                    child:
+                        ClipOval(
                         child: Image(
                           height: 120.0,
                           width: 120.0,
@@ -140,7 +141,6 @@ class _DoctorDetailsFinalState extends State<DoctorDetailsFinal> {
                           fit: BoxFit.cover,
                         ),
                       ),
-                    ),
                   ),
           ),
           SizedBox(
